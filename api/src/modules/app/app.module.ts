@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
 import { BikeModule } from '../bike/bike.module';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -12,6 +13,7 @@ import { AppController } from './app.controller';
 @Module({
   imports: [
     PrismaModule,
+    AuthModule,
     UserModule,
     BikeModule,
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
