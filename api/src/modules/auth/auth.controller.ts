@@ -25,7 +25,7 @@ export class AuthController {
     res.cookie('accessToken', loginData.accessToken, {
       expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
       sameSite: 'strict',
-      secure: true,
+      secure: false,
       httpOnly: true,
     });
 
