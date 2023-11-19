@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
+import { ROLES_ENUM } from '../../shared/constants/global.constants';
 
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
 
@@ -40,7 +41,7 @@ export class AuthService {
       name: userData.name,
       email: userData.email,
       password: null,
-      // role: userData.role,
+      role: userData.role,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -54,7 +55,9 @@ export class AuthService {
       accessToken: accessToken,
     };
   }
+
   public async register(user: RegisterUserDTO): Promise<User> {
-    return this.userService.createUser(user);
+    const newUser = { ...user, role: ROLES_ENUM.USER }; // default role
+    return this.userService.createUser(newUser);
   }
 }
