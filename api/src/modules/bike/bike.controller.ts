@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  UseGuards,
   Delete,
   Get,
   Param,
@@ -10,6 +11,10 @@ import {
 import { Bike as BikeModel } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
+
+import { JwtAuthGuard } from '../auth/auth.jwt.guard';
+import { Roles } from '../auth/auth.roles.decorator';
+import { ROLES_ENUM } from '../../shared/constants/global.constants';
 
 import { BikeService } from './bike.service';
 
@@ -29,6 +34,8 @@ export class BikeController {
   }
 
   @Post('bike')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
   async createBike(
     @Body()
     bikeData: {
@@ -54,6 +61,8 @@ export class BikeController {
   }
 
   @Put('bike/:id')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
   async updateBike(
     @Param('id') id: string,
     @Body() bikeData: Prisma.BikeUpdateInput,
@@ -65,6 +74,8 @@ export class BikeController {
   }
 
   @Delete('bike/:id')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
   async deleteBike(@Param('id') id: string): Promise<BikeModel> {
     return this.bikeService.delete({ id: Number(id) });
   }
