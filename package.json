@@ -1,0 +1,27 @@
+{
+  "name": "@bike/root",
+  "version": "0.0.1",
+  "description": "t",
+  "private": true,
+  "license": "MIT",
+  "main": "index.js",
+  "workspaces": {
+    "packages": [
+      "api",
+      "e2e",
+      "frontend"
+    ]
+  },
+  "scripts": {
+    "test": "echo \"todo\"",
+    "build:app": "yarn workspace @bike/frontend build",
+    "build:api": "yarn workspace @bike/api build",
+    "start:app": "yarn workspace @bike/frontend start",
+    "start:api": "yarn workspace @bike/api start"
+  },
+  "keywords": [
+    "nestjs",
+    "react",
+    "monorepo"
+  ]
+}
