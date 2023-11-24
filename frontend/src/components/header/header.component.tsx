@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import GlobalContext from "../../context/globalContext";
-import LogoutButton from "../loginButton.component";
+import LogoutButton from "../logoutButton.component";
 
 /**
  * Header: A functional component representing a header in React with Tailwind CSS.

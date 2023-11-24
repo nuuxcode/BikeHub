@@ -4,6 +4,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import GlobalContext from "../../../context/globalContext";
 import axios from "../../../apis/axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import {
   FormControl,
@@ -95,14 +96,19 @@ const LoginForm: React.FC = () => {
       setErrMsg("");
       setIsSubmitting(false);
       navigate("/");
+      toast.success("Login successful", { icon: "👏" });
     } catch (error: any) {
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
+        toast.error("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {
-        setErrMsg(error.response.data?.message);
+        setErrMsg(error.response.data?.message[0]);
+        toast.error(error.response.data?.message[0]);
       } else if (error.response?.status === 401) {
         setErrMsg(error.response.data?.message);
+        toast.error(error.response.data?.message);
       }
+
       console.log(data);
       console.log(errEmail, errPassword);
       console.log(auth);
@@ -112,43 +118,12 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  // axios
-  //   .post("/auth/login", JSON.stringify(data), {
-  //     headers: { "Content-Type": "application/json" },
-  //     withCredentials: true,
-  //   })
-  //   .then(function (response) {
-  //     setIsSubmitting(false);
-  //     console.log(JSON.stringify(response?.data));
-  //     const accessToken = response?.data?.accessToken;
-  //     const roles = response?.data?.roles;
-  //     setAuth({ ...data, roles, accessToken });
-  //     setData({ email: "", password: "" });
-  //     setErrMsg("");
-  //   })
-  //   .catch(function (error) {
-  //     setIsSubmitting(false);
-  //     console.log(error?.response?.data.message);
-  //     if (!error?.response) {
-  //       setErrMsg("Something went wrong. Please try again later.");
-  //     } else if (error.response?.status === 400) {
-  //       setErrMsg(error.response.data?.message);
-  //     } else if (error.response?.status === 401) {
-  //       setErrMsg(error.response.data?.message);
-  //     }
-  //     console.log(data);
-  //     console.log(errEmail, errPassword);
-  //     console.log(auth);
-
-  //     console.log(errMsg);
-  //   });
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 w-4/5">
       <FormControl isInvalid={errMsg != ""}>
         {errMsg && (
           <FormErrorMessage justifyContent={"center"}>
-            {errMsg[0]}
+            {errMsg}
           </FormErrorMessage>
         )}
       </FormControl>
@@ -156,7 +131,7 @@ const LoginForm: React.FC = () => {
       <FormControl id="email" isInvalid={errEmail}>
         <FormLabel>Email address</FormLabel>
         <Input
-          isInvalid={errEmail}
+          isInvalid={errEmail || errMsg != ""}
           errorBorderColor="crimson"
           type="email"
           value={data.email}
@@ -168,7 +143,7 @@ const LoginForm: React.FC = () => {
         <FormLabel>Password</FormLabel>
         <InputGroup>
           <Input
-            isInvalid={errPassword}
+            isInvalid={errPassword || errMsg != ""}
             errorBorderColor="crimson"
             type={showPassword ? "text" : "password"}
             value={data.password}

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GlobalContext from "../../../context/globalContext";
+import toast from "react-hot-toast";
 import {
   FormControl,
   FormLabel,
@@ -111,14 +112,11 @@ const LoginForm: React.FC = () => {
   };
 
   /**
-   * Handles the form submission event.
+   * Handles validation input field.
    *
-   * @param event - The form submission event object.
    */
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    if (data.password === "") {
+  const validation = () => {
+    if (data.email === "") {
       setErrEmail(true);
       console.log("pass empty");
     } else {
@@ -130,41 +128,59 @@ const LoginForm: React.FC = () => {
     } else {
       setErrName(false);
     }
-    if (data.email === "") {
+    if (data.password === "") {
       setErrPassword(true);
       console.log("email empty");
     } else {
       setErrPassword(false);
     }
 
-    if (data.password !== confirmPassword) {
-      setErrPassword(true);
-    } else {
+    if (
+      data.password === confirmPassword &&
+      confirmPassword !== "" &&
+      data.password !== ""
+    ) {
       setErrPassword(false);
+    } else {
+      setErrPassword(true);
     }
-    if (!errEmail && !errPassword && !errName && confirmPassword !== "") {
-      try {
-        // Make a POST request to your login endpoint
-        const response = await axios.post("/auth/login", JSON.stringify(data), {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
+  };
 
-        console.log(JSON.stringify(response?.data));
-        setData({ email: "", password: "", name: "" });
-        setErrMsg("");
-        navigate("/login");
-      } catch (error: any) {
-        if (!error?.response) {
-          setErrMsg("Something went wrong. Please try again later.");
-        } else if (error.response?.status === 400) {
-          setErrMsg(error.response.data?.message);
-        } else if (error.response?.status === 401) {
-          setErrMsg(error.response.data?.message);
-        }
-      } finally {
-        setIsSubmitting(false);
+  /**
+   * Handles the form submission event.
+   *
+   * @param event - The form submission event object.
+   */
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    validation();
+
+    try {
+      // Make a POST request to your login endpoint
+      const response = await axios.post("auth/register", JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log(response);
+      console.log(JSON.stringify(response?.data));
+      setData({ email: "", password: "", name: "" });
+      setErrMsg("");
+      navigate("/login");
+      toast.success("Successfully created!");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data?.message[0]);
+
+      if (!error?.response) {
+        setErrMsg("Something went wrong. Please try again later.");
+      } else if (error.response?.status === 400) {
+        setErrMsg(error.response.data?.message);
+      } else if (error.response?.status === 401) {
+        setErrMsg(error.response.data?.message);
       }
+    } finally {
+      setIsSubmitting(false);
     }
     console.log(data);
     console.log(errName, errEmail, errPassword);
@@ -239,6 +255,7 @@ const LoginForm: React.FC = () => {
               type={showPassword ? "text" : "password"}
               value={data.password}
               onChange={handlePasswordChange}
+              placeholder="Password"
             />
             <InputRightElement h={"full"}>
               <Button
@@ -258,6 +275,7 @@ const LoginForm: React.FC = () => {
               type={showPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
+              placeholder="Confirm Password"
             />
             <InputRightElement h={"full"}>
               <Button
