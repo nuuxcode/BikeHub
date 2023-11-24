@@ -35,6 +35,7 @@ model User {
   name       String
   email      String   @unique
   password   String
+  role       String   @default("user")
   Rental     Rental[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

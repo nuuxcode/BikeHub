@@ -2,6 +2,7 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
@@ -12,7 +13,7 @@ import { User } from '@prisma/client';
 export class JwtAuthGuard extends AuthGuard('jwt') {
   roles: string[];
 
-  constructor(private reflector: Reflector) {
+  constructor(private reflector?: Reflector) {
     super(reflector);
   }
 
@@ -23,7 +24,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err: Error, user: User): any {
+  handleRequest(
+    err: Error,
+    user: User,
+    info: any,
+    context: ExecutionContext,
+  ): any {
+    const request = context.switchToHttp().getRequest();
+    const { params } = request;
+
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
@@ -32,12 +41,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return user;
     }
 
-    // TODO: add RBAC (role based auth)
-    // const hasPermission = this.roles.includes(user.role);
+    const hasRole = () => this.roles.includes(user.role);
+    const isSelfUser = () => user.id === Number(params.id);
 
-    // if (!hasPermission) {
-    //   throw new ForbiddenException();
-    // }
+    const hasPermission = hasRole() || isSelfUser();
+
+    if (!hasPermission) {
+      throw new ForbiddenException();
+    }
 
     return user;
   }
