@@ -1,9 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import GlobalContext from "../../../context/globalContext";
+import axios from "../../../apis/axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Button,
+  FormErrorMessage,
+  Text,
+  InputRightElement,
+  InputGroup,
+} from "@chakra-ui/react";
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const { setAuth, auth } = useContext(GlobalContext);
+  const [data, setData] = useState<LoginCredentials>({
+    email: "",
+    password: "",
+  });
+  const [errEmail, setErrEmail] = useState(false);
+  const [errPassword, setErrPassword] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  useEffect(() => {
+    if (auth?.accessToken) {
+      navigate("/");
+    }
+  });
+  console.log(auth);
 
   /**
    * Handles the change event for the email input field.
@@ -11,7 +50,7 @@ const LoginForm: React.FC = () => {
    * @param event - The change event object.
    */
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+    setData({ ...data, email: event.target.value });
   };
 
   /**
@@ -20,7 +59,7 @@ const LoginForm: React.FC = () => {
    * @param event - The change event object.
    */
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+    setData({ ...data, password: event.target.value });
   };
 
   /**
@@ -28,81 +67,125 @@ const LoginForm: React.FC = () => {
    *
    * @param event - The form submission event object.
    */
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Perform sign-in logic here
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${password}`);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    if (!data.email) {
+      setErrPassword(true);
+    } else {
+      setErrPassword(false);
+    }
+    if (!data.password) {
+      setErrEmail(true);
+    } else {
+      setErrEmail(false);
+    }
+
+    try {
+      // Make a POST request to your login endpoint
+      const response = await axios.post("/auth/login", JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+
+      console.log(JSON.stringify(response?.data));
+      const accessToken = response?.data?.accessToken;
+      const roles = response?.data?.roles;
+      setAuth({ ...data, roles, accessToken });
+      setData({ email: "", password: "" });
+      setErrMsg("");
+      setIsSubmitting(false);
+      navigate("/");
+      toast.success("Login successful", { icon: "👏" });
+    } catch (error: any) {
+      if (!error?.response) {
+        setErrMsg("Something went wrong. Please try again later.");
+        toast.error("Something went wrong. Please try again later.");
+      } else if (error.response?.status === 400) {
+        setErrMsg(error.response.data?.message[0]);
+        toast.error(error.response.data?.message[0]);
+      } else if (error.response?.status === 401) {
+        setErrMsg(error.response.data?.message);
+        toast.error(error.response.data?.message);
+      }
+
+      console.log(data);
+      console.log(errEmail, errPassword);
+      console.log(auth);
+      console.log(errMsg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 w-4/5">
-      <div className="">
-        <label
-          htmlFor="email"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Your email
-        </label>
-        <input
+      <FormControl isInvalid={errMsg != ""}>
+        {errMsg && (
+          <FormErrorMessage justifyContent={"center"}>
+            {errMsg}
+          </FormErrorMessage>
+        )}
+      </FormControl>
+
+      <FormControl id="email" isInvalid={errEmail}>
+        <FormLabel>Email address</FormLabel>
+        <Input
+          isInvalid={errEmail || errMsg != ""}
+          errorBorderColor="crimson"
           type="email"
-          placeholder="Email"
-          value={email}
+          value={data.email}
           onChange={handleEmailChange}
-          name="email"
-          id="email"
-          className="bg-gray-50  border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:outline-primary-600 focus:ring-primary-600  focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
         />
-      </div>
-      <div>
-        <label
-          htmlFor="password"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Password
-        </label>
-        <input
-          name="password"
-          id="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:outline-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-start">
-          <div className="flex items-center h-5">
-            <input
-              id="remember"
-              aria-describedby="remember"
-              type="checkbox"
-              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-            />
-          </div>
-          <div className="ml-3 text-sm">
-            <label
-              htmlFor="remember"
-              className="text-gray-500 dark:text-gray-300"
+        <FormErrorMessage>email should not be empty</FormErrorMessage>
+      </FormControl>
+      <FormControl id="password" isInvalid={errPassword}>
+        <FormLabel>Password</FormLabel>
+        <InputGroup>
+          <Input
+            isInvalid={errPassword || errMsg != ""}
+            errorBorderColor="crimson"
+            type={showPassword ? "text" : "password"}
+            value={data.password}
+            onChange={handlePasswordChange}
+          />
+
+          <InputRightElement h={"full"}>
+            <Button
+              variant={"ghost"}
+              onClick={() => setShowPassword((showPassword) => !showPassword)}
             >
-              Remember me
-            </label>
-          </div>
-        </div>
-        <a
-          href="#"
-          className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+              {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+        <FormErrorMessage>password should not be empty</FormErrorMessage>
+      </FormControl>
+
+      <Stack spacing={2}>
+        <Stack
+          direction={{ base: "column", sm: "row" }}
+          align={"start"}
+          justify={"space-between"}
         >
-          Forgot password?
-        </a>
-      </div>
-      <button
-        type="submit"
-        className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-      >
-        Sign in
-      </button>
+          <Checkbox>Remember me</Checkbox>
+          <Link to="/login">
+            <Text color={"blue.400"}>Forgot password?</Text>
+          </Link>
+        </Stack>
+        <Button
+          bg={"blue.400"}
+          color={"white"}
+          _hover={{
+            bg: "blue.500",
+          }}
+          isLoading={isSubmitting}
+          type="submit"
+        >
+          Sign in
+        </Button>
+      </Stack>
+
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <Link
