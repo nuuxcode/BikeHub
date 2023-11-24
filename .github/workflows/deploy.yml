@@ -1,0 +1,96 @@
+name: Deploy DEV
+env:
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_SIGNATURE: ${{ secrets.JWT_SIGNATURE }}
+      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+      PORT: ${{ secrets.PORT }}
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          registry-url: 'https://registry.npmjs.org'
+      - name: pwd
+        run: pwd
+      - name: ls
+        run: ls -la
+      - name: check which branch
+        run: git branch
+      - name: yarn install
+        run: yarn install
+      - name: install frontend
+        run: cd frontend && yarn install
+      - name: install api
+        run: cd api && yarn install
+      - name: Install wait-port
+        run: npm install -g wait-port
+      - name: start api
+        run: |
+            cd api
+            yarn build
+            JWT_SIGNATURE=$JWT_SIGNATURE DATABASE_URL=$DATABASE_URL yarn start:prod > api.log 2>&1 &
+            wait-port localhost:3300
+            curl -si http://localhost:3300/api/v1/hello
+      - name: Wait for API to start
+        run: wait-port localhost:3300
+      - name: Test API health with curl
+        run: curl -si http://localhost:3300/api/v1/hello
+      - name: Display API logs
+        run: cat api/api.log
+      - name: Install serve
+        run: npm install -g serve
+      - name: start frontend
+        run: |
+            cd frontend
+            yarn build
+            serve -l 3000 -s dist > front.log 2>&1 &
+      - name: Wait for front to start
+        run: wait-port -t 60 localhost:3000
+      - name: Test front health with curl
+        run: curl -si http://localhost:3000/
+      - name: Display Front logs
+        run: cat frontend/front.log
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd BikeHub
+            git switch dev
+            git pull origin dev
+            pm2 reload all
