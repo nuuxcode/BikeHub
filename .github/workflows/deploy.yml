@@ -103,6 +103,10 @@ jobs:
             git reset --hard
             echo "Done!"
             echo "--------"
+            echo "cmd: rm -f package-lock.json yarn.lock"
+            rm package-lock.json yarn.lock
+            echo "Done!"
+            echo "--------"
             echo "cmd: git pull origin dev"
             git pull origin dev
             echo "Done!"
