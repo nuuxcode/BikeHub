@@ -90,8 +90,28 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
+            echo "--------"
+            echo "cmd: cd BikeHub"
             cd BikeHub
+            echo "Done!"
+            echo "--------"
+            echo "cmd: git switch dev"
             git switch dev
+            echo "Done!"
+            echo "--------"
+            echo "cmd: git reset --hard"
+            git reset --hard
+            echo "Done!"
+            echo "--------"
+            echo "cmd: git pull origin dev"
             git pull origin dev
+            echo "Done!"
+            echo "--------"
+            echo "cmd: npm install && yarn install"
             npm install && yarn install
+            echo "Done!"
+            echo "--------"
+            echo "cmd: pm2 reload all"
             pm2 reload all
+            echo "Done!"
+            echo "--------"
