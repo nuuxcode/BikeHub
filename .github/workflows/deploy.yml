@@ -93,4 +93,5 @@ jobs:
             cd BikeHub
             git switch dev
             git pull origin dev
+            npm install && yarn install
             pm2 reload all
