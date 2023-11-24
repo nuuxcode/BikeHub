@@ -3,7 +3,7 @@ env:
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
       JWT_SIGNATURE: ${{ secrets.JWT_SIGNATURE }}
       FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
       PORT: ${{ secrets.PORT }}
