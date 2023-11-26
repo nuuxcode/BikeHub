@@ -17,7 +17,7 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL,
+      origin: process.env.CORS_ALLOW_URL.split(','),
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       credentials: true,
     }),
@@ -43,7 +43,7 @@ async function bootstrap() {
     SwaggerModule.setup(swaggerConfig.path || 'api', app, document);
   }
 
-  const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;
+  const PORT = process.env.API_PORT || GLOBAL_CONFIG.nest.port;
   await app.listen(PORT);
 }
 bootstrap();
