@@ -3,6 +3,11 @@ env:
     JWT_SIGNATURE: ${{ secrets.PROD_JWT_SIGNATURE }}
     CORS_ALLOW_URL: ${{ secrets.PROD_CORS_ALLOW_URL }}
     API_PORT: ${{ secrets.PROD_API_PORT }}
+    DATABASE_URL: ${{ secrets.PROD_PDATABASE_URL }}
+    SERVER_HOST: ${{ secrets.PROD_SERVER_HOST }}
+    SERVER_PORT: ${{ secrets.PROD_SERVER_PORT }}
+    SERVER_USERNAME: ${{ secrets.PROD_SERVER_USERNAME }}
+    SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
 on:
   push:
     branches:
@@ -28,15 +33,11 @@ jobs:
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "DATABASE_URL=${{ secrets.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
             echo "SERVER_HOST=${{ secrets.PROD_SERVER_HOST }}" >> $GITHUB_ENV
-            echo "SERVER_PORT=${{ secrets.PROD_SERVER_PORT }}" >> $GITHUB_ENV
             echo "SERVER_USERNAME=${{ secrets.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
-            echo "SSH_PRIVATE_KEY=${{ secrets.PROD_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
             echo "DATABASE_URL=${{ secrets.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
             echo "SERVER_HOST=${{ secrets.DEV_SERVER_HOST }}" >> $GITHUB_ENV
-            echo "SERVER_PORT=${{ secrets.DEV_SERVER_PORT }}" >> $GITHUB_ENV
             echo "SERVER_USERNAME=${{ secrets.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
-            echo "SSH_PRIVATE_KEY=${{ secrets.DEV_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
           fi
       - name: Check the Environment Variable
         run: |
