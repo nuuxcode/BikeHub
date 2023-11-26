@@ -94,47 +94,47 @@ jobs:
           port: ${{ vars.SSH_PORT }}
           script: |
             echo "--------"
-            echo "cmd: cd BikeHub"
+            echo "### CMD: cd BikeHub"
             cd BikeHub
             echo "Done!"
             echo "--------"
-            echo "cmd: git reset --hard"
+            echo "### CMD: git reset --hard"
             git reset --hard
             echo "Done!"
             echo "--------"
-            echo "cmd: rm -f package-lock.json yarn.lock"
+            echo "### CMD: rm -f package-lock.json yarn.lock"
             rm package-lock.json yarn.lock
             echo "Done!"
             echo "--------"
             branch_name=$(basename "${{ github.ref }}")
-            echo "cmd: git switch $branch_name"
+            echo "### CMD: git switch $branch_name"
             git switch "$branch_name"
             echo "Done!"
             echo "--------"
-            echo "cmd: git pull origin $branch_name"
+            echo "### CMD: git pull origin $branch_name"
             git pull origin $branch_name
             echo "Done!"
             echo "--------"
-            echo "cmd: npm install && yarn install"
+            echo "### CMD: npm install && yarn install"
             npm install && yarn install
             echo "Done!"
             echo "--------"
-            echo "cmd: cd ~/BikeHub/api && cp .env.example .env"
+            echo "### CMD: cd ~/BikeHub/api && cp .env.example .env"
             cd ~/BikeHub/api && cp .env.example .env
             echo "Done!"
             echo "--------"
             if [ "${{ github.ref }}" = "refs/heads/main" ]; then
               echo "start deploying in ${{ github.ref }}"
-              echo "cmd: cd ~/BikeHub/api && yarn build"
+              echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
-              echo "cmd: pm2 reload startapi"
-              pm2 reload startapi
-              echo "cmd: cd ~/BikeHub/frontend && yarn build"
+              echo "### CMD: pm2 reload startapi --update-env"
+              pm2 reload startapi --update-env
+              echo "### CMD: cd ~/BikeHub/frontend && yarn build"
               cd ~/BikeHub/frontend && yarn build
-              echo "cmd: pm2 reload startfrontend"
-              pm2 reload startfrontend
-              echo "cmd: pm2 reload prisma"
-              pm2 reload prisma
+              echo "### CMD: pm2 reload startfrontend --update-env"
+              pm2 reload startfrontend --update-env
+              echo "### CMD: pm2 reload prisma --update-env"
+              pm2 reload prisma --update-env
               echo "---------------------------" >> dist/deploy.txt
               echo "Date: $(date)" >> dist/deploy.txt
               echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
@@ -149,16 +149,16 @@ jobs:
             fi
             if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
               echo "start deploying in ${{ github.ref }}"
-              echo "cmd: cd ~/BikeHub/api && yarn build"
+              echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
-              echo "cmd: pm2 reload startapi"
-              pm2 reload startapi
-              echo "cmd: cd ~/BikeHub/frontend && yarn build"
+              echo "### CMD: pm2 reload startapi --update-env"
+              pm2 reload startapi --update-env
+              echo "### CMD: cd ~/BikeHub/frontend && yarn build"
               cd ~/BikeHub/frontend && yarn build
-              echo "cmd: pm2 reload startfrontend"
-              pm2 reload startfrontend
-              echo "cmd: pm2 reload prisma"
-              pm2 reload prisma
+              echo "### CMD: pm2 reload startfrontend --update-env"
+              pm2 reload startfrontend --update-env
+              echo "### CMD: pm2 reload prisma --update-env"
+              pm2 reload prisma --update-env
               echo "---------------------------" >> dist/deploy.txt
               echo "Date: $(date)" >> dist/deploy.txt
               echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
