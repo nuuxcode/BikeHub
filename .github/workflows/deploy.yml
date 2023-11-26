@@ -106,16 +106,21 @@ jobs:
             rm package-lock.json yarn.lock
             echo "Done!"
             echo "--------"
-            echo "cmd: git switch ${{ github.ref }}"
-            git switch ${{ github.ref }}
+            branch_name=$(basename "${{ github.ref }}")
+            echo "cmd: git switch $branch_name"
+            git switch "$branch_name"
             echo "Done!"
             echo "--------"
-            echo "cmd: git pull origin ${{ github.ref }}"
-            git pull origin ${{ github.ref }}
+            echo "cmd: git pull origin $branch_name"
+            git pull origin $branch_name
             echo "Done!"
             echo "--------"
             echo "cmd: npm install && yarn install"
             npm install && yarn install
+            echo "Done!"
+            echo "--------"
+            echo "cmd: cd ~/BikeHub/api && cp .env.example .env"
+            cd ~/BikeHub/api && cp .env.example .env
             echo "Done!"
             echo "--------"
             if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -131,6 +136,7 @@ jobs:
               echo "cmd: pm2 reload prisma"
               pm2 reload prisma
               echo "---------------------------" >> dist/deploy.txt
+              echo "Date: $(date)" >> dist/deploy.txt
               echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
               echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> dist/deploy.txt
               echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> dist/deploy.txt
@@ -154,6 +160,7 @@ jobs:
               echo "cmd: pm2 reload prisma"
               pm2 reload prisma
               echo "---------------------------" >> dist/deploy.txt
+              echo "Date: $(date)" >> dist/deploy.txt
               echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
               echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> dist/deploy.txt
               echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> dist/deploy.txt
