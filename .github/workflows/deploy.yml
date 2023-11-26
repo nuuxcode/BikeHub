@@ -1,35 +1,14 @@
 name: Deploy DEV
 env:
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
-      JWT_SIGNATURE: ${{ secrets.JWT_SIGNATURE }}
-      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-      PORT: ${{ secrets.PORT }}
+    JWT_SIGNATURE: ${{ secrets.PROD_JWT_SIGNATURE }}
+    CORS_ALLOW_URL: ${{ secrets.PROD_CORS_ALLOW_URL }}
+    API_PORT: ${{ secrets.PROD_API_PORT }}
 on:
   push:
     branches:
       - dev
+      - main
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
-      tags:
-        description: 'Test scenario tags'
-        required: false
-        type: boolean
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
 
 jobs:
   test:
@@ -42,6 +21,26 @@ jobs:
         with:
           node-version: latest
           registry-url: 'https://registry.npmjs.org'
+      - name: check triggering branch
+        run: echo ${{ github.ref }}
+      - name: Set Database URL
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "DATABASE_URL=${{ secrets.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ secrets.PROD_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_PORT=${{ secrets.PROD_SERVER_PORT }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ secrets.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
+            echo "SSH_PRIVATE_KEY=${{ secrets.PROD_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            echo "DATABASE_URL=${{ secrets.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ secrets.DEV_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_PORT=${{ secrets.DEV_SERVER_PORT }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ secrets.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
+            echo "SSH_PRIVATE_KEY=${{ secrets.DEV_SSH_PRIVATE_KEY }}" >> $GITHUB_ENV
+          fi
+      - name: Check the Environment Variable
+        run: |
+          echo "DATABASE_URL is $DATABASE_URL"
       - name: pwd
         run: pwd
       - name: ls
@@ -50,23 +49,24 @@ jobs:
         run: git branch
       - name: yarn install
         run: yarn install
-      - name: install frontend
-        run: cd frontend && yarn install
-      - name: install api
-        run: cd api && yarn install
       - name: Install wait-port
         run: npm install -g wait-port
       - name: start api
         run: |
             cd api
             yarn build
-            JWT_SIGNATURE=$JWT_SIGNATURE DATABASE_URL=$DATABASE_URL yarn start:prod > api.log 2>&1 &
-            wait-port localhost:3300
-            curl -si http://localhost:3300/api/v1/hello
+            yarn start:prod > api.log 2>&1 &
       - name: Wait for API to start
-        run: wait-port localhost:3300
+        run: wait-port -t 60 localhost:3300
+        continue-on-error: true
       - name: Test API health with curl
+        if: ${{ success() }}
         run: curl -si http://localhost:3300/api/v1/hello
+      - name: Display API logs failure
+        if: ${{ failure() }}
+        run: |
+            cat api/api.log
+            exit 1
       - name: Display API logs
         run: cat api/api.log
       - name: Install serve
@@ -78,25 +78,28 @@ jobs:
             serve -l 3000 -s dist > front.log 2>&1 &
       - name: Wait for front to start
         run: wait-port -t 60 localhost:3000
+        continue-on-error: true
       - name: Test front health with curl
+        if: ${{ success() }}
         run: curl -si http://localhost:3000/
+      - name: Display Front logs failure
+        if: ${{ failure() }}
+        run: |
+            cat frontend/front.log
+            exit 1
       - name: Display Front logs
         run: cat frontend/front.log
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USERNAME }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          port: ${{ env.SERVER_PORT }}
           script: |
             echo "--------"
             echo "cmd: cd BikeHub"
             cd BikeHub
-            echo "Done!"
-            echo "--------"
-            echo "cmd: git switch dev"
-            git switch dev
             echo "Done!"
             echo "--------"
             echo "cmd: git reset --hard"
@@ -107,15 +110,63 @@ jobs:
             rm package-lock.json yarn.lock
             echo "Done!"
             echo "--------"
-            echo "cmd: git pull origin dev"
-            git pull origin dev
+            echo "cmd: git switch ${{ github.ref }}"
+            git switch ${{ github.ref }}
+            echo "Done!"
+            echo "--------"
+            echo "cmd: git pull origin ${{ github.ref }}"
+            git pull origin ${{ github.ref }}
             echo "Done!"
             echo "--------"
             echo "cmd: npm install && yarn install"
             npm install && yarn install
             echo "Done!"
             echo "--------"
-            echo "cmd: pm2 reload all"
-            pm2 reload all
-            echo "Done!"
+            if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+              echo "start deploying in ${{ github.ref }}"
+              echo "cmd: cd ~/BikeHub/api && yarn build"
+              cd ~/BikeHub/api && yarn build
+              echo "cmd: pm2 reload startapi"
+              pm2 reload startapi
+              echo "cmd: cd ~/BikeHub/frontend && yarn build"
+              cd ~/BikeHub/frontend && yarn build
+              echo "cmd: pm2 reload startfrontend"
+              pm2 reload startfrontend
+              echo "cmd: pm2 reload prisma"
+              pm2 reload prisma
+              echo "---------------------------" >> deploy.txt
+              echo "Branch: ${{ github.ref }}" >> deploy.txt
+              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> deploy.txt
+              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> deploy.txt
+              echo "Pusher: ${{ github.actor }}" >> deploy.txt
+              if [ "${{ github.event_name }}" = "pull_request" ]; then
+                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> deploy.txt
+                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> deploy.txt
+              fi
+              echo "Done!"
+            fi
+            if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+              echo "start deploying in ${{ github.ref }}"
+              echo "cmd: cd ~/BikeHub/api && yarn build"
+              cd ~/BikeHub/api && yarn build
+              echo "cmd: pm2 reload startapi"
+              pm2 reload startapi
+              echo "cmd: cd ~/BikeHub/frontend && yarn build"
+              cd ~/BikeHub/frontend && yarn build
+              echo "cmd: pm2 reload startfrontend"
+              pm2 reload startfrontend
+              echo "cmd: pm2 reload prisma"
+              pm2 reload prisma
+              echo "---------------------------" >> deploy.txt
+              echo "Branch: ${{ github.ref }}" >> deploy.txt
+              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> deploy.txt
+              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> deploy.txt
+              echo "Pusher: ${{ github.actor }}" >> deploy.txt
+              if [ "${{ github.event_name }}" = "pull_request" ]; then
+                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> deploy.txt
+                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> deploy.txt
+              fi
+              echo "Done!"
+            fi
             echo "--------"
+

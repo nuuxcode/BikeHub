@@ -17,7 +17,7 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL,
+      origin: process.env.CORS_ALLOW_URL.split(','),
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       credentials: true,
     }),
