@@ -53,7 +53,7 @@ jobs:
             yarn build
             yarn start:prod > api.log 2>&1 &
       - name: Wait for API to start
-        run: wait-port -t 300 localhost:3300
+        run: wait-port localhost:3300
         continue-on-error: true
       - name: Test API health with curl
         if: ${{ success() }}
@@ -73,7 +73,7 @@ jobs:
             yarn build
             serve -l 3000 -s dist > front.log 2>&1 &
       - name: Wait for front to start
-        run: wait-port -t 300 localhost:3000
+        run: wait-port localhost:3000
         continue-on-error: true
       - name: Test front health with curl
         if: ${{ success() }}
