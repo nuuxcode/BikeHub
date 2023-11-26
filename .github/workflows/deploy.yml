@@ -102,8 +102,10 @@ jobs:
             git reset --hard
             echo "Done!"
             echo "--------"
-            echo "### CMD: rm -f package-lock.json yarn.lock"
-            rm package-lock.json yarn.lock
+            echo "### CMD: find . -name 'package-lock.json' -exec rm -f {} +"
+            find . -name 'package-lock.json' -exec rm -f {} +
+            echo "### CMD: find . -name 'yarn.lock' -exec rm -f {} +"
+            find . -name 'yarn.lock' -exec rm -f {} +
             echo "Done!"
             echo "--------"
             branch_name=$(basename "${{ github.ref }}")
@@ -115,7 +117,7 @@ jobs:
             git pull origin $branch_name
             echo "Done!"
             echo "--------"
-            echo "### CMD: npm install && yarn install"
+            echo "### CMD: npm install &deploy.txt& yarn install"
             npm install && yarn install
             echo "Done!"
             echo "--------"
@@ -135,16 +137,19 @@ jobs:
               pm2 reload startfrontend --update-env
               echo "### CMD: pm2 reload prisma --update-env"
               pm2 reload prisma --update-env
-              echo "---------------------------" >> dist/deploy.txt
-              echo "Date: $(date)" >> dist/deploy.txt
-              echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
-              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> dist/deploy.txt
-              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> dist/deploy.txt
-              echo "Pusher: ${{ github.actor }}" >> dist/deploy.txt
+              echo "### CMD: update deploy.txt"
+              echo "---------------------------" >> deploy.txt
+              echo "Date: $(date)" >> deploy.txt
+              echo "Branch: ${{ github.ref }}" >> deploy.txt
+              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> deploy.txt
+              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> deploy.txt
+              echo "Pusher: ${{ github.actor }}" >> deploy.txt
               if [ "${{ github.event_name }}" = "pull_request" ]; then
-                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> dist/deploy.txt
-                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> dist/deploy.txt
+                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> deploy.txt
+                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> deploy.txt
               fi
+              echo "### CMD: cp deploy.txt dist/deploy.txt"
+              cp deploy.txt dist/deploy.txt
               echo "Done!"
             fi
             if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
@@ -159,16 +164,19 @@ jobs:
               pm2 reload startfrontend --update-env
               echo "### CMD: pm2 reload prisma --update-env"
               pm2 reload prisma --update-env
-              echo "---------------------------" >> dist/deploy.txt
-              echo "Date: $(date)" >> dist/deploy.txt
-              echo "Branch: ${{ github.ref }}" >> dist/deploy.txt
-              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> dist/deploy.txt
-              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> dist/deploy.txt
-              echo "Pusher: ${{ github.actor }}" >> dist/deploy.txt
+              echo "### CMD: update deploy.txt"
+              echo "---------------------------" >> deploy.txt
+              echo "Date: $(date)" >> deploy.txt
+              echo "Branch: ${{ github.ref }}" >> deploy.txt
+              echo "Last Commit Message: ${{ github.event.head_commit.message }}" >> deploy.txt
+              echo "Last Commit Author: ${{ github.event.head_commit.author.name }}" >> deploy.txt
+              echo "Pusher: ${{ github.actor }}" >> deploy.txt
               if [ "${{ github.event_name }}" = "pull_request" ]; then
-                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> dist/deploy.txt
-                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> dist/deploy.txt
+                echo "Pull Request Author: ${{ github.event.pull_request.user.login }}" >> deploy.txt
+                echo "Merged By: ${{ github.event.pull_request.merged_by.login }}" >> deploy.txt
               fi
+              echo "### CMD: cp deploy.txt dist/deploy.txt"
+              cp deploy.txt dist/deploy.txt
               echo "Done!"
             fi
             echo "--------"
