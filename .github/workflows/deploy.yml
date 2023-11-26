@@ -23,13 +23,13 @@ jobs:
       - name: Set Database URL
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "DATABASE_URL=${{ env.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
-            echo "SERVER_HOST=${{ env.PROD_SERVER_HOST }}" >> $GITHUB_ENV
-            echo "SERVER_USERNAME=${{ env.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
+            echo "DATABASE_URL=${{ vars.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ vars.PROD_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
-            echo "DATABASE_URL=${{ env.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
-            echo "SERVER_HOST=${{ env.DEV_SERVER_HOST }}" >> $GITHUB_ENV
-            echo "SERVER_USERNAME=${{ env.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
+            echo "DATABASE_URL=${{ vars.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ vars.DEV_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
           fi
       - name: Check the Environment Variable
         run: |
@@ -87,8 +87,8 @@ jobs:
         with:
           host: $SERVER_HOST
           username: $SERVER_USERNAME
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT }}
+          key: ${{ vars.SSH_PRIVATE_KEY }}
+          port: ${{ vars.SSH_PORT }}
           script: |
             echo "--------"
             echo "cmd: cd BikeHub"
