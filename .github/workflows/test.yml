@@ -1,0 +1,87 @@
+name: CI
+env:
+    JWT_SIGNATURE: ${{ vars.JWT_SIGNATURE }}
+    CORS_ALLOW_URL: ${{ vars.CORS_ALLOW_URL }}
+    API_PORT: ${{ vars.API_PORT }}
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          registry-url: 'https://registry.npmjs.org'
+      - name: check triggering branch
+        run: echo ${{ github.event.pull_request.base.ref }}
+      - name: Set Database URL
+        run: |
+          if [ "${{ github.event.pull_request.base.ref }}" == "main" ]; then
+            echo "DATABASE_URL=${{ vars.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ vars.PROD_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
+          elif [ "${{ github.event.pull_request.base.ref }}" == "dev" ]; then
+            echo "DATABASE_URL=${{ vars.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
+            echo "SERVER_HOST=${{ vars.DEV_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
+          fi
+      - name: Check the Environment Variable
+        run: |
+          echo "DATABASE_URL is $DATABASE_URL"
+      - name: pwd
+        run: pwd
+      - name: ls
+        run: ls -la
+      - name: check which branch
+        run: git branch
+      - name: yarn install
+        run: yarn install
+      - name: Install wait-port
+        run: npm install -g wait-port
+      - name: start api
+        run: |
+            cd api
+            yarn build
+            yarn start:prod > api.log 2>&1 &
+      - name: Wait for API to start
+        run: wait-port -t 60000 localhost:3300
+        continue-on-error: true
+      - name: Test API health with curl
+        if: ${{ success() }}
+        run: curl -si http://localhost:3300/api/v1/hello
+      - name: Display API logs failure
+        if: ${{ failure() }}
+        run: |
+            cat api/api.log
+            exit 1
+      - name: Display API logs
+        run: cat api/api.log
+      - name: Install serve
+        run: npm install -g serve
+      - name: start frontend
+        run: |
+            cd frontend
+            yarn build
+            serve -l 3000 -s dist > front.log 2>&1 &
+      - name: Wait for front to start
+        run: wait-port -t 60000 localhost:3000
+        continue-on-error: true
+      - name: Test front health with curl
+        if: ${{ success() }}
+        run: curl -si http://localhost:3000/
+      - name: Display Front logs failure
+        if: ${{ failure() }}
+        run: |
+            cat frontend/front.log
+            exit 1
+      - name: Display Front logs
+        run: cat frontend/front.log
