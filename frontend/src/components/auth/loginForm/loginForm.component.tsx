@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import GlobalContext from "../../../context/globalContext";
 import axios from "../../../apis/axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -18,6 +17,7 @@ import {
   InputRightElement,
   InputGroup,
 } from "@chakra-ui/react";
+import { useAuth } from "../../../hooks/useAuth";
 
 interface LoginCredentials {
   email: string;
@@ -27,7 +27,7 @@ interface LoginCredentials {
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const { setAuth, auth } = useContext(GlobalContext);
+  const { login } = useAuth();
   const [data, setData] = useState<LoginCredentials>({
     email: "",
     password: "",
@@ -37,12 +37,6 @@ const LoginForm: React.FC = () => {
   const [errMsg, setErrMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  useEffect(() => {
-    if (auth?.accessToken) {
-      navigate("/");
-    }
-  });
-  console.log(auth);
 
   /**
    * Handles the change event for the email input field.
@@ -84,14 +78,20 @@ const LoginForm: React.FC = () => {
     try {
       // Make a POST request to your login endpoint
       const response = await axios.post("/auth/login", JSON.stringify(data), {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         withCredentials: true,
       });
 
-      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      setAuth({ ...data, roles, accessToken });
+      const userRes = response?.data?.user;
+      login({
+        id: userRes.id,
+        name: userRes?.name,
+        email: userRes?.email,
+        accessToken: accessToken,
+      });
       setData({ email: "", password: "" });
       setErrMsg("");
       setIsSubmitting(false);
@@ -110,14 +110,13 @@ const LoginForm: React.FC = () => {
       }
 
       console.log(data);
+      console.log(error);
       console.log(errEmail, errPassword);
-      console.log(auth);
       console.log(errMsg);
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 w-4/5">
       <FormControl isInvalid={errMsg != ""}>
