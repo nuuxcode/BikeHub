@@ -12,9 +12,9 @@ BikeHub is a bike rental platform for enthusiasts, commuters, and tourists. This
 
 ## Technologies
 
-- **Front-end:** Svelte
+- **Front-end:** React
 - **Back-end:** Nest.js with Fastify
-- **Database:** MongoDB with Prisma
+- **Database:** Postgresql with Prisma
 - **Payment:** Stripe API
 - **QR Code:** QR Code Generator Library
-TEST
+
