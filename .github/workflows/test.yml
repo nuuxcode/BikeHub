@@ -22,14 +22,14 @@ jobs:
           node-version: latest
           registry-url: 'https://registry.npmjs.org'
       - name: check triggering branch
-        run: echo ${{ github.ref }}
+        run: echo ${{ github.event.pull_request.base.ref }}
       - name: Set Database URL
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [ "${{ github.event.pull_request.base.ref }}" == "main" ]; then
             echo "DATABASE_URL=${{ vars.PROD_PDATABASE_URL }}" >> $GITHUB_ENV
             echo "SERVER_HOST=${{ vars.PROD_SERVER_HOST }}" >> $GITHUB_ENV
             echo "SERVER_USERNAME=${{ vars.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
-          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          elif [ "${{ github.event.pull_request.base.ref }}" == "dev" ]; then
             echo "DATABASE_URL=${{ vars.DEV_PDATABASE_URL }}" >> $GITHUB_ENV
             echo "SERVER_HOST=${{ vars.DEV_SERVER_HOST }}" >> $GITHUB_ENV
             echo "SERVER_USERNAME=${{ vars.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
