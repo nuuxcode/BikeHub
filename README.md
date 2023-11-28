@@ -17,3 +17,4 @@ BikeHub is a bike rental platform for enthusiasts, commuters, and tourists. This
 - **Database:** MongoDB with Prisma
 - **Payment:** Stripe API
 - **QR Code:** QR Code Generator Library
+TEST
