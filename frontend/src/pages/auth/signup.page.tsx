@@ -1,8 +1,17 @@
-import React from "react";
-import RegisterForm from "../components/auth/registerForm/registerForm.component";
-import signupImage from "../assets/images/signupImage.png";
+import React, { useEffect } from "react";
+import RegisterForm from "../../components/auth/registerForm/registerForm.component";
+import signupImage from "../../assets/images/signupImage.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 const SignupPage: React.FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user?.accessToken) {
+      navigate("/");
+    }
+  });
   return (
     <div className="min-h-[90%] flex justify-center items-center ">
       <div className="max-w-screen-lg bg-gray-50 m-5 shadow-xl rounded-2xl flex justify-between items-center max-sm:flex-col">

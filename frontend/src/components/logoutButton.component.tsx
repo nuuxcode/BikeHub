@@ -1,32 +1,26 @@
 import { Button } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React from "react";
 import axios from "../apis/axios";
-import GlobalContext from "../context/globalContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-interface AuthData {
-  accessToken: string;
-}
-
-const LogoutButton: React.FC<{
-  auth: AuthData | null;
-}> = ({ auth }) => {
-  const { setAuth } = useContext(GlobalContext);
+const LogoutButton: React.FC = () => {
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      if (auth?.accessToken) {
+      if (user?.accessToken) {
         await axios.post("/auth/logout", null, {
           headers: {
-            Authorization: `Bearer ${auth.accessToken}`,
+            Authorization: `Bearer ${user.accessToken}`,
           },
           withCredentials: true,
         });
       }
       navigate("/login");
       console.log("Logout successful");
-      setAuth({});
+      logout();
     } catch (error) {
       console.error("Logout failed:", error);
     }

@@ -1,22 +1,29 @@
-import React, { useContext } from "react";
-import GlobalContext from "../context/globalContext.tsx";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Input } from "@chakra-ui/react";
+import bannerImage from "../assets/images/bannerBike.jpg";
 
 const HomePage: React.FC = () => {
-  const { auth } = useContext(GlobalContext);
   return (
-    <Flex
-      height={"full"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      gap={4}
+    <Box
+      backgroundImage={bannerImage}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      height="550px"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
     >
-      <Text>Home page</Text>
-      <Box>
-        <Text>{auth?.email}</Text>
+      <Box
+        backgroundColor="rgba(255, 255, 255, 0.8)"
+        padding="20px"
+        borderRadius="md"
+        display="flex"
+        alignItems="center"
+      >
+        <Input placeholder="Search..." marginRight="10px" />
+        <Button colorScheme="blue">Search</Button>
       </Box>
-    </Flex>
+    </Box>
   );
 };
 

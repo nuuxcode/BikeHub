@@ -4,7 +4,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-import { GlobalProvider } from "./context/globalContext.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 const breakpoints = {
   base: "0px",
   sm: "320px",
@@ -20,11 +20,11 @@ const theme = extendTheme({ breakpoints });
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ChakraProvider theme={theme}>
-        <GlobalProvider>
+      <AuthProvider>
+        <ChakraProvider theme={theme}>
           <App />
-        </GlobalProvider>
-      </ChakraProvider>
+        </ChakraProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
