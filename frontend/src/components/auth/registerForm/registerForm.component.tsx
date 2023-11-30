@@ -237,18 +237,15 @@ const LoginForm: React.FC = () => {
           align={"start"}
           justify={"space-between"}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox colorScheme="teal">Remember me</Checkbox>
           <Link to="/signup">
-            <Text color={"blue.400"}>Forgot password?</Text>
+            <Text color={"teal.400"}>Forgot password?</Text>
           </Link>
         </Stack>
         <Button
           width={{ base: "100%", md: "200px" }}
-          bg={"blue.400"}
           color={"white"}
-          _hover={{
-            bg: "blue.500",
-          }}
+          colorScheme="teal"
           isLoading={isSubmitting}
           type="submit"
         >
@@ -258,7 +255,7 @@ const LoginForm: React.FC = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+            className="font-medium text-teal-600 hover:underline dark:text-teal-500"
           >
             Sign in
           </Link>

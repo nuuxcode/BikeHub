@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import LoginForm from "../../components/auth/loginForm/loginForm.component";
 import loginImage from "../../assets/images/loginImage.png";
+import logoImage from "../../assets/images/logov2.png";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { Image } from "@chakra-ui/react";
 
 const LoginPage: React.FC = () => {
   const { user } = useAuth();
@@ -15,8 +17,10 @@ const LoginPage: React.FC = () => {
   return (
     <div className="min-h-[90%] flex justify-center items-center ">
       <div className="max-w-screen-lg bg-gray-50 m-5 shadow-xl rounded-2xl flex justify-between items-center max-sm:flex-col">
-        <div className="w-1/2 max-sm:w-full flex flex-col items-center gap-5">
-          <h1 className="text-2xl font-bold text-gray-700">Sign in</h1>
+        <div className="w-1/2 max-sm:w-full flex flex-col py-4 items-center gap-5">
+          <Image src={logoImage} width={"25%"} />
+
+          {/* <h1 className="text-2xl font-bold text-gray-700">Sign in</h1> */}
           <p className="text-sm font-normal text-gray-500">
             Sign in to continue using Bikehub
           </p>
@@ -57,7 +61,7 @@ const LoginPage: React.FC = () => {
           {/* ddddddddddddddddddddddd */}
           <LoginForm />
         </div>
-        <div className="w-1/2 max-sm:w-5/6 h-[540px] max-sm:h-[400px] flex items-center self-end max-sm:self-center bg-gradient-to-t from-cyan-200 to-cyan-700 rounded-2xl m-4 ">
+        <div className="w-1/2 max-sm:w-5/6 h-[600px] max-sm:h-[400px] flex items-center self-end max-sm:self-center bg-gradient-to-t from-teal-200 to-teal-700 rounded-2xl m-4 ">
           <img src={loginImage} alt="bike" className="w-full" />
         </div>
       </div>
