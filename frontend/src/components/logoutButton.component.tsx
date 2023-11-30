@@ -4,7 +4,7 @@ import axios from "../apis/axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-const LogoutButton: React.FC = () => {
+function LogoutButton({ children }: { children: React.ReactNode }) {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
@@ -27,15 +27,10 @@ const LogoutButton: React.FC = () => {
   };
 
   return (
-    <Button
-      colorScheme="teal"
-      variant="outline"
-      className="ml-3"
-      onClick={handleLogout}
-    >
-      Logout
+    <Button width={"full"} onClick={handleLogout}>
+      {children}
     </Button>
   );
-};
+}
 
 export default LogoutButton;

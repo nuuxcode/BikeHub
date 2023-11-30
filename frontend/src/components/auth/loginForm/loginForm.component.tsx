@@ -167,13 +167,13 @@ const LoginForm: React.FC = () => {
           align={"start"}
           justify={"space-between"}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox colorScheme="teal">Remember me</Checkbox>
           <Link to="/login">
-            <Text color={"blue.400"}>Forgot password?</Text>
+            <Text color={"teal.400"}>Forgot password?</Text>
           </Link>
         </Stack>
         <Button
-          bg={"blue.400"}
+          colorScheme="teal"
           color={"white"}
           _hover={{
             bg: "blue.500",
@@ -185,11 +185,11 @@ const LoginForm: React.FC = () => {
         </Button>
       </Stack>
 
-      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <Link
           to="/signup"
-          className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+          className="font-medium text-teal-600 hover:underline dark:text-teal-500"
         >
           Sign up
         </Link>
