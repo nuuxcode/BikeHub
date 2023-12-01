@@ -49,7 +49,7 @@ const CardSlider = ({
            bg-cover bg-center"
         ></Box> */}
       <motion.p
-        className="text-teal-500 text-lg font-bold  px-2 z-10 rounded-lg mb-4"
+        className="text-teal-500 text-lg font-bold  px-2 z-10 mb-4"
         variants={{
           hidden: { opacity: 0, y: 75 },
           visible: { opacity: 1, y: 0 },
