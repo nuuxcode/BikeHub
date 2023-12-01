@@ -30,7 +30,7 @@ const LandingSwiper = () => {
       sousTitle: "Starting from 15$ per day",
       text1: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
       text2: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      id: 1,
+      id: 2,
     },
     {
       img: bannerImage3,
@@ -38,7 +38,7 @@ const LandingSwiper = () => {
       sousTitle: "Starting from 3$ per hour",
       text1: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
       text2: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      id: 1,
+      id: 3,
     },
   ];
   return (
@@ -54,8 +54,8 @@ const LandingSwiper = () => {
         modules={[Autoplay]}
         className="mySwiper"
       >
-        {data.map(({ img, text1, text2, title, sousTitle }) => (
-          <SwiperSlide>
+        {data.map(({ img, text1, text2, title, sousTitle, id }) => (
+          <SwiperSlide key={id}>
             {({ isActive }) =>
               isActive && (
                 <CardSlider
