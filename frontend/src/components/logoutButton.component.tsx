@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 import React from "react";
 import axios from "../apis/axios";
 import { useNavigate } from "react-router-dom";
@@ -27,9 +27,13 @@ function LogoutButton({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <Button width={"full"} onClick={handleLogout}>
+    <Center
+      className="bg-gray-100 font-medium text-base rounded-lg py-2 hover:bg-gray-300 cursor-pointer"
+      width={"full"}
+      onClick={handleLogout}
+    >
       {children}
-    </Button>
+    </Center>
   );
 }
 
