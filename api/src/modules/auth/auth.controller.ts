@@ -59,6 +59,6 @@ export class AuthController {
       secure: false,
       httpOnly: true,
     });
-    return res.status(200).send(req.user);
+    return res.redirect('http://localhost:3000/');
   }
 }
