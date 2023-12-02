@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Response } from '@nestjs/common';
+import { Body, Controller, Post, Response, UseGuards, Get, Req, Res } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
@@ -6,11 +6,12 @@ import { JWT_EXPIRY_SECONDS } from '../../shared/constants/global.constants';
 
 import { AuthService } from './auth.service';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('login')
   @ApiOperation({ description: 'Login user' })
@@ -41,5 +42,23 @@ export class AuthController {
   logout(@Response() res): void {
     res.clearCookie('accessToken');
     res.status(200).send({ success: true });
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthCallback(@Req() req, @Res() res) {
+    res.cookie('accessToken', req.user.accessToken, {
+      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
+      sameSite: 'strict',
+      secure: false,
+      httpOnly: true,
+    });
+    return res.status(200).send(req.user);
   }
 }
