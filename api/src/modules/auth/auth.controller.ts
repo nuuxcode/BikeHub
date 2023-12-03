@@ -59,6 +59,7 @@ export class AuthController {
       secure: false,
       httpOnly: true,
     });
+    console.log("redirecting to: ", process.env.REDIRECT_URL)
     return res.redirect(process.env.REDIRECT_URL);
   }
 }

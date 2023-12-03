@@ -27,16 +27,16 @@ export const SLUG_SEPARATOR = '-';
 
 
 if (process.env.NODE_ENV === 'prod') {
-  process.env.BACKEND_URL = process.env.BACK_END_PROD;
-  process.env.REDIRECT_URL = process.env.FRONT_END_PROD;
+  process.env.CALLBACK = process.env.BASE_URL_PROD;
+  process.env.REDIRECT_URL = process.env.BASE_URL_PROD;
 }
 if (process.env.NODE_ENV === 'dev') {
-  process.env.BACKEND_URL = process.env.BACK_END_DEV;
-  process.env.REDIRECT_URL = process.env.FRONT_END_DEV;
+  process.env.CALLBACK = process.env.BASE_URL_DEV;
+  process.env.REDIRECT_URL = process.env.BASE_URL_DEV;
 }
 if (process.env.NODE_ENV === 'local') {
-  process.env.BACKEND_URL = process.env.BACK_END_LOCAL;
-  process.env.REDIRECT_URL = process.env.FRONT_END_LOCAL;
+  process.env.CALLBACK = process.env.BASE_URL_API_LOCAL;
+  process.env.REDIRECT_URL = process.env.BASE_URL_LOCAL;
 }
 
 if (process.env.DB_MODE === 'prod') {
