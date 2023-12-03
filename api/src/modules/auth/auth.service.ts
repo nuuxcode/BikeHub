@@ -62,31 +62,29 @@ export class AuthService {
   }
 
   public async validateUser(details: UserDetails): Promise<AuthResponseDTO> {
-    console.log("------- validateUser")
-    console.log(details);
+    let data = null;
+    let newUser = null;
+
     const user = await this.prisma.user.findUnique({
       where: { email: details.email },
     });
-    console.log(user);
-    if (user) {
-      user.password = null;;
-      const accessToken = this.jwtService.sign(user, {
+    if (!user) {
+      newUser = await this.prisma.user.create({ data: details });
+      newUser.password = null;
+    }
+    data = newUser || user;
+    if (data) {
+      data.password = null;;
+      const accessToken = this.jwtService.sign(data, {
         expiresIn: GLOBAL_CONFIG.security.expiresIn,
       });
       return {
-        user: user,
+        user: data ,
         accessToken: accessToken,
       };
+    } else {
+      throw new UnauthorizedException();
     }
-    const newUser = await this.prisma.user.create({ data: details });
-    newUser.password = null;
-    const accessToken = this.jwtService.sign(newUser, {
-      expiresIn: GLOBAL_CONFIG.security.expiresIn,
-    });
-    return {
-      user: newUser,
-      accessToken: accessToken,
-    };
   }
 
 }

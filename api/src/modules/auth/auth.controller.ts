@@ -59,6 +59,6 @@ export class AuthController {
       secure: false,
       httpOnly: true,
     });
-    return res.redirect('http://localhost:3000/');
+    return res.redirect(process.env.REDIRECT_URL);
   }
 }
