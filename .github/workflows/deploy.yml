@@ -135,7 +135,7 @@ jobs:
             if [ "${{ github.ref }}" = "refs/heads/main" ]; then
               echo "start deploying in ${{ github.ref }}"
               echo "### CMD: change VITE_MODE to prod"
-              sed -i 's/^VITE_MODE=.*/VITE_MODE=dev/' ~/BikeHub/frontend/.env
+              sed -i 's/^VITE_MODE=.*/VITE_MODE=prod/' ~/BikeHub/frontend/.env
               echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
               echo "### CMD: pm2 reload startapi --update-env"
