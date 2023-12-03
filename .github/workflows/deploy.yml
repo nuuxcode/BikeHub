@@ -127,15 +127,15 @@ jobs:
             cd ~/BikeHub/api && cp .env.example .env
             echo "Done!"
             echo "--------"
-            echo "### CMD: change DB_MODE/NODE_ENV to local"
-            sed -i 's/^DB_MODE=.*/DB_MODE=local/' ~/BikeHub/api/.env
-            sed -i 's/^NODE_ENV=.*/NODE_ENV=local/' ~/BikeHub/api/.env
-            echo "Done!"
-            echo "--------"
             if [ "${{ github.ref }}" = "refs/heads/main" ]; then
               echo "start deploying in ${{ github.ref }}"
               echo "### CMD: change VITE_MODE to prod"
               sed -i 's/^VITE_MODE=.*/VITE_MODE=prod/' ~/BikeHub/frontend/.env
+              echo "Done!"
+              echo "### CMD: change DB_MODE/NODE_ENV to local"
+              sed -i 's/^NODE_ENV=.*/NODE_ENV=prod/' ~/BikeHub/api/.env
+              sed -i 's/^DB_MODE=.*/DB_MODE=local/' ~/BikeHub/api/.env
+              echo "Done!"
               echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
               echo "### CMD: pm2 reload startapi --update-env"
@@ -165,6 +165,11 @@ jobs:
               echo "start deploying in ${{ github.ref }}"
               echo "### CMD: change VITE_MODE to dev"
               sed -i 's/^VITE_MODE=.*/VITE_MODE=dev/' ~/BikeHub/frontend/.env
+              echo "Done!"
+              echo "### CMD: change DB_MODE/NODE_ENV to local"
+              sed -i 's/^NODE_ENV=.*/NODE_ENV=dev/' ~/BikeHub/api/.env
+              sed -i 's/^DB_MODE=.*/DB_MODE=local/' ~/BikeHub/api/.env
+              echo "Done!"
               echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
               echo "### CMD: pm2 reload startapi --update-env"
