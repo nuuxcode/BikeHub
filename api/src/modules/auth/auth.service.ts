@@ -8,7 +8,7 @@ import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { ROLES_ENUM } from '../../shared/constants/global.constants';
 
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
+import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO, UserDetails } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
     private userService: UserService,
     private prisma: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
     const userData = await this.userService.findUser({
@@ -60,4 +60,31 @@ export class AuthService {
     const newUser = { ...user, role: ROLES_ENUM.USER }; // default role
     return this.userService.createUser(newUser);
   }
+
+  public async validateUser(details: UserDetails): Promise<AuthResponseDTO> {
+    let data = null;
+    let newUser = null;
+
+    const user = await this.prisma.user.findUnique({
+      where: { email: details.email },
+    });
+    if (!user) {
+      newUser = await this.prisma.user.create({ data: details });
+      newUser.password = null;
+    }
+    data = newUser || user;
+    if (data) {
+      data.password = null;;
+      const accessToken = this.jwtService.sign(data, {
+        expiresIn: GLOBAL_CONFIG.security.expiresIn,
+      });
+      return {
+        user: data ,
+        accessToken: accessToken,
+      };
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
 }

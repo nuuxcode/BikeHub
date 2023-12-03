@@ -26,7 +26,7 @@ const LoginPage: React.FC = () => {
           </p>
           {/* dddddddddddddd */}
           <a
-            href="#"
+            href="http://localhost:3300/api/v1/auth/google"
             className=" w-4/5 flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
           >
             <div className="px-4 py-3">
