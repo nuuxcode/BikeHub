@@ -8,12 +8,11 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-
   constructor(private authService: AuthService) {
     super({
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`,
+      callbackURL: `${process.env.CALLBACK}/api/v1/auth/google/callback`,
       scope: ['email', 'profile'],
     });
   }
