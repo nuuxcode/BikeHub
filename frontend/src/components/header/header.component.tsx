@@ -109,11 +109,11 @@ const Header: React.FC = () => {
                   px="14px"
                 >
                   <Link
-                    to="/profile"
+                    to="/UserSettings"
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
-                      Profile
+                      UserSettings
                     </Text>
                   </Link>
                 </MenuItem>
