@@ -24,7 +24,7 @@ export class AuthService {
     });
 
     if (!userData) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("This email doesn't exist");
     }
 
     const isMatch = await AuthHelpers.verify(
@@ -33,7 +33,7 @@ export class AuthService {
     );
 
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Password doesn't match");
     }
 
     const payload = {
