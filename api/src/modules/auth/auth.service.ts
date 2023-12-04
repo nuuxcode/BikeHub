@@ -68,6 +68,14 @@ export class AuthService {
     return this.userService.createUser(newUser);
   }
 
+  public validateToken(token: string): any {
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      return null;
+    }
+  }
+
   public async validateUser(details: UserDetails): Promise<AuthResponseDTO> {
     let data = null;
     let newUser = null;

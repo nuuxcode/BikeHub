@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
     GoogleLogin = import.meta.env.VITE_BACK_END_DEV as string;
   }
   if (import.meta.env.VITE_MODE === 'local') {
-    GoogleLogin = import.meta.env.VITE_BACK_END_DEV as string;
+    GoogleLogin = import.meta.env.VITE_BACK_END_LOCAL as string;
   }
   const { user } = useAuth();
   const navigate = useNavigate();
