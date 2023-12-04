@@ -24,7 +24,7 @@ export class AuthService {
     });
 
     if (!userData) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("This email doesn't exist");
     }
 
     const isMatch = await AuthHelpers.verify(
@@ -33,7 +33,7 @@ export class AuthService {
     );
 
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Password doesn't match");
     }
 
     const payload = {
@@ -57,6 +57,13 @@ export class AuthService {
   }
 
   public async register(user: RegisterUserDTO): Promise<User> {
+    const userData = await this.userService.findUser({
+      email: user.email,
+    });
+
+    if (userData) {
+      throw new UnauthorizedException("This email already exists");
+    }
     const newUser = { ...user, role: ROLES_ENUM.USER }; // default role
     return this.userService.createUser(newUser);
   }
@@ -79,7 +86,7 @@ export class AuthService {
         expiresIn: GLOBAL_CONFIG.security.expiresIn,
       });
       return {
-        user: data ,
+        user: data,
         accessToken: accessToken,
       };
     } else {
