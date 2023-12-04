@@ -101,14 +101,19 @@ const LoginForm: React.FC = () => {
       toast.success("Successfully created!");
     } catch (error: any) {
       console.log(error);
-      toast.error(error?.response?.data?.message[0]);
+      let errorMessage = error?.response?.data?.message;
+      if (typeof errorMessage === 'string')
+        errorMessage = error?.response?.data?.message;
+      else
+        errorMessage = error?.response?.data?.message.join(", ");
 
+      toast.error(errorMessage)
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {
-        setErrMsg(error.response.data?.message);
+        setErrMsg(errorMessage);
       } else if (error.response?.status === 401) {
-        setErrMsg(error.response.data?.message);
+        setErrMsg(errorMessage);
       }
     } finally {
       setIsSubmitting(false);
@@ -125,7 +130,7 @@ const LoginForm: React.FC = () => {
       <FormControl isInvalid={errMsg != ""}>
         {errMsg && (
           <FormErrorMessage justifyContent={"center"}>
-            {errMsg[0]}
+            {errMsg}
           </FormErrorMessage>
         )}
       </FormControl>
