@@ -7,11 +7,23 @@ import { JWT_EXPIRY_SECONDS } from '../../shared/constants/global.constants';
 import { AuthService } from './auth.service';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
+
+  @Get('check')
+  @UseGuards(JwtAuthGuard)
+  async checkUser(@Req() req) {
+    const token = req.cookies.accessToken;
+    const user = this.authService.validateToken(token);
+    return {
+      user: user,
+      accessToken: token,
+    };
+  }
 
   @Post('login')
   @ApiOperation({ description: 'Login user' })
