@@ -29,8 +29,8 @@ const Header: React.FC = () => {
   const { user } = useAuth();
   const headerItems = [
     { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-    { label: "Contact", path: "/contact" },
+    { label: "About", path: "/" },
+    { label: "Contact", path: "/" },
   ];
 
   return (
@@ -41,11 +41,11 @@ const Header: React.FC = () => {
 
       <HStack as="nav" spacing="5">
         {headerItems.map((item, i) => (
-          <A key={i}>
+          <Link key={i} to={item.path}>
             <Button variant="nav" _hover={{ bg: "teal.50" }}>
               {item.label}
             </Button>
-          </A>
+          </Link>
         ))}
       </HStack>
 
