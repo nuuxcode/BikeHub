@@ -44,6 +44,7 @@ const CardSteps = ({ Icon, title, text, after, delay = 0.5 }: Props) => {
           position: "absolute",
           left: "100px",
           top: "15px",
+          width: "100%",
         }}
       >
         <Icon className=" w-9 h-9" />

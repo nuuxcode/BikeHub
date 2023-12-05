@@ -34,7 +34,7 @@ export const Reveal = ({ children, width = "fit", delay = 0.5 }: Props) => {
         {children}
       </motion.div>
       <motion.div
-        className="absolute top-4 left-0 bottom-4 right-0 bg-gradient-to-r from-teal-500 to-teal-700 z-20"
+        className="absolute opacity-50 top-4 left-0 bottom-4 right-0 bg-gradient-to-r from-teal-500 to-teal-700 z-20"
         variants={{
           hidden: { left: 0 },
           visible: { left: "100%" },

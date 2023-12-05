@@ -22,6 +22,7 @@ const CardBike = ({ bike }: { bike: Bike }) => {
   return (
     <Flex
       width={{ base: "100%", sm: "265px" }}
+      bg={"white"}
       direction="column"
       justifyContent="space-between"
       className="p-3 border rounded-lg"
@@ -37,8 +38,9 @@ const CardBike = ({ bike }: { bike: Bike }) => {
       >
         <FaHeart
           onClick={() => setLiked(!liked)}
-          className={`text-gray-600 opacity-50 absolute top-2 right-2 w-5 h-5 cursor-pointer ${
-            liked && "text-red-500 berder-red-600 opacity-100  drop-shadow-lg"
+          className={`text-gray-600 absolute top-2 right-2 w-5 h-5 cursor-pointer ${
+            liked &&
+            "text-red-500 berder-red-600 text-opacity-100 drop-shadow-lg"
           }`}
         />
       </Box>
@@ -52,7 +54,7 @@ const CardBike = ({ bike }: { bike: Bike }) => {
           Best choice for women
         </Text>
       </Reveal>
-      <Reveal>
+      <Reveal width="full" delay={0.25}>
         <Flex justifyContent={"space-between"} mb={3}>
           <Heading as="h3" size="md" fontWeight={500} color={"gray.700"}>
             ${bike.price_tier}/hour
