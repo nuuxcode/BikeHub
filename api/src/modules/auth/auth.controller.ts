@@ -36,7 +36,7 @@ export class AuthController {
     const loginData = await this.authService.login(user);
 
     res.cookie('accessToken', loginData.accessToken, {
-      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
+      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS),
       sameSite: 'strict',
       secure: false,
       httpOnly: true,
@@ -66,7 +66,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(@Req() req, @Res() res) {
     res.cookie('accessToken', req.user.accessToken, {
-      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
+      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS),
       sameSite: 'strict',
       secure: false,
       httpOnly: true,

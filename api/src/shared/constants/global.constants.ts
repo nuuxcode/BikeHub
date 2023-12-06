@@ -2,7 +2,8 @@
 require('dotenv').config();
 
 export const JWT_SECRET = process.env.JWT_SIGNATURE;
-export const JWT_EXPIRY_SECONDS = 3600;
+export const JWT_EXPIRY_SECONDS = 3600 * 1000 * 24;
+//export const JWT_EXPIRY_SECONDS = 1000 * 60;
 
 export enum ROLES_ENUM {
   ADMIN = 'admin',
