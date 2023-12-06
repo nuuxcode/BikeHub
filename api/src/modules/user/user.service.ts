@@ -1,6 +1,6 @@
 import { Prisma, User } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
-
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -43,6 +43,16 @@ export class UserService {
     data: Prisma.UserUpdateInput;
   }): Promise<User> {
     const { where, data } = params;
+    const user = await this.prisma.user.findUnique({
+      where: where,
+    });
+    const isMatch = await AuthHelpers.verify(
+      data.oldpassword,
+      user.password,
+    );
+    if (!isMatch) {
+      throw new UnauthorizedException("the current password is wrong");
+    }
     return this.prisma.user.update({
       data,
       where,
