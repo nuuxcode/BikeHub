@@ -3,6 +3,8 @@ env:
     JWT_SIGNATURE: ${{ vars.JWT_SIGNATURE }}
     CORS_ALLOW_URL: ${{ vars.CORS_ALLOW_URL }}
     API_PORT: ${{ vars.API_PORT }}
+    CLIENT_ID: ${{ vars.CLIENT_ID }}
+    CLIENT_SECRET: ${{ vars.CLIENT_SECRET }}
 on:
   push:
     branches:
@@ -127,6 +129,13 @@ jobs:
             echo "--------"
             if [ "${{ github.ref }}" = "refs/heads/main" ]; then
               echo "start deploying in ${{ github.ref }}"
+              echo "### CMD: change VITE_MODE to prod"
+              sed -i 's/^VITE_MODE=.*/VITE_MODE=prod/' ~/BikeHub/frontend/.env
+              echo "Done!"
+              echo "### CMD: change DB_MODE/NODE_ENV to local"
+              sed -i 's/^NODE_ENV=.*/NODE_ENV=prod/' ~/BikeHub/api/.env
+              sed -i 's/^DB_MODE=.*/DB_MODE=local/' ~/BikeHub/api/.env
+              echo "Done!"
               echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
               echo "### CMD: pm2 reload startapi --update-env"
@@ -154,6 +163,13 @@ jobs:
             fi
             if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
               echo "start deploying in ${{ github.ref }}"
+              echo "### CMD: change VITE_MODE to dev"
+              sed -i 's/^VITE_MODE=.*/VITE_MODE=dev/' ~/BikeHub/frontend/.env
+              echo "Done!"
+              echo "### CMD: change DB_MODE/NODE_ENV to local"
+              sed -i 's/^NODE_ENV=.*/NODE_ENV=dev/' ~/BikeHub/api/.env
+              sed -i 's/^DB_MODE=.*/DB_MODE=local/' ~/BikeHub/api/.env
+              echo "Done!"
               echo "### CMD: cd ~/BikeHub/api && yarn build"
               cd ~/BikeHub/api && yarn build
               echo "### CMD: pm2 reload startapi --update-env"

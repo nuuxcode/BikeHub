@@ -37,13 +37,13 @@ export class RentalController {
     return this.rentalService.findOne({ id: Number(id) });
   }
 
-  @Get('user/:userId')
+  @Get('user/:id')
   @Roles(ROLES_ENUM.ADMIN)
   @UseGuards(JwtAuthGuard)
   async getRentalsByUser(
-    @Param('userId') userId: string,
+    @Param('id') id: string,
   ): Promise<RentalModel[]> {
-    return this.rentalService.findAll({ where: { user_id: Number(userId) } });
+    return this.rentalService.findAll({ where: { user_id: Number(id) } });
   }
 
   @Post('rental')

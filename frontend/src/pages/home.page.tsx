@@ -1,22 +1,17 @@
-import React, { useContext } from "react";
-import GlobalContext from "../context/globalContext.tsx";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import React from "react";
+import LandingSwiper from "../components/home/landingSwiper/landingSwiper.component";
+import HowToRent from "../components/home/howToRent/howToRent.component";
+import SwiperBikes from "../components/home/bikes/swiperBikes.component";
+import SwiperReviews from "../components/home/reviews/swiperReviews.component";
 
 const HomePage: React.FC = () => {
-  const { auth } = useContext(GlobalContext);
   return (
-    <Flex
-      height={"full"}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      gap={4}
-    >
-      <Text>Home page</Text>
-      <Box>
-        <Text>{auth?.email}</Text>
-      </Box>
-    </Flex>
+    <>
+      <LandingSwiper />
+      <HowToRent />
+      <SwiperBikes />
+      <SwiperReviews />
+    </>
   );
 };
 

@@ -45,3 +45,9 @@ export class LoginUserDTO {
   @ApiProperty()
   password: string;
 }
+
+export type UserDetails = {
+  email: string;
+  name: string;
+  password: string;
+}

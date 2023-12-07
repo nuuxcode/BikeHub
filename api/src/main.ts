@@ -5,10 +5,10 @@ import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+import { GLOBAL_CONFIG } from './configs/global.config';
 import { AppModule } from './modules/app/app.module';
 import { API_PREFIX } from './shared/constants/global.constants';
 import { SwaggerConfig } from './configs/config.interface';
-import { GLOBAL_CONFIG } from './configs/global.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -32,15 +32,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   ): any {
     const request = context.switchToHttp().getRequest();
     const { params } = request;
-
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-
     if (!this.roles) {
       return user;
     }
-
     const hasRole = () => this.roles.includes(user.role);
     const isSelfUser = () => user.id === Number(params.id);
 

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import GlobalContext from "../../../context/globalContext";
 import toast from "react-hot-toast";
 import {
   FormControl,
@@ -18,18 +17,16 @@ import {
 } from "@chakra-ui/react";
 import { PhoneIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "../../../apis/axios";
-
+import { useAuth } from "../../../hooks/useAuth";
 interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
 }
 
-const LoginForm: React.FC = () => {
-  const { auth } = useContext(GlobalContext);
+const registerForm: React.FC = () => {
   const navigate = useNavigate();
-
-  //   const [email, setEmail] = useState("");
+  const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [data, setData] = useState<RegisterCredentials>({
@@ -44,72 +41,6 @@ const LoginForm: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    if (auth?.accessToken) {
-      navigate("/");
-    }
-  });
-
-  /**
-   * Handles the change event for the email input field.
-   *
-   * @param event - The change event object.
-   */
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...data, email: event.target.value });
-  };
-
-  /**
-   * Handles the change event for the name input field.
-   *
-   * @param event - The change event object.
-   */
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...data, name: event.target.value });
-  };
-
-  // /**
-  //  * Handles the change event for the Date Of Birth input field.
-  //  *
-  //  * @param event - The change event object.
-  //  */
-  // const handleDateOfBirthChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setData({ ...data, dateOfBirth: event.target.value });
-  // };
-
-  // /**
-  //  * Handles the change event for the Phone Number input field.
-  //  *
-  //  * @param event - The change event object.
-  //  */
-  // const handlePhoneNumberChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setData({ ...data, phoneNumber: event.target.value });
-  // };
-
-  /**
-   * Handles the change event for the password input field.
-   *
-   * @param event - The change event object.
-   */
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...data, password: event.target.value });
-  };
-
-  /**
-   * Handles the change event for the confirm password input field.
-   *
-   * @param event - The change event object.
-   */
-  const handleConfirmPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(event.target.value);
-  };
 
   /**
    * Handles validation input field.
@@ -170,21 +101,26 @@ const LoginForm: React.FC = () => {
       toast.success("Successfully created!");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data?.message[0]);
+      let errorMessage = error?.response?.data?.message;
+      if (typeof errorMessage === 'string')
+        errorMessage = error?.response?.data?.message;
+      else
+        errorMessage = error?.response?.data?.message.join(", ");
 
+      toast.error(errorMessage)
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {
-        setErrMsg(error.response.data?.message);
+        setErrMsg(errorMessage);
       } else if (error.response?.status === 401) {
-        setErrMsg(error.response.data?.message);
+        setErrMsg(errorMessage);
       }
     } finally {
       setIsSubmitting(false);
     }
     console.log(data);
     console.log(errName, errEmail, errPassword);
-    console.log(auth);
+    console.log(user);
     console.log(errMsg);
     setIsSubmitting(false);
   };
@@ -194,7 +130,7 @@ const LoginForm: React.FC = () => {
       <FormControl isInvalid={errMsg != ""}>
         {errMsg && (
           <FormErrorMessage justifyContent={"center"}>
-            {errMsg[0]}
+            {errMsg}
           </FormErrorMessage>
         )}
       </FormControl>
@@ -204,7 +140,9 @@ const LoginForm: React.FC = () => {
           <Input
             type="text"
             value={data.name}
-            onChange={handleNameChange}
+            onChange={(e) => {
+              setData({ ...data, name: e.target.value });
+            }}
             placeholder="Full Name"
           />
           <FormErrorMessage>Name is messing</FormErrorMessage>
@@ -214,7 +152,9 @@ const LoginForm: React.FC = () => {
           <Input
             type="email"
             value={data.email}
-            onChange={handleEmailChange}
+            onChange={(e) => {
+              setData({ ...data, email: e.target.value });
+            }}
             placeholder="Email"
           />
           <FormErrorMessage>email should not be empty</FormErrorMessage>
@@ -226,7 +166,9 @@ const LoginForm: React.FC = () => {
           <Input
             type="date"
             // value={data.dateOfBirth}
-            // onChange={handleDateOfBirthChange}
+            //  onChange={(e) => {
+            //   setData({ ...data, dateOfBirth: e.target.value });
+            // }}
             placeholder="DD/MM/YYYY"
           />
           <FormErrorMessage></FormErrorMessage>
@@ -240,7 +182,9 @@ const LoginForm: React.FC = () => {
             <Input
               type="tel"
               // value={data.phoneNumber}
-              // onChange={handlePhoneNumberChange}
+              // onChange={(e) => {
+              //   setData({ ...data, phoneNumber: e.target.value });
+              // }}
               placeholder="Phone Number"
             />
           </InputGroup>
@@ -254,7 +198,9 @@ const LoginForm: React.FC = () => {
             <Input
               type={showPassword ? "text" : "password"}
               value={data.password}
-              onChange={handlePasswordChange}
+              onChange={(e) => {
+                setData({ ...data, password: e.target.value });
+              }}
               placeholder="Password"
             />
             <InputRightElement h={"full"}>
@@ -274,7 +220,7 @@ const LoginForm: React.FC = () => {
             <Input
               type={showPassword ? "text" : "password"}
               value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm Password"
             />
             <InputRightElement h={"full"}>
@@ -296,18 +242,15 @@ const LoginForm: React.FC = () => {
           align={"start"}
           justify={"space-between"}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox colorScheme="teal">Remember me</Checkbox>
           <Link to="/signup">
-            <Text color={"blue.400"}>Forgot password?</Text>
+            <Text color={"teal.400"}>Forgot password?</Text>
           </Link>
         </Stack>
         <Button
           width={{ base: "100%", md: "200px" }}
-          bg={"blue.400"}
           color={"white"}
-          _hover={{
-            bg: "blue.500",
-          }}
+          colorScheme="teal"
           isLoading={isSubmitting}
           type="submit"
         >
@@ -317,7 +260,7 @@ const LoginForm: React.FC = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+            className="font-medium text-teal-600 hover:underline dark:text-teal-500"
           >
             Sign in
           </Link>
@@ -327,4 +270,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default registerForm;
