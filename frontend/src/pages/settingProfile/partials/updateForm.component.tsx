@@ -24,7 +24,7 @@ interface RegisterCredentials {
   password: string;
 }
 
-const registerForm: React.FC = () => {
+const updateForm: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -270,4 +270,4 @@ const registerForm: React.FC = () => {
   );
 };
 
-export default registerForm;
+export default updateForm;

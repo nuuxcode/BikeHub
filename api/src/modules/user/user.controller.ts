@@ -36,13 +36,6 @@ export class UserController {
     return this.userService.findUser({ id: Number(id) });
   }
 
-  @Post('user')
-  async signupUser(
-    @Body() userData: { name: string; email: string; password: string },
-  ): Promise<User> {
-    return this.userService.createUser(userData);
-  }
-
   @Put('user/:id')
   @Roles(ROLES_ENUM.ADMIN)
   @UseGuards(JwtAuthGuard)

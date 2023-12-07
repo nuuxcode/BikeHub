@@ -39,7 +39,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return user;
     }
     const hasRole = () => this.roles.includes(user.role);
-    const isSelfUser = () => user.id === Number(params.userId);
+    const isSelfUser = () => user.id === Number(params.id);
 
     const hasPermission = hasRole() || isSelfUser();
 
