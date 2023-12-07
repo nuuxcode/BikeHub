@@ -112,7 +112,7 @@ const Header: React.FC = () => {
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
-                      UserSettings
+                      Setting Profile
                     </Text>
                   </Link>
                 </MenuItem>
