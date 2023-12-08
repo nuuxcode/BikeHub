@@ -1,29 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import RegisterForm from "../../components/auth/registerForm/registerForm.component";
 import signupImage from "../../assets/images/signupImage.png";
 import logoImage from "../../assets/images/logov2.png";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import { Image } from "@chakra-ui/react";
 
 const SignupPage: React.FC = () => {
   let GoogleLogin: string | undefined;
-  if (import.meta.env.VITE_MODE === 'prod') {
+  if (import.meta.env.VITE_MODE === "prod") {
     GoogleLogin = import.meta.env.VITE_BACK_END_PROD as string;
   }
-  if (import.meta.env.VITE_MODE === 'dev') {
+  if (import.meta.env.VITE_MODE === "dev") {
     GoogleLogin = import.meta.env.VITE_BACK_END_DEV as string;
   }
-  if (import.meta.env.VITE_MODE === 'local') {
+  if (import.meta.env.VITE_MODE === "local") {
     GoogleLogin = import.meta.env.VITE_BACK_END_LOCAL as string;
   }
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user?.accessToken) {
-      navigate("/");
-    }
-  });
+
   return (
     <div className="min-h-[90%] flex justify-center items-center ">
       <div className="max-w-screen-lg bg-gray-50 m-5 shadow-xl rounded-2xl flex justify-between items-center max-sm:flex-col">

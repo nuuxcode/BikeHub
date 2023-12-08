@@ -19,12 +19,12 @@ const theme = extendTheme({ breakpoints });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
         <ChakraProvider theme={theme}>
           <App />
         </ChakraProvider>
-      </AuthProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
