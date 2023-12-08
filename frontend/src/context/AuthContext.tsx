@@ -13,8 +13,16 @@ export const AuthContext = createContext<AuthContext>({} as AuthContext);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const checkAuthentication = async () => {
+    const { isAuthenticated, user } = await authService.checkAuthentication();
+
+    if (isAuthenticated) {
+      setUser(user ?? null);
+    }
+  };
+
   useEffect(() => {
-    authService.checkAuthentication();
+    checkAuthentication();
   }, []);
 
   return (

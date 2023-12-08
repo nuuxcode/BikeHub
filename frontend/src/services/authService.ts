@@ -1,30 +1,30 @@
 import axios from '../apis/axios';
-import { useAuth } from '../hooks/useAuth';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+
 class AuthService {
   async checkAuthentication() {
+    let authStatus = { isAuthenticated: false, user: null as any };
+    //get user from local storage
     const storedToken = localStorage.getItem("user");
     try {
       const response = await axios.get('/auth/check', { withCredentials: true });
       const { user, accessToken } = response.data;
       const data = { "id": user.id, "name": user.name, "email": user.email, "accessToken": accessToken };
       console.log("Cookies Still on: ", response.status);
-      //get user from local storage
-      const storedToken = localStorage.getItem("user");
+      authStatus.user = data;
       //check  if there user in localstorage
       if (!storedToken) {
         //update local storage if token still in cookies
-        useAuth().login(data);
+        localStorage.setItem("user", JSON.stringify(data));
+        authStatus.isAuthenticated = true;
       }
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
         // mean user dont have cookies token
         console.error("Unauthorized request:", error.response.status);
         // log person out so he can login again ann get new token cookies
-        if (!storedToken) {
-          //update local storage if token still in cookies
-          localStorage.removeItem('user');
-        }
+        //update local storage if token still in cookies
+        localStorage.removeItem('user');
+        authStatus.isAuthenticated = false;
       } else {
         console.error("Error:", error);
       }
@@ -46,6 +46,7 @@ class AuthService {
         localStorage.removeItem('user');
       }
     }
+    return authStatus;
   }
 }
 export default new AuthService();
