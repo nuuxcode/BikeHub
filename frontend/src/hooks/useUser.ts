@@ -11,7 +11,7 @@ export interface User {
 
 export const useUser = () => {
   const { user, setUser } = useContext(AuthContext);
-  const { setItem } = useLocalStorage();
+  const { setItem, removeItem } = useLocalStorage();
 
   const addUser = (user: User) => {
     setUser(user);
@@ -20,7 +20,7 @@ export const useUser = () => {
 
   const removeUser = () => {
     setUser(null);
-    setItem("user", "");
+    removeItem("user");
   };
 
   return { user, setUser, addUser, removeUser };
