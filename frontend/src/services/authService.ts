@@ -1,20 +1,49 @@
 import axios from '../apis/axios';
-const TOKEN_KEY = 'accessToken';
-
+import { useAuth } from '../hooks/useAuth';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 class AuthService {
   async checkAuthentication() {
-    const storedToken = localStorage.getItem(TOKEN_KEY);
-    if (storedToken) {
-      return { isAuthenticated: true };
-    } else {
-      try {
-        const response = await axios.get('/auth/check', { withCredentials: true });
-        const { user, accessToken } = response.data;
-        const data = {"id": user.id, "name": user.name, "email": user.email, "accessToken": accessToken};
-        localStorage.setItem("user", JSON.stringify(data));
-        return { isAuthenticated: true, user: data };
-      } catch (error) {
-        return { isAuthenticated: false };
+    const storedToken = localStorage.getItem("user");
+    try {
+      const response = await axios.get('/auth/check', { withCredentials: true });
+      const { user, accessToken } = response.data;
+      const data = { "id": user.id, "name": user.name, "email": user.email, "accessToken": accessToken };
+      console.log("Cookies Still on: ", response.status);
+      //get user from local storage
+      const storedToken = localStorage.getItem("user");
+      //check  if there user in localstorage
+      if (!storedToken) {
+        //update local storage if token still in cookies
+        useAuth().login(data);
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        // mean user dont have cookies token
+        console.error("Unauthorized request:", error.response.status);
+        // log person out so he can login again ann get new token cookies
+        if (!storedToken) {
+          //update local storage if token still in cookies
+          localStorage.removeItem('user');
+        }
+      } else {
+        console.error("Error:", error);
+      }
+    }
+    // Check if token is expired, if its remove it from local storage
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      const user = JSON.parse(userString);
+      const accessToken = user.accessToken;
+      const tokenData = JSON.parse(atob(accessToken.split('.')[1]));
+      const expirationTime = tokenData.exp * 1000;
+      const timeToExpire = expirationTime - Date.now();
+      const timeToExpireInDays = Math.floor(timeToExpire / 1000 / 60 / 60 / 24);
+      const timeToExpireInHours = Math.floor(timeToExpire / 1000 / 60 / 60);
+      const minutesLeft = Math.floor((timeToExpire / 1000 / 60) % 60);
+      const secondLeft = Math.floor((timeToExpire / 1000) % 60);
+      console.log("token expire in D:H:M:S: ", timeToExpireInDays, timeToExpireInHours, minutesLeft, secondLeft)
+      if (Date.now() > expirationTime) {
+        localStorage.removeItem('user');
       }
     }
   }
