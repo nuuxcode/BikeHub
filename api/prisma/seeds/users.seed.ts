@@ -23,5 +23,7 @@ function createRandomUser(): Partial<User> {
     name: faker.internet.userName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
+    birthdate: faker.date.past(),
+    phone: faker.phone.number(),
   };
 }

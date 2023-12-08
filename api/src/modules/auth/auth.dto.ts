@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 import {
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsString,
@@ -31,6 +32,15 @@ export class RegisterUserDTO {
   @MinLength(8)
   @ApiProperty()
   password: string;
+
+  @IsDate()
+  @ApiProperty()
+  birthdate: Date;
+
+  @IsString()
+  @MinLength(9)
+  @ApiProperty()
+  phone: string | null;
 }
 
 export class LoginUserDTO {
