@@ -59,7 +59,11 @@ const SwiperReviews = () => {
   ];
 
   return (
-    <Flex height={"70vh"} className="relative items-center justify-end gap-4">
+    <Flex
+      id="clients"
+      height={"70vh"}
+      className="relative md:flex-row flex-col items-center justify-end gap-4"
+    >
       <Box
         className="absolute w-3/6 h-full top-1 right-1 bg-teal-50"
         clipPath={"polygon(100% 0, 41% 0, 100% 89%)"}
