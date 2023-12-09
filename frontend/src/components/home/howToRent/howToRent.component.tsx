@@ -47,6 +47,7 @@ const HowToRent: React.FC = () => {
   ];
   return (
     <Flex
+      id="howToRent"
       justifyContent={"space-around"}
       alignItems={"center"}
       flexDirection={"column"}

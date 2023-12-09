@@ -31,6 +31,7 @@ const SwiperBikes = () => {
   }, []);
   return (
     <Box
+      id="weOffer"
       height={"80vh"}
       className="relative flex flex-col items-center justify-center gap-4"
     >
