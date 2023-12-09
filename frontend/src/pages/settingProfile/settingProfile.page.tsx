@@ -4,9 +4,9 @@ import { BsPersonCircle } from "react-icons/bs";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import RegisterForm from "../../components/auth/registerForm/registerForm.component";
 import DeleteUserForm from "./partials/deleteUserForm.component";
-import LoginForm from "../../components/auth/loginForm/loginForm.component";
+import UpdatePassword from "./partials/updatePasswordForm.component";
+import UpdateInfoPers from "./partials/updateInfoForm.component";
 
 enum ActiveComponent {
   info = "info",
@@ -30,7 +30,7 @@ const SettingProfile: React.FC = () => {
   };
 
   return (
-    <div className="py-20 px-28">
+    <div className="py-20 px-28 h-[75vh]">
       <Grid
         templateColumns="repeat(5, 1fr)"
         justifyContent={"space-between"}
@@ -95,10 +95,11 @@ const SettingProfile: React.FC = () => {
         <GridItem
           colSpan={3}
           w="100%"
+          h={"fit-content"}
           className="flex justify-center items-center shadow-xl rounded-lg"
         >
-          {activeComponent === ActiveComponent.info && <RegisterForm />}
-          {activeComponent === ActiveComponent.pass && <LoginForm />}
+          {activeComponent === ActiveComponent.info && <UpdateInfoPers />}
+          {activeComponent === ActiveComponent.pass && <UpdatePassword />}
           {activeComponent === ActiveComponent.del && (
             <DeleteUserForm className="p-5" />
           )}
