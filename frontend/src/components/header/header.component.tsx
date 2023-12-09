@@ -64,7 +64,7 @@ const Header: React.FC = () => {
           </Button>
         </Link>
         {headerItems.map((item, i) => (
-          <A key={i} href={item.path}>
+          <A key={i} href={window.location.origin+"/"+item.path}>
             <Button
               paddingStart={0}
               paddingEnd={0}
