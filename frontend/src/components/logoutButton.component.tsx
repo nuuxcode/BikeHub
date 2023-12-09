@@ -10,11 +10,8 @@ function LogoutButton({ children }: { children: React.ReactNode }) {
 
   const handleLogout = async () => {
     try {
-      if (user?.accessToken) {
+      if (user?.id) {
         await axios.post("/auth/logout", null, {
-          headers: {
-            Authorization: `Bearer ${user.accessToken}`,
-          },
           withCredentials: true,
         });
       }
