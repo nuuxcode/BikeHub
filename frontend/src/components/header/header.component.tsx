@@ -6,6 +6,7 @@ import {
   Image,
   Flex,
   Menu,
+  Link as A,
   MenuButton,
   MenuList,
   MenuItem,
@@ -13,6 +14,7 @@ import {
   Text,
   Center,
   MenuDivider,
+  Box,
 } from "@chakra-ui/react";
 import { TbLogout } from "react-icons/tb";
 import LogoutButton from "../logoutButton.component";
@@ -27,9 +29,10 @@ import logoImage from "../../assets/images/logov2.png";
 const Header: React.FC = () => {
   const { user } = useAuth();
   const headerItems = [
-    { label: "Home", path: "/" },
-    { label: "About", path: "/" },
-    { label: "Contact", path: "/" },
+    { label: "Choose us", path: "#chooseUs" },
+    { label: "How To Rent", path: "#howToRent" },
+    { label: "We Offer", path: "#weOffer" },
+    { label: "Clients", path: "#clients" },
   ];
 
   return (
@@ -38,13 +41,50 @@ const Header: React.FC = () => {
         <Image src={logoImage} width={"150px"} />
       </Link>
 
-      <HStack as="nav" spacing="5">
+      <HStack as="nav" spacing="8">
+        <Link to="/">
+          <Button
+            paddingStart={0}
+            paddingEnd={0}
+            className="group hover:text-teal-500 focus:text-teal-500"
+            variant="nav"
+            _hover={{ transition: "all 0.3s ease-in-out" }}
+            pos={"relative"}
+          >
+            Home
+            <Box
+              position={"absolute"}
+              className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+              _groupFocus={{ width: "100%" }}
+              _groupHover={{
+                width: "100%",
+                transition: "all 0.3s ease-in-out",
+              }}
+            />
+          </Button>
+        </Link>
         {headerItems.map((item, i) => (
-          <Link key={i} to={item.path}>
-            <Button variant="nav" _hover={{ bg: "teal.50" }}>
+          <A key={i} href={item.path}>
+            <Button
+              paddingStart={0}
+              paddingEnd={0}
+              className="group hover:text-teal-500 focus:text-teal-500"
+              variant="nav"
+              _hover={{ transition: "all 0.3s ease-in-out" }}
+              pos={"relative"}
+            >
               {item.label}
+              <Box
+                position={"absolute"}
+                className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+                _groupFocus={{ width: "100%" }}
+                _groupHover={{
+                  width: "100%",
+                  transition: "all 0.3s ease-in-out",
+                }}
+              />
             </Button>
-          </Link>
+          </A>
         ))}
       </HStack>
 
