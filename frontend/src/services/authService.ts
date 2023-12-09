@@ -5,10 +5,12 @@ class AuthService {
     let authStatus = { isAuthenticated: false, user: null as any };
     //get user from local storage
     const storedToken = localStorage.getItem("user");
+    let Token = null;
     try {
       const response = await axios.get('/auth/check', { withCredentials: true });
       const { user, accessToken } = response.data;
-      const data = { "id": user.id, "name": user.name, "email": user.email, "accessToken": accessToken };
+      const data = { "id": user.id, "name": user.name, "email": user.email, "birthdate": user.birthdate, "phone": user.phone };
+      Token = accessToken;
       console.log("Cookies Still on: ", response.status);
       authStatus.user = data;
       //check  if there user in localstorage
@@ -20,7 +22,7 @@ class AuthService {
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
         // mean user dont have cookies token
-        console.error("Unauthorized request:", error.response.status);
+        //console.error("Unauthorized request:", error.response.status);
         // log person out so he can login again ann get new token cookies
         //update local storage if token still in cookies
         localStorage.removeItem('user');
@@ -32,9 +34,7 @@ class AuthService {
     // Check if token is expired, if its remove it from local storage
     const userString = localStorage.getItem("user");
     if (userString) {
-      const user = JSON.parse(userString);
-      const accessToken = user.accessToken;
-      const tokenData = JSON.parse(atob(accessToken.split('.')[1]));
+      const tokenData = JSON.parse(atob(Token.split('.')[1]));
       const expirationTime = tokenData.exp * 1000;
       const timeToExpire = expirationTime - Date.now();
       const timeToExpireInDays = Math.floor(timeToExpire / 1000 / 60 / 60 / 24);

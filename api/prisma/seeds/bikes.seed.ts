@@ -9,8 +9,7 @@ export async function seedBikes(parks) {
     return [];
   }
 
-  const bikes = faker.helpers.multiple(() => createRandomBike(parks), {
-    count: 50,
+  const bikes = faker.helpers.multiple(() => createRandomBike(parks), {    count: 10,
   });
   const createdBikes = [];
 
