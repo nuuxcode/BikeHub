@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+
 import {
   IsDate,
   IsEmail,
@@ -33,7 +34,7 @@ export class RegisterUserDTO {
   @ApiProperty()
   password: string;
 
-  @IsDate()
+  //@IsDate() temporarly disabling this validation
   @ApiProperty()
   birthdate: Date;
 

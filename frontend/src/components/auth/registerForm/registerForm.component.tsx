@@ -22,7 +22,7 @@ interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
-  birthdate: string;
+  birthdate: any;
   phone: string;
 }
 
@@ -92,16 +92,16 @@ const registerForm: React.FC = () => {
     event.preventDefault();
     setIsSubmitting(true);
     validation();
-
     try {
       // Make a POST request to your login endpoint
+      data.birthdate = new Date(data.birthdate)
       const response = await axios.post("auth/register", JSON.stringify(data), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
       console.log(response);
       console.log(JSON.stringify(response?.data));
-      setData({ email: "", password: "", name: "", birthdate: "" , phone: ""  });
+      setData({ email: "", password: "", name: "", birthdate: "", phone: "" });
       setErrMsg("");
       navigate("/login");
       toast.success("Successfully created!");
@@ -172,7 +172,7 @@ const registerForm: React.FC = () => {
           <Input
             type="date"
             value={data.birthdate}
-             onChange={(e) => {
+            onChange={(e) => {
               setData({ ...data, birthdate: e.target.value });
             }}
             placeholder="DD/MM/YYYY"
