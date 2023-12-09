@@ -17,6 +17,14 @@ export class AuthResponseDTO {
   accessToken: string;
 }
 
+export type UserDetails = {
+  email: string;
+  name: string;
+  password: string;
+  phone: string;
+  birthdate: Date | string;
+}
+
 export class RegisterUserDTO {
   @IsString()
   @IsNotEmpty()
@@ -57,8 +65,3 @@ export class LoginUserDTO {
   password: string;
 }
 
-export type UserDetails = {
-  email: string;
-  name: string;
-  password: string;
-}
