@@ -51,7 +51,7 @@ model Rental {
   end_time   DateTime?
   status     String
   price      Float
-  User       User     @relation(fields: [user_id], references: [id])
+  User       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   Bike       Bike     @relation(fields: [bike_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

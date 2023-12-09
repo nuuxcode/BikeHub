@@ -22,6 +22,8 @@ interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
+  birthdate: string;
+  phone: string;
 }
 
 const registerForm: React.FC = () => {
@@ -33,9 +35,13 @@ const registerForm: React.FC = () => {
     name: "",
     email: "",
     password: "",
+    birthdate: "",
+    phone: "",
   });
   const [errEmail, setErrEmail] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
+  const [errBirthdate, setErrBirthdate] = useState(false);
+  const [errPhone, setErrPhone] = useState(false);
   const [errName, setErrName] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
@@ -95,7 +101,7 @@ const registerForm: React.FC = () => {
       });
       console.log(response);
       console.log(JSON.stringify(response?.data));
-      setData({ email: "", password: "", name: "" });
+      setData({ email: "", password: "", name: "", birthdate: "" , phone: ""  });
       setErrMsg("");
       navigate("/login");
       toast.success("Successfully created!");
@@ -161,19 +167,19 @@ const registerForm: React.FC = () => {
         </FormControl>
       </Flex>
       <Flex gap={4} className="max-sm:flex-col">
-        <FormControl id="dateOfBirth">
+        <FormControl id="birthdate">
           <FormLabel>Date Of Birth</FormLabel>
           <Input
             type="date"
-            // value={data.dateOfBirth}
-            //  onChange={(e) => {
-            //   setData({ ...data, dateOfBirth: e.target.value });
-            // }}
+            value={data.birthdate}
+             onChange={(e) => {
+              setData({ ...data, birthdate: e.target.value });
+            }}
             placeholder="DD/MM/YYYY"
           />
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
-        <FormControl id="phoneNumber">
+        <FormControl id="phone">
           <FormLabel>Phone Number</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -181,10 +187,10 @@ const registerForm: React.FC = () => {
             </InputLeftElement>
             <Input
               type="tel"
-              // value={data.phoneNumber}
-              // onChange={(e) => {
-              //   setData({ ...data, phoneNumber: e.target.value });
-              // }}
+              value={data.phone}
+              onChange={(e) => {
+                setData({ ...data, phone: e.target.value });
+              }}
               placeholder="Phone Number"
             />
           </InputGroup>
