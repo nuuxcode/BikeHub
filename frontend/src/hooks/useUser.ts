@@ -6,7 +6,8 @@ export interface User {
   id?: string;
   name?: string;
   email: string;
-  accessToken?: string;
+  birthdate: string | Date;
+  phone?: string;
 }
 
 export const useUser = () => {
