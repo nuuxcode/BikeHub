@@ -91,7 +91,7 @@ export class AuthService {
     }
     data = newUser || user;
     if (data) {
-      data.password = null;;
+      data.password = null;
       const accessToken = this.jwtService.sign(data, {
         expiresIn: GLOBAL_CONFIG.security.expiresIn,
       });

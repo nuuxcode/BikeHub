@@ -3,8 +3,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useLocalStorage } from "./useLocalStorage";
 
 export interface User {
-  id?: string;
-  name?: string;
+  id: string;
+  name: string;
   email: string;
   birthdate: string | Date;
   phone?: string;

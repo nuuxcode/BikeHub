@@ -46,10 +46,13 @@ export class UserService {
     const user = await this.prisma.user.findUnique({
       where: where,
     });
-    return this.prisma.user.update({
+    data.password = user.password;
+    const updatedUser = await this.prisma.user.update({
       data,
       where,
     });
+    delete updatedUser.password;
+    return updatedUser;
   }
 
   async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
