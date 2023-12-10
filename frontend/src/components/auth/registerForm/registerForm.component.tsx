@@ -40,8 +40,8 @@ const registerForm: React.FC = () => {
   });
   const [errEmail, setErrEmail] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
-  const [errBirthdate, setErrBirthdate] = useState(false);
-  const [errPhone, setErrPhone] = useState(false);
+  //const [errBirthdate, setErrBirthdate] = useState(false);
+  //const [errPhone, setErrPhone] = useState(false);
   const [errName, setErrName] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
