@@ -10,11 +10,16 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
+import toast from "react-hot-toast";
 import { PhoneIcon } from "@chakra-ui/icons";
 import { useAuth } from "../../../hooks/useAuth";
+import axios from "../../../apis/axios";
+
 interface RegisterCredentials {
   name: string | undefined;
   email: string;
+  birthdate: any;
+  phone?: string;
 }
 
 const UpdateInfoPers = () => {
@@ -22,6 +27,8 @@ const UpdateInfoPers = () => {
   const [data, setData] = useState<RegisterCredentials>({
     name: user ? user.name : "",
     email: user ? user.email : "",
+    birthdate: user ? new Date(user.birthdate).toISOString().split("T")[0] : "",
+    phone: user ? user.phone : "",
   });
   const [errEmail, setErrEmail] = useState(false);
   const [errName, setErrName] = useState(false);
@@ -53,15 +60,44 @@ const UpdateInfoPers = () => {
    *
    * @param event - The form submission event object.
    */
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event, "submit");
+    //console.log(event, "submit");
     validation();
     setErrMsg("");
     setIsSubmitting(true);
-    setInterval(() => {
+    try {
+      data.birthdate = new Date(data.birthdate)
+      const response = await axios.put(`users/user/${user?.id}`, JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log(response);
+      console.log(JSON.stringify(response?.data));
+      setErrMsg("");
+      toast.success("Successfully updated!");
+    } catch (error: any) {
+      console.log(error);
+      let errorMessage = error?.response?.data?.message;
+      if (typeof errorMessage === 'string')
+        errorMessage = error?.response?.data?.message;
+      else
+        errorMessage = error?.response?.data?.message.join(", ");
+
+      toast.error(errorMessage)
+      if (!error?.response) {
+        setErrMsg("Something went wrong. Please try again later.");
+      } else if (error.response?.status === 400) {
+        setErrMsg(errorMessage);
+      } else if (error.response?.status === 401) {
+        setErrMsg(errorMessage);
+      }
+    } finally {
       setIsSubmitting(false);
-    }, 3000);
+    }
+    // setInterval(() => {
+    //   setIsSubmitting(false);
+    // }, 3000);
   };
 
   return (
@@ -100,19 +136,19 @@ const UpdateInfoPers = () => {
         </FormControl>
       </Flex>
       <Flex gap={4} className="max-sm:flex-col">
-        <FormControl id="dateOfBirth">
+        <FormControl id="birthdate">
           <FormLabel>Date Of Birth</FormLabel>
           <Input
             type="date"
-            // value={data.dateOfBirth}
-            //  onChange={(e) => {
-            //   setData({ ...data, dateOfBirth: e.target.value });
-            // }}
+            value={data.birthdate}
+            onChange={(e) => {
+              setData({ ...data, birthdate: e.target.value });
+            }}
             placeholder="DD/MM/YYYY"
           />
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
-        <FormControl id="phoneNumber">
+        <FormControl id="phone">
           <FormLabel>Phone Number</FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
@@ -120,10 +156,10 @@ const UpdateInfoPers = () => {
             </InputLeftElement>
             <Input
               type="tel"
-              // value={data.phoneNumber}
-              // onChange={(e) => {
-              //   setData({ ...data, phoneNumber: e.target.value });
-              // }}
+              value={data.phone}
+              onChange={(e) => {
+                setData({ ...data, phone: e.target.value });
+              }}
               placeholder="Phone Number"
             />
           </InputGroup>
