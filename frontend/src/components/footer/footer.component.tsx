@@ -40,7 +40,7 @@ const Footer = () => {
             </Link>
 
             {footerItems.map((item, i) => (
-              <A key={i} href={window.location.origin+"/"+item.path}>
+              <A key={i} href={item.path}>
                 <Button
                   paddingStart={0}
                   paddingEnd={0}
