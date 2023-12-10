@@ -47,10 +47,12 @@ export class UserService {
       where: where,
     });
     data.password = user.password;
-    return this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       data,
       where,
     });
+    delete updatedUser.password;
+    return updatedUser;
   }
 
   async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {

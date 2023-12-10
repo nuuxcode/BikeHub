@@ -23,7 +23,7 @@ interface RegisterCredentials {
 }
 
 const UpdateInfoPers = () => {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const [data, setData] = useState<RegisterCredentials>({
     name: user ? user.name : "",
     email: user ? user.email : "",
@@ -76,6 +76,15 @@ const UpdateInfoPers = () => {
       console.log(JSON.stringify(response?.data));
       setErrMsg("");
       toast.success("Successfully updated!");
+      const newBirthdate = new Date(response?.data?.birthdate).toISOString().split("T")[0];
+      login({
+        id: response?.data.id,
+        name: response?.data?.name,
+        email: response?.data?.email,
+        birthdate: newBirthdate,
+        phone: response?.data?.phone,
+      });
+      setData({ ...data, birthdate: newBirthdate });
     } catch (error: any) {
       console.log(error);
       let errorMessage = error?.response?.data?.message;
