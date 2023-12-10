@@ -111,6 +111,7 @@ const WhyChoose = () => {
         <Box className="flex flex-1 flex-col gap-4 md:justify-start items-center">
           {data.map((item) => (
             <CardChoose
+              key={item.id}
               id={item.id}
               title={item.title}
               description={item.description}

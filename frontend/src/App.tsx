@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { Routes } from "./routes/routes";
 import "./index.css";
 import Footer from "./components/footer/footer.component";
+import ButtonScroll from "./components/home/buttonScroll.component";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes />
       <Footer />
       <Toaster />
+      <ButtonScroll />
     </div>
   );
 }
