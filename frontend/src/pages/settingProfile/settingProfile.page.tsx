@@ -1,5 +1,5 @@
 import { Button, Grid, GridItem } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -7,7 +7,7 @@ import { AiOutlineUserDelete } from "react-icons/ai";
 // import DeleteUserForm from "./partials/deleteUserForm.component";
 // import UpdatePassword from "./partials/updatePasswordForm.component";
 // import UpdateInfoPers from "./partials/updateInfoForm.component";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 enum ActiveComponent {
   info = "info",
@@ -20,6 +20,11 @@ const SettingProfile: React.FC = () => {
     ActiveComponent.info
   );
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("information");
+  }, []);
+
   /**
    * handleClick: A function to handle button click events.
    *
@@ -27,9 +32,7 @@ const SettingProfile: React.FC = () => {
    */
   const handleButtonClick = (component: ActiveComponent) => {
     setActiveComponent(component);
-    console.log(activeComponent);
   };
-
   return (
     <div className="py-20 px-28 h-[75vh]">
       <Grid

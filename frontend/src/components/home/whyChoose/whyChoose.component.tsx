@@ -18,8 +18,8 @@ const CardChoose = ({ id, title, description, Icon }: CardChooseProps) => {
     <Box
       key={id}
       className="group flex items-center justify-center bg-white rounded-lg px-8 py-4 gap-4 transition-all duration-300 ease-in-out cursor-pointer"
-      width="400px"
-      height="150px"
+      width={{ base: "80%", md: "400px" }}
+      height={{ base: "auto", md: "150px" }}
       shadow={
         "0px 0px 25px -5px rgba(0, 0, 0, 0.1), 0px 7px 10px -5px rgba(0, 0, 0, 0.04)"
       }
@@ -33,23 +33,29 @@ const CardChoose = ({ id, title, description, Icon }: CardChooseProps) => {
       //   _groupHover={{ color: "white" }}
     >
       <Box
+        // width={{ base: "50px", md: "80px" }}
         className="flex items-center justify-center rounded-full  bg-teal-200 p-3"
         _groupHover={{ bg: "teal.300", transition: "all 0.3s ease-in-out" }}
       >
-        <Icon size={"30px"} className="text-teal-500 group-hover:text-white" />
+        <Icon className="text-teal-500 sm:text-3xl text-xl  group-hover:text-white" />
       </Box>
       <Box
         className="flex flex-col items-start justify-center gap-2"
         _groupHover={{ color: "white", transition: "all 0.3s ease-in-out" }}
       >
         <Reveal>
-          <Heading as="h2" size={"md"} fontSize={"18px"} className="capitalize">
+          <Heading
+            as="h2"
+            size={{ base: "14px", md: "18px" }}
+            // fontSize={"18px"}
+            className="capitalize"
+          >
             {title}
           </Heading>
         </Reveal>
         <Reveal>
           <Text
-            className="text-gray-500 text-sm font-normal"
+            className="text-gray-500 sm:text-sm text-xs font-normal"
             _groupHover={{ color: "white", transition: "all 0.3s ease-in-out" }}
           >
             {description}
@@ -95,18 +101,26 @@ const WhyChoose = () => {
         clipPath={"polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%)"}
       />
       <Reveal>
-        <Heading as="h2" size="md" className=" mb-3 capitalize">
+        <Heading
+          as="h2"
+          size={{ base: "sm", md: "md" }}
+          className=" mb-3 capitalize"
+        >
           why choose BikeHub
         </Heading>
       </Reveal>
       <Reveal>
-        <Text className="text-gray-500 text-base font-medium mb-5">
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5">
           proper busniess solution for your developing business
         </Text>
       </Reveal>
       <Box className=" w-full flex md:flex-row flex-col justify-evenly gap-5 ">
         <Box className="flex-1 text-center">
-          <Image src={BikeImage} width={"100%"} />
+          <Image
+            src={BikeImage}
+            mx={"auto"}
+            width={{ base: "80%", md: "100%" }}
+          />
         </Box>
         <Box className="flex flex-1 flex-col gap-4 md:justify-start items-center">
           {data.map((item) => (
