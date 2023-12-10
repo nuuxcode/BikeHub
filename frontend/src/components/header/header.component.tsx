@@ -89,7 +89,7 @@ const Header: React.FC = () => {
       </HStack>
 
       <div>
-        {!user?.accessToken ? (
+        {!user?.id ? (
           <>
             <Link to="/login">
               <Button colorScheme="teal" variant="solid">

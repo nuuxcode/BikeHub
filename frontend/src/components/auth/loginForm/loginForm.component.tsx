@@ -85,13 +85,13 @@ const LoginForm: React.FC = () => {
         withCredentials: true,
       });
 
-      const accessToken = response?.data?.accessToken;
       const userRes = response?.data?.user;
       login({
         id: userRes.id,
         name: userRes?.name,
         email: userRes?.email,
-        accessToken: accessToken,
+        birthdate: userRes?.birthdate,
+        phone: userRes?.phone,
       });
       setData({ email: "", password: "" });
       setErrMsg("");

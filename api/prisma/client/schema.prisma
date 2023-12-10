@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bike {
+  id         Int      @id @default(autoincrement())
+  model      String
+  status     String
+  lock       Boolean
+  location   String
+  price_tier String
+  park_id    Int
+  Park       Park     @relation(fields: [park_id], references: [id])
+  Rental     Rental[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Park {
+  id         Int      @id @default(autoincrement())
+  name       String
+  location   String
+  Bike       Bike[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("user")
+  Rental     Rental[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Rental {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  bike_id    Int
+  start_time DateTime
+  end_time   DateTime
+  status     String
+  price      Float
+  User       User     @relation(fields: [user_id], references: [id])
+  Bike       Bike     @relation(fields: [bike_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

@@ -44,6 +44,8 @@ export class AuthService {
       role: userData.role,
       created_at: new Date(),
       updated_at: new Date(),
+      birthdate: userData.birthdate,
+      phone: userData.phone,
     };
 
     const accessToken = this.jwtService.sign(payload, {
