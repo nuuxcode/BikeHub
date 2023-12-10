@@ -4,9 +4,10 @@ import { BsPersonCircle } from "react-icons/bs";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import DeleteUserForm from "./partials/deleteUserForm.component";
-import UpdatePassword from "./partials/updatePasswordForm.component";
-import UpdateInfoPers from "./partials/updateInfoForm.component";
+// import DeleteUserForm from "./partials/deleteUserForm.component";
+// import UpdatePassword from "./partials/updatePasswordForm.component";
+// import UpdateInfoPers from "./partials/updateInfoForm.component";
+import { Link, Outlet } from "react-router-dom";
 
 enum ActiveComponent {
   info = "info",
@@ -46,51 +47,57 @@ const SettingProfile: React.FC = () => {
           h={"fit-content"}
           p={5}
         >
-          <Button
-            className="w-full flex justify-start gap-1"
-            variant={"solid"}
-            color={
-              activeComponent === ActiveComponent.info ? "white" : "gray.500"
-            }
-            colorScheme={
-              activeComponent === ActiveComponent.info ? "teal" : "white"
-            }
-            onClick={() => handleButtonClick(ActiveComponent.info)}
-          >
-            <BsPersonCircle size={20} />
-            Personal information
-            <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
-          </Button>
-          <Button
-            className="w-full flex justify-start gap-1"
-            variant={"solid"}
-            colorScheme={
-              activeComponent === ActiveComponent.pass ? "teal" : "white"
-            }
-            color={
-              activeComponent === ActiveComponent.pass ? "white" : "gray.500"
-            }
-            onClick={() => handleButtonClick(ActiveComponent.pass)}
-          >
-            <RiLockPasswordFill size={20} />
-            Update Password
-            <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
-          </Button>
-          <Button
-            className="w-full flex justify-start gap-1"
-            variant={"solid"}
-            colorScheme={
-              activeComponent === ActiveComponent.del ? "teal" : "white"
-            }
-            color={
-              activeComponent === ActiveComponent.del ? "white" : "gray.500"
-            }
-            onClick={() => handleButtonClick(ActiveComponent.del)}
-          >
-            <AiOutlineUserDelete size={20} />
-            Delete Account
-            <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
-          </Button>
+          <Link to="information">
+            <Button
+              className="w-full flex justify-start gap-1"
+              variant={"solid"}
+              color={
+                activeComponent === ActiveComponent.info ? "white" : "gray.500"
+              }
+              colorScheme={
+                activeComponent === ActiveComponent.info ? "teal" : "white"
+              }
+              onClick={() => handleButtonClick(ActiveComponent.info)}
+            >
+              <BsPersonCircle size={20} />
+              Personal information
+              <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
+            </Button>
+          </Link>
+          <Link to="updatePassword">
+            <Button
+              className="w-full flex justify-start gap-1"
+              variant={"solid"}
+              colorScheme={
+                activeComponent === ActiveComponent.pass ? "teal" : "white"
+              }
+              color={
+                activeComponent === ActiveComponent.pass ? "white" : "gray.500"
+              }
+              onClick={() => handleButtonClick(ActiveComponent.pass)}
+            >
+              <RiLockPasswordFill size={20} />
+              Update Password
+              <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
+            </Button>
+          </Link>
+          <Link to="deleteUser">
+            <Button
+              className="w-full flex justify-start gap-1"
+              variant={"solid"}
+              colorScheme={
+                activeComponent === ActiveComponent.del ? "teal" : "white"
+              }
+              color={
+                activeComponent === ActiveComponent.del ? "white" : "gray.500"
+              }
+              onClick={() => handleButtonClick(ActiveComponent.del)}
+            >
+              <AiOutlineUserDelete size={20} />
+              Delete Account
+              <MdKeyboardArrowRight size={22} className=" ml-auto mr-0" />
+            </Button>
+          </Link>
         </GridItem>
         <GridItem
           colSpan={3}
@@ -98,11 +105,12 @@ const SettingProfile: React.FC = () => {
           h={"fit-content"}
           className="flex justify-center items-center shadow-xl rounded-lg"
         >
-          {activeComponent === ActiveComponent.info && <UpdateInfoPers />}
+          {/* {activeComponent === ActiveComponent.info && <UpdateInfoPers />}
           {activeComponent === ActiveComponent.pass && <UpdatePassword />}
           {activeComponent === ActiveComponent.del && (
             <DeleteUserForm className="p-5" />
-          )}
+          )} */}
+          <Outlet />
         </GridItem>
       </Grid>
     </div>

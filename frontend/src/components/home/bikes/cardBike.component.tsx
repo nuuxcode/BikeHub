@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  // useDisclosure,
+} from "@chakra-ui/react";
 import { Reveal } from "../../motion/reveal.component";
 import bikeImage from "../../../assets/images/bikes/bike1.jpg";
 import { FaStar } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { MdPeopleOutline } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
+// import BikeDetails from "./bikeDetails.component";
 
 type Bike = {
   id: number;
@@ -19,6 +27,7 @@ type Bike = {
 
 const CardBike = ({ bike }: { bike: Bike }) => {
   const [liked, setLiked] = useState(false);
+  // const { onOpen } = useDisclosure();
   return (
     <Flex
       width={{ base: "100%", sm: "265px" }}
@@ -90,6 +99,7 @@ const CardBike = ({ bike }: { bike: Bike }) => {
           <Text>More Detail</Text>
         </Reveal>
       </Button>
+      {/* <BikeDetails /> */}
     </Flex>
   );
 };
