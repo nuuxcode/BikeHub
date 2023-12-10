@@ -76,20 +76,26 @@ const SwiperReviews = () => {
       <Center
         width={"300px"}
         justifyContent={"end"}
+        alignItems={"center"}
+        // alignItems={{ base: "start", md: "center" }}
         flexDirection={"column"}
         gap={4}
       >
         <Reveal>
-          <Heading as="h2" size="lg" className="capitalize">
+          <Heading
+            as="h2"
+            size={{ base: "md", md: "lg" }}
+            className="capitalizesl sm:text-start text-center"
+          >
             What client say about us
           </Heading>
         </Reveal>
         <Reveal>
-          <Text className="text-gray-500 text-base font-medium">
+          <Text className="text-gray-500 sm:text-base text-sm font-medium sm:text-start text-center">
             proper busniess solution for your developing business
           </Text>
         </Reveal>
-        <Flex gap={3} alignSelf={"start"} zIndex={99}>
+        <Flex gap={3} alignSelf={{ base: "center", md: "start" }} zIndex={99}>
           <div
             className="cursor-pointer"
             onClick={() => {
@@ -106,7 +112,7 @@ const SwiperReviews = () => {
           </div>
         </Flex>
       </Center>
-      <Box className="w-2/3 ">
+      <Box className="sm:w-2/3  w-11/12">
         <Swiper
           slidesPerView={1}
           spaceBetween={18}

@@ -53,32 +53,47 @@ const HowToRent: React.FC = () => {
       flexDirection={"column"}
       gap={6}
       py={"30px"}
-      height={"85vh"}
+      minHeight={"85vh"}
     >
       <Center flexDirection={"column"} gap={4}>
         <Reveal>
-          <Heading as="h3" size="md" className="capitalize">
+          <Heading
+            as="h3"
+            size={{ base: "sm", md: "md" }}
+            className="capitalize text-center"
+          >
             How to rent
           </Heading>
         </Reveal>
         <Reveal>
-          <Heading as="h1" size="3xl" className="py-4" color={"orange.500"}>
+          <Heading
+            as="h1"
+            size={{ base: "xl", md: "3xl" }}
+            className="py-4 text-center"
+            color={"orange.500"}
+          >
             Simple and easy steps to rent
           </Heading>
         </Reveal>
         <Reveal>
-          <Text className="text-md font-medium text-gray-500">
+          <Text
+            className="font-medium text-gray-500 text-center"
+            fontSize={{ base: "xs", md: "md" }}
+          >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam,
             eos maxime?
           </Text>
         </Reveal>
         <Reveal>
-          <Text className="text-md font-medium text-gray-500">
+          <Text
+            className="text-md font-medium text-gray-500 text-center"
+            fontSize={{ base: "xs", md: "md" }}
+          >
             Ab id ullam quis consequuntur nesciunt blanditiis.
           </Text>
         </Reveal>
       </Center>
-      <Flex>
+      <Flex flexDirection={{ base: "column", md: "row" }} gap={4}>
         {dataSteps.map(({ icon, title, text, id, after, delay }) => (
           <CardSteps
             key={id}
