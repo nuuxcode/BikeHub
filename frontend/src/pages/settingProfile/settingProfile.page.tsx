@@ -9,6 +9,7 @@ import { AiOutlineUserDelete } from "react-icons/ai";
 // import UpdateInfoPers from "./partials/updateInfoForm.component";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
+
 enum ActiveComponent {
   info = "info",
   pass = "pass",
