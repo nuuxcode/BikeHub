@@ -10,14 +10,18 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import toast from "react-hot-toast";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-// import axios from "../../../apis/axios";
+import axios from "../../../apis/axios";
+import { useAuth } from "../../../hooks/useAuth";
+
 interface RegisterCredentials {
   oldPassword: string;
   newPassword: string;
 }
 
 const UpdatePassword = () => {
+  const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [data, setData] = useState<RegisterCredentials>({
@@ -37,11 +41,16 @@ const UpdatePassword = () => {
   const validation = () => {
     if (data.oldPassword === "") {
       setErrPassword(true);
-      console.log("email empty");
+      console.log("old Password empty");
     } else {
       setErrPassword(false);
     }
-
+    if (data.newPassword === "") {
+      setErrPassword(true);
+      console.log("new Password empty");
+    } else {
+      setErrPassword(false);
+    }
     if (
       data.newPassword === confirmPassword &&
       confirmPassword !== "" &&
@@ -58,15 +67,41 @@ const UpdatePassword = () => {
    *
    * @param event - The form submission event object.
    */
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(event, "submit");
     validation();
     setErrMsg("");
     setIsSubmitting(true);
-    setInterval(() => {
+    try {
+      const response = await axios.put(`users/user/${user?.id}`, JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log(response);
+      console.log(JSON.stringify(response?.data));
+      setErrMsg("");
+      toast.success("Successfully updated!");
+      setErrPassword(false);
+    } catch (error: any) {
+      console.log(error);
+      let errorMessage = error?.response?.data?.message;
+      if (typeof errorMessage === 'string')
+        errorMessage = error?.response?.data?.message;
+      else
+        errorMessage = error?.response?.data?.message.join(", ");
+
+      toast.error(errorMessage)
+      if (!error?.response) {
+        setErrMsg("Something went wrong. Please try again later.");
+      } else if (error.response?.status === 400) {
+        setErrMsg(errorMessage);
+      } else if (error.response?.status === 401) {
+        setErrMsg(errorMessage);
+      }
+    } finally {
       setIsSubmitting(false);
-    }, 3000);
+    }
   };
 
   return (
