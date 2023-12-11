@@ -18,7 +18,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any): Promise<any> {
-    const data = { name: profile.displayName, email: profile.emails[0].value, password: "123456789" } //password here is for testing purposes only
+    console.log(profile)
+    const generateRandomString = (length) => {
+      const characters = '#@ABCDEFGHIJKLMNOPQRSTUVWXYZ#@abcdefghijklmnopqrstuvwxyz#@0123456789#@';
+      return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+    };
+    const data = { name: profile.displayName, email: profile.emails[0].value, password: generateRandomString(10), birthdate: new Date("1111-11-11"), phone: "" }
+    console.log(data)
     const user = await this.authService.validateUser(data);
     return user || null;
   }

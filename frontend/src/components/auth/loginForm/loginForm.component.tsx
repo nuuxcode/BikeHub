@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "../../../apis/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import {
@@ -26,6 +26,7 @@ interface LoginCredentials {
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const stateLocation = useLocation().state;
 
   const { login } = useAuth();
   const [data, setData] = useState<LoginCredentials>({
@@ -84,18 +85,18 @@ const LoginForm: React.FC = () => {
         withCredentials: true,
       });
 
-      const accessToken = response?.data?.accessToken;
       const userRes = response?.data?.user;
       login({
         id: userRes.id,
         name: userRes?.name,
         email: userRes?.email,
-        accessToken: accessToken,
+        birthdate: userRes?.birthdate,
+        phone: userRes?.phone,
       });
       setData({ email: "", password: "" });
       setErrMsg("");
       setIsSubmitting(false);
-      navigate("/");
+      navigate(stateLocation?.from ? stateLocation.from : "/");
       toast.success("Login successful", { icon: "👏" });
     } catch (error: any) {
       if (!error?.response) {

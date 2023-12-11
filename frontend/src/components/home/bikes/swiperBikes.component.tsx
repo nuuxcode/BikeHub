@@ -31,8 +31,9 @@ const SwiperBikes = () => {
   }, []);
   return (
     <Box
-      height={"80vh"}
-      className="relative flex flex-col items-center justify-center gap-4"
+      id="weOffer"
+      minHeight={"80vh"}
+      className="relative flex flex-col items-center justify-center gap-4 my-4"
     >
       <Box
         className="absolute w-2/5 h-full top-0 right-0 bg-teal-50"
@@ -45,12 +46,21 @@ const SwiperBikes = () => {
 
       <Center justifyContent={"center"} flexDirection={"column"}>
         <Reveal>
-          <Heading as="h3" size="md" className="capitalize">
+          <Heading
+            as="h3"
+            size={{ base: "sm", md: "md" }}
+            className="capitalize"
+          >
             What we offer
           </Heading>
         </Reveal>
         <Reveal>
-          <Heading as="h1" size="3xl" className="py-4" color={"orange.500"}>
+          <Heading
+            as="h1"
+            size={{ base: "xl", md: "3xl" }}
+            className="py-4"
+            color={"orange.500"}
+          >
             Explore Our Bike Range
           </Heading>
         </Reveal>

@@ -10,6 +10,7 @@ import { JwtStrategy } from './auth.jwt.strategy';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GoogleStrategy } from './auth.google.strategy';
+import { EmailService } from '../email/email.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { GoogleStrategy } from './auth.google.strategy';
     }),
     PrismaModule,
   ],
-  providers: [UserService, AuthService, JwtStrategy, PrismaService, GoogleStrategy],
+  providers: [UserService, AuthService, JwtStrategy, PrismaService, GoogleStrategy, EmailService],
   controllers: [AuthController],
 })
 export class AuthModule {}

@@ -8,5 +8,5 @@ export const PRISMA_LOG_CONFIG: Array<LogDefinition> = [
   { level: 'warn', emit: 'stdout' },
   { level: 'info', emit: 'stdout' },
   { level: 'error', emit: 'stdout' },
-  { level: 'query', emit: 'stdout' },
+  //{ level: 'query', emit: 'stdout' },
 ];

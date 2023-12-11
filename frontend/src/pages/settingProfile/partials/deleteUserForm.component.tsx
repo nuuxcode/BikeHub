@@ -30,7 +30,7 @@ export default function DeleteUserForm({
   const [errMsg, setErrMsg] = useState("");
 
   return (
-    <section className={`space-y-6 ${className}`}>
+    <section className={`p-5 space-y-6 ${className}`}>
       <header>
         <h2 className="text-lg font-medium text-gray-900">Delete Account</h2>
 

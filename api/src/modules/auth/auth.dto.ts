@@ -1,5 +1,7 @@
 import { User } from '@prisma/client';
+
 import {
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsString,
@@ -13,6 +15,24 @@ import { INVALID_EMAIL } from '../../shared/constants/strings';
 export class AuthResponseDTO {
   user: User;
   accessToken: string;
+}
+
+export type UserDetails = {
+  email: string;
+  name: string;
+  password: string;
+  phone: string;
+  birthdate: Date | string;
+}
+
+export type UpdateUser = {
+  oldPassword?: string;
+  newPassword?: string;
+  email?: string;
+  name?: string;
+  password?: string;
+  phone?: string;
+  birthdate?: Date | string;
 }
 
 export class RegisterUserDTO {
@@ -31,6 +51,15 @@ export class RegisterUserDTO {
   @MinLength(8)
   @ApiProperty()
   password: string;
+
+  //@IsDate() temporarly disabling this validation
+  @ApiProperty()
+  birthdate: Date;
+
+  @IsString()
+  @MinLength(9)
+  @ApiProperty()
+  phone: string | null;
 }
 
 export class LoginUserDTO {
@@ -46,8 +75,3 @@ export class LoginUserDTO {
   password: string;
 }
 
-export type UserDetails = {
-  email: string;
-  name: string;
-  password: string;
-}

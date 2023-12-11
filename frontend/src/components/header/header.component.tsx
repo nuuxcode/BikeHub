@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import {
   Button,
   HStack,
-  Image,
   Flex,
   Menu,
+  Link as A,
   MenuButton,
   MenuList,
   MenuItem,
@@ -13,11 +13,23 @@ import {
   Text,
   Center,
   MenuDivider,
+  Box,
+  IconButton,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerBody,
+  useDisclosure,
+  VStack,
+  // DrawerHeader,
+  DrawerCloseButton,
+  // useColorMode,
 } from "@chakra-ui/react";
 import { TbLogout } from "react-icons/tb";
 import LogoutButton from "../logoutButton.component";
 import { useAuth } from "../../hooks/useAuth";
 import logoImage from "../../assets/images/logov2.png";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 /**
  * Header: A functional component representing a header in React with Tailwind CSS.
@@ -27,37 +39,86 @@ import logoImage from "../../assets/images/logov2.png";
 const Header: React.FC = () => {
   const { user } = useAuth();
   const headerItems = [
-    { label: "Home", path: "/" },
-    { label: "About", path: "/" },
-    { label: "Contact", path: "/" },
+    { label: "Choose us", path: "#chooseUs" },
+    { label: "How To Rent", path: "#howToRent" },
+    { label: "We Offer", path: "#weOffer" },
+    { label: "Clients", path: "#clients" },
   ];
 
+  // const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <header className="flex justify-between items-center text-gray-700 py-2 px-12 shadow-lg">
+    <header className="flex justify-between items-center text-gray-700 py-2 px-4 sm:px-12 shadow-lg">
       <Link to="/">
-        <Image src={logoImage} width={"150px"} />
+        <img src={logoImage} className="sm:w-36 w-24 max-w-none" />
       </Link>
 
-      <HStack as="nav" spacing="5">
+      <HStack as="nav" spacing="8" display={{ base: "none", md: "flex" }}>
+        <Link to="/">
+          <Button
+            paddingStart={0}
+            paddingEnd={0}
+            className="group hover:text-teal-500 focus:text-teal-500"
+            variant="nav"
+            _hover={{ transition: "all 0.3s ease-in-out" }}
+            pos={"relative"}
+          >
+            Home
+            <Box
+              position={"absolute"}
+              className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+              _groupFocus={{ width: "100%" }}
+              _groupHover={{
+                width: "100%",
+                transition: "all 0.3s ease-in-out",
+              }}
+            />
+          </Button>
+        </Link>
         {headerItems.map((item, i) => (
-          <Link key={i} to={item.path}>
-            <Button variant="nav" _hover={{ bg: "teal.50" }}>
+          <A key={i} href={item.path}>
+            <Button
+              paddingStart={0}
+              paddingEnd={0}
+              className="group hover:text-teal-500 focus:text-teal-500"
+              variant="nav"
+              _hover={{ transition: "all 0.3s ease-in-out" }}
+              pos={"relative"}
+            >
               {item.label}
+              <Box
+                position={"absolute"}
+                className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+                _groupFocus={{ width: "100%" }}
+                _groupHover={{
+                  width: "100%",
+                  transition: "all 0.3s ease-in-out",
+                }}
+              />
             </Button>
-          </Link>
+          </A>
         ))}
       </HStack>
 
       <div>
-        {!user?.accessToken ? (
+        {!user?.id ? (
           <>
             <Link to="/login">
-              <Button colorScheme="teal" variant="solid">
+              <Button
+                colorScheme="teal"
+                variant="solid"
+                size={{ base: "sm", md: "md" }}
+              >
                 Signin
               </Button>
             </Link>
             <Link to="/signup" className="ml-3">
-              <Button colorScheme="teal" variant="outline">
+              <Button
+                colorScheme="teal"
+                variant="outline"
+                size={{ base: "sm", md: "md" }}
+              >
                 Signup
               </Button>
             </Link>
@@ -133,6 +194,67 @@ const Header: React.FC = () => {
           </Flex>
         )}
       </div>
+      <IconButton
+        size={"sm"}
+        aria-label="Toggle navigation"
+        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+        onClick={onOpen}
+        display={{ base: "block", md: "none" }}
+      />
+      <Drawer placement={"top"} onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody>
+            <VStack as="nav" spacing="8">
+              <Link to="/">
+                <Button
+                  paddingStart={0}
+                  paddingEnd={0}
+                  className="group hover:text-teal-500 focus:text-teal-500"
+                  variant="nav"
+                  _hover={{ transition: "all 0.3s ease-in-out" }}
+                  pos={"relative"}
+                >
+                  Home
+                  <Box
+                    position={"absolute"}
+                    className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+                    _groupFocus={{ width: "100%" }}
+                    _groupHover={{
+                      width: "100%",
+                      transition: "all 0.3s ease-in-out",
+                    }}
+                  />
+                </Button>
+              </Link>
+              {headerItems.map((item, i) => (
+                <A key={i} href={item.path} onClick={onClose}>
+                  <Button
+                    paddingStart={0}
+                    paddingEnd={0}
+                    className="group hover:text-teal-500 focus:text-teal-500"
+                    variant="nav"
+                    _hover={{ transition: "all 0.3s ease-in-out" }}
+                    pos={"relative"}
+                  >
+                    {item.label}
+                    <Box
+                      position={"absolute"}
+                      className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+                      _groupFocus={{ width: "100%" }}
+                      _groupHover={{
+                        width: "100%",
+                        transition: "all 0.3s ease-in-out",
+                      }}
+                    />
+                  </Button>
+                </A>
+              ))}
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </header>
   );
 };

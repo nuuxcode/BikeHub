@@ -49,7 +49,7 @@ const CardSlider = ({
            bg-cover bg-center"
         ></Box> */}
       <motion.p
-        className="text-teal-500 text-lg font-bold  px-2 z-10 mb-4"
+        className="text-teal-500 sm:text-lg text-sm font-bold  px-2 z-10 mb-4"
         variants={{
           hidden: { opacity: 0, y: 75 },
           visible: { opacity: 1, y: 0 },
@@ -61,7 +61,7 @@ const CardSlider = ({
         {sousTitle}
       </motion.p>
       <motion.p
-        className="text-gray-50 text-6xl font-bold z-10"
+        className="text-gray-50 sm:text-6xl text-3xl font-bold z-10"
         variants={{
           hidden: { opacity: 0, y: 75 },
           visible: { opacity: 1, y: 0 },
@@ -84,7 +84,7 @@ const CardSlider = ({
       />
       <Box>
         <motion.p
-          className="text-gray-50 text-lg font-semibold z-10"
+          className="text-gray-50 sm:text-lg text-sm font-semibold z-10"
           variants={{
             hidden: { opacity: 0, x: 150 },
             visible: { opacity: 1, x: 0 },
@@ -96,7 +96,7 @@ const CardSlider = ({
           {text1}
         </motion.p>
         <motion.p
-          className="text-gray-50 text-lg font-semibold z-10"
+          className="text-gray-50 sm:text-lg text-sm font-semibold z-10"
           variants={{
             hidden: { opacity: 0, x: -150 },
             visible: { opacity: 1, x: 0 },
