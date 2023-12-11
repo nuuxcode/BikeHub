@@ -16,6 +16,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Set ENV
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "SERVER_HOST=${{ vars.PROD_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.PROD_SERVER_USERNAME }}" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+            echo "SERVER_HOST=${{ vars.DEV_SERVER_HOST }}" >> $GITHUB_ENV
+            echo "SERVER_USERNAME=${{ vars.DEV_SERVER_USERNAME }}" >> $GITHUB_ENV
+          fi
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
@@ -125,4 +134,3 @@ jobs:
               echo "Done!"
             fi
             echo "--------"
-
