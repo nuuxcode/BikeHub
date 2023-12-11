@@ -25,6 +25,16 @@ export type UserDetails = {
   birthdate: Date | string;
 }
 
+export type UpdateUser = {
+  oldPassword?: string;
+  newPassword?: string;
+  email?: string;
+  name?: string;
+  password?: string;
+  phone?: string;
+  birthdate?: Date | string;
+}
+
 export class RegisterUserDTO {
   @IsString()
   @IsNotEmpty()
