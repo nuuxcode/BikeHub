@@ -9,6 +9,7 @@ import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { ROLES_ENUM } from '../../shared/constants/global.constants';
 
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO, UserDetails } from './auth.dto';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private userService: UserService,
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) { }
 
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
@@ -59,6 +61,19 @@ export class AuthService {
   }
 
   public async register(user: RegisterUserDTO): Promise<User> {
+    const object = 'Welcome to BikeHub! - Enjoy your bike!';
+    const content = `
+    Hello ${user.name},
+
+    Welcome to BikeHub!
+
+    You can update your profile information from profile settings.
+
+    Link: ${process.env.REDIRECT_URL}/setting-profile/
+
+    Thank you,
+    Enjoy your Bike :)
+    `;
     const userData = await this.userService.findUser({
       email: user.email,
     });
@@ -67,7 +82,10 @@ export class AuthService {
       throw new UnauthorizedException("This email already exists");
     }
     const newUser = { ...user, role: ROLES_ENUM.USER }; // default role
-    return this.userService.createUser(newUser);
+    const Res = await this.userService.createUser(newUser);
+    await this.emailService.sendEmail(user.email, object, content);
+    delete Res.password;
+    return Res;
   }
 
   public validateToken(token: string): any {
@@ -81,12 +99,30 @@ export class AuthService {
   public async validateUser(details: UserDetails): Promise<AuthResponseDTO> {
     let data = null;
     let newUser = null;
+    const object = 'Welcome to BikeHub! - Your Password!';
+    const content = `
+    Hello ${details.name},
+
+    Welcome to BikeHub!
+
+    Your password is: ${details.password}
+
+    You can change your password from profile settings.
+
+    Link: ${process.env.REDIRECT_URL}/setting-profile/updatePassword
+
+    Thank you,
+    Enjoy your Bike :)
+    `;
 
     const user = await this.prisma.user.findUnique({
       where: { email: details.email },
     });
     if (!user) {
+      console.log("new user")
+      console.log(details)
       newUser = await this.prisma.user.create({ data: details });
+      await this.emailService.sendEmail(details.email, object, content);
       newUser.password = null;
     }
     data = newUser || user;

@@ -43,7 +43,7 @@ const UpdateInfoPers = () => {
   const validation = () => {
     if (data.email === "") {
       setErrEmail(true);
-      console.log("pass empty");
+      console.log("email empty");
     } else {
       setErrEmail(false);
     }
@@ -104,9 +104,6 @@ const UpdateInfoPers = () => {
     } finally {
       setIsSubmitting(false);
     }
-    // setInterval(() => {
-    //   setIsSubmitting(false);
-    // }, 3000);
   };
 
   return (
