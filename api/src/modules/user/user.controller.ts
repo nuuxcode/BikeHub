@@ -14,7 +14,7 @@ import { ROLES_ENUM } from 'src/shared/constants/global.constants';
 
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { Roles } from '../auth/auth.roles.decorator';
-
+import { UpdateUser } from './../auth/auth.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -41,7 +41,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async updateUser(
     @Param('id') id: string,
-    @Body() userData: Prisma.UserUpdateInput,
+    @Body() userData: UpdateUser,
   ): Promise<User> {
     return this.userService.updateUser({
       where: { id: Number(id) },
