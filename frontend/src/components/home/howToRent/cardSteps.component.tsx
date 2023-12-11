@@ -37,10 +37,12 @@ const CardSteps = ({ Icon, title, text, after, delay = 0.5 }: Props) => {
       transition={{ duration: 1, delay: delay }}
     >
       <Center
-        className="w-20 h-20 relative text-teal-500  bg-gray-100 shadow-xl rounded-lg cursor-pointer hover:shadow-teal-300 hover:text-white hover:bg-gradient-to-t from-teal-400 to-teal-600 ease-out hover:ease-in transition duration-300"
+        className="relative text-teal-500  bg-gray-100 shadow-xl rounded-lg cursor-pointer hover:shadow-teal-300 hover:text-white hover:bg-gradient-to-t from-teal-400 to-teal-600 ease-out hover:ease-in transition duration-300"
+        width={{ base: "60px", md: "80px" }}
+        height={{ base: "60px", md: "80px" }}
         _after={{
           content: `${after ? "url(" + arrow + ")" : '""'}`,
-          display: "block",
+          display: { base: "none", md: "block" },
           position: "absolute",
           left: "100px",
           top: "15px",
@@ -49,10 +51,13 @@ const CardSteps = ({ Icon, title, text, after, delay = 0.5 }: Props) => {
       >
         <Icon className=" w-9 h-9" />
       </Center>
-      <Heading as="h2" size="md" fontWeight={"semibold"}>
+      <Heading as="h2" size={{ base: "sm", md: "md" }} fontWeight={"semibold"}>
         {title}
       </Heading>
-      <Text className="w-4/5 text-center text-gray-600 font-medium">
+      <Text
+        fontSize={{ base: "xs", md: "sm" }}
+        className="w-4/5 text-center text-gray-600 font-medium"
+      >
         {text}
       </Text>
     </motion.div>
