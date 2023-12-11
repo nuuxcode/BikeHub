@@ -5,7 +5,7 @@ import {
   Flex,
   Heading,
   Text,
-  // useDisclosure,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Reveal } from "../../motion/reveal.component";
 import bikeImage from "../../../assets/images/bikes/bike1.jpg";
@@ -13,21 +13,22 @@ import { FaStar } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { MdPeopleOutline } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
-// import BikeDetails from "./bikeDetails.component";
+import BikeDetails from "./bikeDetails.component";
 
-type Bike = {
+export type Bike = {
   id: number;
   model: string;
   status: string;
   lock: boolean;
   location: string;
-  price_tier: string | number;
+  price_tier: number;
   park_id: number;
 };
 
 const CardBike = ({ bike }: { bike: Bike }) => {
   const [liked, setLiked] = useState(false);
   // const { onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <Flex
       width={{ base: "100%", sm: "265px" }}
@@ -94,12 +95,12 @@ const CardBike = ({ bike }: { bike: Bike }) => {
           <Text className="text-gray-500 font-medium">: 35/h</Text>
         </Flex>
       </Flex>
-      <Button colorScheme="teal" size="sm">
+      <Button colorScheme="teal" size="sm" onClick={onOpen}>
         <Reveal>
           <Text>More Detail</Text>
         </Reveal>
       </Button>
-      {/* <BikeDetails /> */}
+      <BikeDetails isOpen={isOpen} onClose={onClose} bike={bike} />
     </Flex>
   );
 };
