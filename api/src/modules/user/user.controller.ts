@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   Put,
   UseGuards,
   Param,
@@ -20,7 +21,7 @@ import { UserService } from './user.service';
 @ApiTags('users')
 @Controller('/users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @Get()
   @Roles(ROLES_ENUM.ADMIN)
@@ -47,5 +48,20 @@ export class UserController {
       where: { id: Number(id) },
       data: userData,
     });
+  }
+
+  @Delete('delete/:id')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async deleteUser(
+    @Param('id') id: string,
+    @Body('password') password: string,
+  ): Promise<{ message: string }> {
+    const deletedUser = await this.userService.deleteUser(
+      { id: Number(id) },
+      password,
+    );
+
+    return { message: 'User deleted' };
   }
 }

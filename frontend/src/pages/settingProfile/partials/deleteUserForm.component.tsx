@@ -1,33 +1,75 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
   InputRightElement,
+  Button,
+  useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import axios from "../../../apis/axios";
+import { useAuth } from "../../../hooks/useAuth";
 
-export default function DeleteUserForm({
-  className = "",
-}: {
+interface DeleteUserFormProps {
   className?: string;
-}) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef<HTMLButtonElement>(null);
+}
+
+const DeleteUserForm: React.FC<DeleteUserFormProps> = ({
+  className = "",
+}) => {
+  const { user, logout } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [errPassword, setErrPassword] = useState(false);
+  const toast = useToast({ position: "top" });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
   const [errMsg, setErrMsg] = useState("");
+
+  const handleClick = async () => {
+    setErrPassword(false);
+
+    try {
+      const response = await axios.delete(`/users/delete/${user?.id}`, { data: { password }, withCredentials: true, });
+      // Handle success response
+      console.log(response);
+      toast({
+        title: "Account deleted",
+        description: "Your account has been deleted.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      logout();
+    } catch (error: any) {
+      console.log(error);
+      let errorMessage = error?.response?.data?.message;
+      if (typeof errorMessage === "string") {
+        errorMessage = error?.response?.data?.message;
+        setErrMsg(errorMessage);
+      } else {
+        errorMessage = error?.response?.data?.message.join(", ");
+        setErrMsg(errorMessage);
+      }
+      toast({
+        title: "Error",
+        description: errorMessage || "Something went wrong.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <section className={`p-5 space-y-6 ${className}`}>
@@ -95,7 +137,7 @@ export default function DeleteUserForm({
                 <Button ref={cancelRef} onClick={onClose}>
                   Cancel
                 </Button>
-                <Button colorScheme="red" onClick={onClose} ml={3}>
+                <Button colorScheme="red" onClick={handleClick} ml={3}>
                   Delete
                 </Button>
               </AlertDialogFooter>
@@ -105,4 +147,6 @@ export default function DeleteUserForm({
       </AlertDialog>
     </section>
   );
-}
+};
+
+export default DeleteUserForm;
