@@ -1,5 +1,5 @@
 import { Prisma, User } from '@prisma/client';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUser } from './../auth/auth.dto';
@@ -57,7 +57,7 @@ export class UserService {
       );
       if (!isMatch) {
         console.log("old password doesn't match")
-        throw new UnauthorizedException("Old password doesn't match");
+        throw new BadRequestException("Old password doesn't match");
       }
       data.password = data.newPassword;
       delete data.oldPassword;
@@ -75,9 +75,30 @@ export class UserService {
     return updatedUser;
   }
 
-  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
-    return this.prisma.user.delete({
+  async deleteUser(
+    where: Prisma.UserWhereUniqueInput,
+    password: string,
+  ): Promise<User> {
+    const user = await this.prisma.user.findUnique({
       where,
     });
+    console.log("user found:", user)
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isMatch = await AuthHelpers.verify(password, user.password);
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Incorrect password');
+    }
+
+    const deleteduser = await this.prisma.user.delete({
+      where,
+    });
+    delete deleteduser.password;
+    console.log("user deleted:", deleteduser)
+    return deleteduser;
   }
+
 }
