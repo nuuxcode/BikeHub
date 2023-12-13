@@ -39,12 +39,14 @@ const BikeTierPie = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v1/bikes`,
+          `${process.env.REACT_APP_API_URL}bikes`,
           {
             withCredentials: true,
           }
         );
-
+        console.log("-response------------")
+        console.log(response)
+        console.log("-------------")
         const bikes: Bike[] = response.data;
 
         // Count bikes by price tier

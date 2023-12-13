@@ -21,7 +21,7 @@ const Checkbox = (props: {
   return (
     <input
       type="checkbox"
-      className={`defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center 
+      className={`defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center
       justify-center rounded-md border border-gray-300 text-white/0 outline-none transition duration-[0.2s]
       checked:border-none checked:text-white hover:cursor-pointer dark:border-white/10 ${
         color === "red"
@@ -39,7 +39,7 @@ const Checkbox = (props: {
           : color === "navy"
           ? "checked:border-none checked:bg-navy-500 dark:checked:bg-navy-400"
           : color === "lime"
-          ? "checked:border-none checked:bg-lime-500 dark:checked:bg-lime-400"
+          ? "checked:border-none checked:bg-teal-600 dark:checked:bg-teal-400"
           : color === "cyan"
           ? "checked:border-none checked:bg-cyan-500 dark:checked:bg-cyan-400"
           : color === "pink"
@@ -52,7 +52,7 @@ const Checkbox = (props: {
           ? "checked:border-none checked:bg-indigo-500 dark:checked:bg-indigo-400"
           : color === "gray"
           ? "checked:border-none checked:bg-gray-500 dark:checked:bg-gray-400"
-          : "checked:bg-brand-500 dark:checked:bg-brand-400"
+          : "checked:bg-teal-600 dark:checked:bg-teal-400"
       } ${extra}`}
       name="weekly"
       {...rest}

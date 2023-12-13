@@ -26,13 +26,13 @@ const NftCard = (props: {
           />
           <button
             onClick={() => setHeart(!heart)}
-            className="absolute right-3 top-3 flex items-center justify-center rounded-md bg-white p-2 text-brand-500 hover:cursor-pointer"
+            className="absolute right-3 top-3 flex items-center justify-center rounded-md bg-white p-2 text-teal-600 hover:cursor-pointer"
           >
             <div className="flex h-full w-full items-center justify-center rounded-md text-xl hover:bg-gray-50 dark:text-navy-900">
               {heart ? (
                 <IoHeartOutline />
               ) : (
-                <IoHeart className="text-brand-500" />
+                <IoHeart className="text-teal-600" />
               )}
             </div>
           </button>
@@ -70,11 +70,11 @@ const NftCard = (props: {
 
         <div className="flex items-center justify-between md:flex-col md:items-start lg:flex-row lg:justify-between xl:flex-col 2xl:items-start 3xl:flex-row 3xl:items-center 3xl:justify-between">
           <div className="flex">
-            <p className="mb-2 text-sm font-bold text-brand-500 dark:text-white">
+            <p className="mb-2 text-sm font-bold text-teal-600 dark:text-white">
               Current Bid: {price} <span>ETH</span>
             </p>
           </div>
-          <button className="linear rounded-md bg-brand-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-brand-800 active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:opacity-90">
+          <button className="linear rounded-md bg-teal-900 px-4 py-2 text-base font-medium text-white transition duration-200 hover:bg-teal-800 active:bg-teal-700 dark:bg-teal-400 dark:hover:bg-teal-300 dark:active:opacity-90">
             Place Bid
           </button>
         </div>

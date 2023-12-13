@@ -43,7 +43,7 @@ const Radio = (props: {
            : color === "navy"
            ? "checked:!border-navy-500 checked:before:!bg-navy-500 dark:checked:!border-navy-400 dark:checked:before:!bg-navy-400"
            : color === "lime"
-           ? "checked:!border-lime-500 checked:before:!bg-lime-500 dark:checked:!border-lime-400 dark:checked:before:!bg-lime-400"
+           ? "checked:!border-teal-600 checked:before:!bg-teal-600 dark:checked:!border-teal-400 dark:checked:before:!bg-teal-400"
            : color === "cyan"
            ? "checked:!border-cyan-500 checked:before:!bg-cyan-500 dark:checked:!border-cyan-400 dark:checked:before:!bg-cyan-400"
            : color === "pink"
@@ -56,7 +56,7 @@ const Radio = (props: {
            ? "checked:!border-indigo-500 checked:before:!bg-indigo-500 dark:checked:!border-indigo-400 dark:checked:before:!bg-indigo-400"
            : color === "gray"
            ? "checked:!border-gray-500 checked:before:!bg-gray-500 dark:checked:!border-gray-400 dark:checked:before:!bg-gray-400"
-           : "checked:!border-brand-500 checked:before:!bg-brand-500 dark:checked:!border-brand-400 dark:checked:before:!bg-brand-400"
+           : "checked:!border-teal-600 checked:before:!bg-teal-600 dark:checked:!border-teal-400 dark:checked:before:!bg-teal-400"
        } `}
       {...rest}
     />

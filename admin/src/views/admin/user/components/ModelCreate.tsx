@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Switch from "components/switch";
 import ReactDOM from "react-dom";
-
+import axios from "axios";
 const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
   module,
   children,
@@ -11,28 +11,35 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
-    const getFields = async (module: string) => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/${module}s${
-          module === "user" ? "" : "/" + module
-        }/2`,
-        {
-          credentials: "include",
+    const getFields = async (module: string): Promise<string[]> => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}${module}s${
+            module === "user" ? "" : "/" + module
+          }/2`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.status !== 200) {
+          throw new Error("Network response was not ok");
         }
-      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const result: any = response.data;
+
+        let fields = Object.keys(result);
+
+        const excludedFields = ["created_at", "updated_at", "id"];
+        fields = fields.filter((field) => !excludedFields.includes(field));
+
+        return fields;
+      } catch (error) {
+        console.error(error);
+        return [];
       }
-
-      const result = await response.json();
-      let fields = Object.keys(result);
-
-      const excludedFields = ["created_at", "updated_at", "id"];
-      fields = fields.filter((field) => !excludedFields.includes(field));
-
-      return fields;
     };
+
     const fetchFields = async () => {
       const fields = await getFields(module);
       setFields(fields);
@@ -72,7 +79,7 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
 
     const createItem = async (module: string, data: { [key: string]: any }) => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/${module}s/${module}`,
+        `${process.env.REACT_APP_API_URL}${module}s/${module}`,
         {
           method: "POST",
           credentials: "include",
@@ -82,13 +89,16 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
           body: JSON.stringify(data),
         }
       );
-
+      console.log("-response------------")
+      console.log(response)
+      console.log("-------------")
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const result = await response.json();
-
+      console.log("-resulte------------")
+      console.log(result)
+      console.log("-------------")
       return result;
     };
     await createItem(module, data);

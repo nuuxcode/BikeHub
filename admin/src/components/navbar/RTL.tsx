@@ -88,7 +88,7 @@ const Navbar = (props: {
               </div>
 
               <button className="flex w-full items-center">
-                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
+                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-teal-600 py-4 text-2xl text-white">
                   <BsArrowBarUp />
                 </div>
                 <div className="flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm ms-2">
@@ -102,7 +102,7 @@ const Navbar = (props: {
               </button>
 
               <button className="flex w-full items-center">
-                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
+                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-teal-600 py-4 text-2xl text-white">
                   <BsArrowBarUp />
                 </div>
                 <div className="flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm ms-2">
@@ -138,7 +138,7 @@ const Navbar = (props: {
               <a
                 target="blank"
                 href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200"
+                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-teal-600 py-[11px] font-bold text-white transition duration-200 hover:bg-teal-600 hover:text-white active:bg-teal-700 dark:bg-teal-400 dark:hover:bg-teal-300 dark:active:bg-teal-200"
               >
                 Buy Horizon UI PRO
               </a>

@@ -26,10 +26,16 @@ const Tables = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/parks`,
+        `${process.env.REACT_APP_API_URL}parks`,
         { credentials: "include" }
       );
+      console.log("-response------------")
+      console.log(response)
+      console.log("-------------")
       const data = await response.json();
+      console.log("-response------------")
+      console.log(data)
+      console.log("-------------")
       setTableData(data);
     };
 

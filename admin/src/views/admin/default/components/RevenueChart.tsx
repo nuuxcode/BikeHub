@@ -23,12 +23,14 @@ const RevenueChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/v1/rentals`,
+          `${process.env.REACT_APP_API_URL}rentals`,
           {
             withCredentials: true,
           }
         );
-
+        console.log("-response------------")
+        console.log(response)
+        console.log("-------------")
         const rentals: Rental[] = response.data;
 
         // Filter rentals from the last 30 days
@@ -72,7 +74,7 @@ const RevenueChart = () => {
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
           Revenue Chart
         </h2>
-        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
+        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-teal-600 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
           <MdBarChart className="h-6 w-6" />
         </button>
       </div>

@@ -12,7 +12,7 @@ const DrawerEdit: React.FC<EditDrawerProps> = ({ isOpen, onClose, data }) => {
   useEffect(() => {
     if (data) {
       fetch(
-        `${process.env.REACT_APP_API_URL}/v1/${data.module}s${
+        `${process.env.REACT_APP_API_URL}${data.module}s${
           data.module === "user" ? "" : "/" + data.module
         }/${data.id || 1}`,
         {
@@ -31,7 +31,7 @@ const DrawerEdit: React.FC<EditDrawerProps> = ({ isOpen, onClose, data }) => {
 
   const handleSave = () => {
     if (formData) {
-      const url = `${process.env.REACT_APP_API_URL}/v1/${data.module}s/${data.module}/${data.id}`;
+      const url = `${process.env.REACT_APP_API_URL}${data.module}s/${data.module}/${data.id}`;
       const method = "PUT";
 
       fetch(url, {

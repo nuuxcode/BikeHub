@@ -108,14 +108,18 @@ export default function HistoryTable() {
     const fetchData = async () => {
       try {
         const [rentalsResponse, usersResponse] = await Promise.all([
-          axios.get(`${process.env.REACT_APP_API_URL}/v1/rentals`, {
+          axios.get(`${process.env.REACT_APP_API_URL}rentals`, {
             withCredentials: true,
           }),
-          axios.get(`${process.env.REACT_APP_API_URL}/v1/users`, {
+          axios.get(`${process.env.REACT_APP_API_URL}users`, {
             withCredentials: true,
           }),
         ]);
-
+        console.log("-response------------")
+        console.log(usersResponse)
+        console.log("-response------------")
+        console.log(rentalsResponse)
+        console.log("-------------")
         const rentals: Rental[] = rentalsResponse.data;
         const users: User[] = usersResponse.data;
 
@@ -166,7 +170,7 @@ export default function HistoryTable() {
         <div className="text-xl font-bold text-navy-700 dark:text-white">
           Rents History
         </div>
-        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
+        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-teal-600 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
           <MdBarChart className="h-6 w-6" />
         </button>
       </div>

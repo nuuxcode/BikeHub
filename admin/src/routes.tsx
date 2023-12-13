@@ -57,7 +57,7 @@ const routes = [
     component: <ManageRentals />,
   },
   {
-    name: "Sign In",
+    name: "Log Out",
     layout: "/auth",
     path: "sign-in",
     icon: <MdLock className="h-6 w-6" />,

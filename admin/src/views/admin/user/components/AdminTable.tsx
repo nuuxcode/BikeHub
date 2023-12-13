@@ -34,18 +34,18 @@ const AdminTable: React.FC<Props> = ({
         Cell:
           header.id === "created_at"
             ? (cellInfo: { value: string }) => {
-                const date = new Date(cellInfo.value);
-                return (
-                  <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    {date.toLocaleDateString()}
-                  </p>
-                );
-              }
-            : (cellInfo: { value: string }) => (
+              const date = new Date(cellInfo.value);
+              return (
                 <p className="text-sm font-bold text-navy-700 dark:text-white">
-                  {cellInfo.value}
+                  {date.toLocaleDateString()}
                 </p>
-              ),
+              );
+            }
+            : (cellInfo: { value: string }) => (
+              <p className="text-sm font-bold text-navy-700 dark:text-white">
+                {cellInfo.value}
+              </p>
+            ),
       })),
     [tableHeader]
   );
@@ -85,12 +85,15 @@ const AdminTable: React.FC<Props> = ({
     if (confirmDelete) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/v1/${moduleName}s/${moduleName}/${row.id}`,
+          `${process.env.REACT_APP_API_URL}${moduleName}s/${moduleName}/${row.id}`,
           {
             method: "DELETE",
             credentials: "include",
           }
         );
+        console.log("-response------------")
+        console.log(response)
+        console.log("-------------")
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -168,7 +171,6 @@ const AdminTable: React.FC<Props> = ({
                     <button
                       onClick={() => handleDelete(row.original)}
                       className="flex items-center gap-1 rounded bg-red-500 px-2 py-1 text-white hover:bg-red-400 disabled:cursor-not-allowed"
-                      disabled={moduleName === "user"}
                     >
                       <AiFillDelete />
                       Delete

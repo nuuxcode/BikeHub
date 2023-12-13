@@ -25,16 +25,22 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const urls = ["/v1/users", "/v1/parks", "/v1/bikes", "/v1/rentals"];
+        const urls = ["users", "parks", "bikes", "rentals"];
 
         const allRequests = urls.map((url) =>
           fetch(process.env.REACT_APP_API_URL + url, { credentials: "include" })
         );
+
         const responses = await Promise.all(allRequests);
+        console.log("-response------------")
+        console.log(responses)
+        console.log("-------------")
         const data = await Promise.all(
           responses.map((response) => response.json())
         );
-
+        console.log("-response------------")
+        console.log(data)
+        console.log("-------------")
         setStats({
           users: data[0],
           parks: data[1],

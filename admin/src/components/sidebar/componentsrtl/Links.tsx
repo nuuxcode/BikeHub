@@ -32,7 +32,7 @@ export function SidebarLinks(props: { routes: RoutesType[] }) {
                 <span
                   className={`${
                     activeRoute(route.path) === true
-                      ? "font-bold text-brand-500 dark:text-white"
+                      ? "font-bold text-teal-600 dark:text-white"
                       : "font-medium text-gray-600"
                   }`}
                 >
@@ -49,7 +49,7 @@ export function SidebarLinks(props: { routes: RoutesType[] }) {
                 </p>
               </li>
               {activeRoute(route.path) ? (
-                <div className="absolute top-px h-9 w-1 rounded-lg bg-brand-500 end-0 dark:bg-brand-400" />
+                <div className="absolute top-px h-9 w-1 rounded-lg bg-teal-600 end-0 dark:bg-teal-400" />
               ) : null}
             </div>
           </Link>

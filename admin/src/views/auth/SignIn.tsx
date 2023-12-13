@@ -14,7 +14,7 @@ export default function SignIn() {
   const handleLogin = async () => {
     console.log(process.env.REACT_APP_API_URL);
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/v1/auth/login`,
+      `${process.env.REACT_APP_API_URL}auth/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export default function SignIn() {
           variant="auth"
           extra="mb-3"
           label="Email*"
-          placeholder="mail@simmmple.com"
+          placeholder="mail@gmail.com"
           id="email"
           type="text"
           value={email}
@@ -80,21 +80,21 @@ export default function SignIn() {
         {error && <div className="text-center text-red-500">{error}</div>}
         <button
           onClick={handleLogin}
-          className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+          className="linear mt-2 w-full rounded-xl bg-teal-600 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-teal-600 active:bg-teal-700 dark:bg-teal-400 dark:text-white dark:hover:bg-teal-300 dark:active:bg-teal-200"
         >
           Sign In
         </button>
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <span className=" text-sm font-medium text-navy-700 dark:text-gray-600">
             Not registered yet?
           </span>
           <a
             href=" "
-            className="ml-1 text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-white"
+            className="ml-1 text-sm font-medium text-teal-600 hover:text-teal-600 dark:text-white"
           >
             Create an account
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

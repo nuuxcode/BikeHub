@@ -34,13 +34,17 @@ const Tables = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/bikes`,
+        `${process.env.REACT_APP_API_URL}bikes`,
         { credentials: "include" }
       );
+      console.log("-response------------")
+      console.log(response)
       const data = await response.json();
+      console.log("-data------------")
+      console.log(data)
+      console.log("-------------")
       setTableData(data);
     };
-
     fetchData();
   }, []);
 
