@@ -22,11 +22,11 @@ interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
-  birthdate: any;
+  birthdate: string;
   phone: string;
 }
 
-const registerForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -94,7 +94,7 @@ const registerForm: React.FC = () => {
     validation();
     try {
       // Make a POST request to your login endpoint
-      data.birthdate = new Date(data.birthdate)
+      data.birthdate = new Date(data.birthdate);
       const response = await axios.post("auth/register", JSON.stringify(data), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -108,12 +108,11 @@ const registerForm: React.FC = () => {
     } catch (error: any) {
       console.log(error);
       let errorMessage = error?.response?.data?.message;
-      if (typeof errorMessage === 'string')
+      if (typeof errorMessage === "string")
         errorMessage = error?.response?.data?.message;
-      else
-        errorMessage = error?.response?.data?.message.join(", ");
+      else errorMessage = error?.response?.data?.message.join(", ");
 
-      toast.error(errorMessage)
+      toast.error(errorMessage);
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {
@@ -276,4 +275,4 @@ const registerForm: React.FC = () => {
   );
 };
 
-export default registerForm;
+export default RegisterForm;

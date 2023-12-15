@@ -169,11 +169,27 @@ const Header: React.FC = () => {
                   px="14px"
                 >
                   <Link
-                    to="/setting-profile"
+                    to="/setting-profile/information"
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
                       Setting Profile
+                    </Text>
+                  </Link>
+                </MenuItem>
+                <MenuItem
+                  justifyContent={"center"}
+                  _hover={{ bg: "none" }}
+                  _focus={{ bg: "none" }}
+                  color="gray.700"
+                  px="14px"
+                >
+                  <Link
+                    to="/profile"
+                    className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
+                  >
+                    <Text fontWeight={500} fontSize={16}>
+                      Profile
                     </Text>
                   </Link>
                 </MenuItem>
