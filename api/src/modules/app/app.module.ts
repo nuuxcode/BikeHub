@@ -7,6 +7,7 @@ import { BikeModule } from '../bike/bike.module';
 import { ParkModule } from '../park/park.module';
 import { RentalModule } from '../rental/rental.module';
 import { PrismaModule } from '../prisma/prisma.module';
+import { PaypalModule } from '../payment/paypal.module';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 
 import { AppService } from './app.service';
@@ -21,6 +22,7 @@ import { AppController } from './app.controller';
     BikeModule,
     RentalModule,
     ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
+    PaypalModule
   ],
   controllers: [AppController],
   providers: [AppService],

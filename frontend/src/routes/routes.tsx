@@ -10,6 +10,7 @@ import UnAuthorized from "../components/protectedRoutes/UnAuthorized";
 import UpdateInfoPers from "../pages/settingProfile/partials/updateInfoForm.component";
 import UpdatePassword from "../pages/settingProfile/partials/updatePasswordForm.component";
 import DeleteUserForm from "../pages/settingProfile/partials/deleteUserForm.component";
+import PaymentPage from "../pages/PaymentPage"
 
 const Routes: React.FC = () => {
   return (
@@ -43,6 +44,7 @@ const Routes: React.FC = () => {
           </UnAuthorized>
         }
       />
+      <Route path="/paypal" element={<PaymentPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </ReactRouterRoutes>
   );
