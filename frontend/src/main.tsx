@@ -13,9 +13,14 @@ const breakpoints = {
   xl: "1200px",
   "2xl": "1536px",
 };
+const fonts = {
+  body: "'Open Sans', sans-serif",
+  heading: "'Open Sans', sans-serif",
+  mono: "Menlo, monospace",
+};
 
 // 3. Extend the theme
-const theme = extendTheme({ breakpoints });
+const theme = extendTheme({ breakpoints, fonts });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
