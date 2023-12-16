@@ -25,7 +25,7 @@ const HowToRent: React.FC = () => {
       title: "Choose A Bike",
       text: "Select the bike you like.",
       after: true,
-      delay: 2,
+      delay: 1.5,
       id: 2,
     },
     {
@@ -33,7 +33,7 @@ const HowToRent: React.FC = () => {
       title: "Enjoy Your Ride",
       text: "Explore new sights and places with comfort.",
       after: true,
-      delay: 3,
+      delay: 2,
       id: 3,
     },
     {
@@ -41,7 +41,7 @@ const HowToRent: React.FC = () => {
       title: "Return The Bike",
       text: "Leave the bike at one of our parks.",
       after: false,
-      delay: 4,
+      delay: 2.5,
       id: 4,
     },
   ];
