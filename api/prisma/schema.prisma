@@ -13,10 +13,11 @@ model Bike {
   status     String
   lock       Boolean
   location   String
-  price_tier String
+  price      Float
   park_id    Int
   Park       Park     @relation(fields: [park_id], references: [id])
   Rental     Rental[]
+  image      String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
@@ -28,6 +29,7 @@ model Park {
   Bike       Bike[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  image      String?
 }
 
 model User {
@@ -41,18 +43,22 @@ model User {
   updated_at DateTime @updatedAt
   birthdate  DateTime
   phone      String?
+  image      String?
 }
 
 model Rental {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   user_id    Int
   bike_id    Int
   start_time DateTime
   end_time   DateTime?
   status     String
   price      Float
-  User       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Bike       Bike     @relation(fields: [bike_id], references: [id])
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  User       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Bike       Bike      @relation(fields: [bike_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  qrcode     String?
+  payment_id String?
+  order_id   String?
 }

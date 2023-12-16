@@ -106,7 +106,7 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
             <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
               <Text className="text-gray-800 font-medium">Phone Number:</Text>
               <Text className="text-gray-500 font-medium">
-                {/* ${bike.price_tier}/hour */}
+                {/* ${bike.price}/hour */}
                 6-666-665-666
               </Text>
             </Flex>
@@ -144,7 +144,7 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
             <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
               <Text className="text-gray-800 font-medium">Return Time:</Text>
               <Text className="text-gray-500 font-medium">
-                {/* ${bike.price_tier}/hour */}
+                {/* ${bike.price}/hour */}
               </Text>
             </Flex>
           </Box>

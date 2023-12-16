@@ -48,6 +48,6 @@ function createRandomRental(
     start_time: faker.date.past(),
     end_time: faker.date.future(),
     status: faker.helpers.arrayElement(['ongoing', 'completed', 'lost']),
-    price: faker.number.int({ min: 10, max: 100 }),
+    price: faker.number.int({ min: 5, max: 500 }),
   };
 }

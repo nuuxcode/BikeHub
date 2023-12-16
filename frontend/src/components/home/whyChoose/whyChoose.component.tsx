@@ -30,7 +30,7 @@ const CardChoose = ({ id, title, description, Icon }: CardChooseProps) => {
         transform: "scale(1.05)",
         transition: "all 0.3s ease-in-out",
       }}
-      //   _groupHover={{ color: "white" }}
+    //   _groupHover={{ color: "white" }}
     >
       <Box
         // width={{ base: "50px", md: "80px" }}
@@ -70,31 +70,31 @@ const WhyChoose = () => {
   const data = [
     {
       id: 1,
-      title: "Save Time",
+      title: "Community Vibes",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate.",
+        "When you choose BikeHub, you join a community of like-minded cyclists. Share your favorite routes, discover new ones, and be part of a movement that celebrates the joy of biking.",
       icon: IoTimeOutline,
     },
     {
       id: 2,
-      title: "Affordable Price",
+      title: "Pay as You Ride",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate.",
+        "No need to commit to long-term contracts. With BikeHub, you pay for the ride when you need it. Tailor your biking experience to your schedule and your wallet.",
       icon: CiWallet,
     },
     {
       id: 3,
-      title: "Available Riders",
+      title: "Easy Rentals",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate.",
+        "With the BikeHub app, renting a bike is as easy as a few taps. Find your ride, unlock, and roll out. We've streamlined the process so you can focus on the joy of riding.",
       icon: MdDirectionsBike,
     },
   ];
   return (
     <Box
       id="chooseUs"
-      className="relative flex flex-col  justify-center items-center gap-5 my-5 py-5 "
-      //   height="90vh"
+      className="relative flex flex-col  justify-center items-center gap-12 my-5 py-5 "
+    //   height="90vh"
     >
       <Box
         className="absolute w-2/5 h-full top-1 right-12 bg-teal-50 -z-10"
@@ -103,15 +103,28 @@ const WhyChoose = () => {
       <Reveal>
         <Heading
           as="h2"
-          size={{ base: "sm", md: "md" }}
+          size={{ base: "sm", md: "xl" }}
           className=" mb-3 capitalize"
+          mt={10}
         >
-          why choose BikeHub
+          why choose BikeHub 🚴‍♂️✨
         </Heading>
       </Reveal>
       <Reveal>
-        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5">
-          proper busniess solution for your developing business
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5" maxWidth="600px" mb={2}>
+          🚲 Dive into urban adventures on stylish, eco-friendly bikes.
+        </Text>
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5" maxWidth="600px" mb={2}>
+          ⚙️ Easy Rentals: Swift and smart with our user-friendly app.
+        </Text>
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5" maxWidth="600px" mb={2}>
+          🌍 Eco-Friendly: Ride green, reduce your carbon footprint.
+        </Text>
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5" maxWidth="600px" mb={2}>
+          🤝 Community Vibes: Join a cyclist family!
+        </Text>
+        <Text className="text-gray-500 sm:text-base text-sm font-medium mb-5" maxWidth="600px">
+          Choose BikeHub – Where Every Ride is an Adventure!🚴‍♀️
         </Text>
       </Reveal>
       <Box className=" w-full flex md:flex-row flex-col justify-evenly gap-5 ">
@@ -120,6 +133,7 @@ const WhyChoose = () => {
             src={BikeImage}
             mx={"auto"}
             width={{ base: "80%", md: "100%" }}
+            mt={10}
           />
         </Box>
         <Box className="flex flex-1 flex-col gap-4 md:justify-start items-center">

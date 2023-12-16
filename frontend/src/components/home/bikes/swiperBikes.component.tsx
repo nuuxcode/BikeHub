@@ -48,7 +48,7 @@ const SwiperBikes = () => {
         <Reveal>
           <Heading
             as="h3"
-            size={{ base: "sm", md: "md" }}
+            size={{ base: "sm", md: "xl" }}
             className="capitalize"
           >
             What we offer

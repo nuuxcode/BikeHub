@@ -23,7 +23,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       const characters = '#@ABCDEFGHIJKLMNOPQRSTUVWXYZ#@abcdefghijklmnopqrstuvwxyz#@0123456789#@';
       return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
     };
-    const data = { name: profile.displayName, email: profile.emails[0].value, password: generateRandomString(10), birthdate: new Date("1111-11-11"), phone: "" }
+    const data = { name: profile.displayName, email: profile.emails[0].value, password: generateRandomString(10), birthdate: new Date("1111-11-11"), phone: "", image: profile.photos[0].value }
     console.log(data)
     const user = await this.authService.validateUser(data);
     return user || null;

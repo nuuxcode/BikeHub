@@ -21,7 +21,7 @@ export type Bike = {
   status: string;
   lock: boolean;
   location: string;
-  price_tier: number;
+  price: number;
   park_id: number;
 };
 
@@ -67,7 +67,7 @@ const CardBike = ({ bike }: { bike: Bike }) => {
       <Reveal width="full" delay={0.25}>
         <Flex justifyContent={"space-between"} mb={3}>
           <Heading as="h3" size="md" fontWeight={500} color={"gray.700"}>
-            ${bike.price_tier}/hour
+            ${bike.price}/hour
           </Heading>
           <Flex
             rounded={"md"}

@@ -33,8 +33,8 @@ async function bootstrap() {
   // Swagger Api
   if (swaggerConfig.enabled) {
     const options = new DocumentBuilder()
-      .setTitle(swaggerConfig.title || 'Nestjs')
-      .setDescription(swaggerConfig.description || 'The nestjs API description')
+      .setTitle(swaggerConfig.title || 'BikeHub')
+      .setDescription(swaggerConfig.description || 'BikeHub API')
       .setVersion(swaggerConfig.version || '1.0')
       .addBearerAuth()
       .build();
