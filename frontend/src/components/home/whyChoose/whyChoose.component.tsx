@@ -103,7 +103,7 @@ const WhyChoose = () => {
       <Reveal>
         <Heading
           as="h2"
-          size={{ base: "sm", md: "md" }}
+          size={{ base: "sm", md: "xl" }}
           className=" mb-3 capitalize"
           mt={10}
         >
