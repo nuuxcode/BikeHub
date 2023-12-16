@@ -15,7 +15,7 @@ const HowToRent: React.FC = () => {
     {
       icon: FaMagnifyingGlassLocation,
       title: "Location",
-      text: "Pick the location and the needed rent date.",
+      text: "Pick the location and the date.",
       after: true,
       delay: 1,
       id: 1,
@@ -23,7 +23,7 @@ const HowToRent: React.FC = () => {
     {
       icon: MdOutlineElectricBike,
       title: "Choose A Bike",
-      text: "Select a bicycle using our catalogues.",
+      text: "Select the bike you like.",
       after: true,
       delay: 2,
       id: 2,
@@ -39,7 +39,7 @@ const HowToRent: React.FC = () => {
     {
       icon: FaMapLocationDot,
       title: "Return The Bike",
-      text: "Leave the bike at one of our offices.",
+      text: "Leave the bike at one of our parks.",
       after: false,
       delay: 4,
       id: 4,
@@ -53,13 +53,13 @@ const HowToRent: React.FC = () => {
       flexDirection={"column"}
       gap={6}
       py={"30px"}
-      minHeight={"85vh"}
+      minHeight={"80vh"}
     >
       <Center flexDirection={"column"} gap={4}>
         <Reveal>
           <Heading
             as="h3"
-            size={{ base: "sm", md: "md" }}
+            size={{ base: "sm", md: "2xl" }}
             className="capitalize text-center"
           >
             How to rent
@@ -68,11 +68,11 @@ const HowToRent: React.FC = () => {
         <Reveal>
           <Heading
             as="h1"
-            size={{ base: "xl", md: "3xl" }}
+            size={{ base: "xl", md: "2xl" }}
             className="py-4 text-center"
             color={"orange.500"}
           >
-            Simple and easy steps to rent
+            Simple & Easy Steps
           </Heading>
         </Reveal>
         <Reveal>
@@ -80,8 +80,7 @@ const HowToRent: React.FC = () => {
             className="font-medium text-gray-500 text-center"
             fontSize={{ base: "xs", md: "md" }}
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam,
-            eos maxime?
+            Choose Location, Bike & Enjoy Your Ride
           </Text>
         </Reveal>
         <Reveal>
@@ -89,11 +88,11 @@ const HowToRent: React.FC = () => {
             className="text-md font-medium text-gray-500 text-center"
             fontSize={{ base: "xs", md: "md" }}
           >
-            Ab id ullam quis consequuntur nesciunt blanditiis.
+            When you finish, return the bike to one of our parking stations.
           </Text>
         </Reveal>
       </Center>
-      <Flex flexDirection={{ base: "column", md: "row" }} gap={4}>
+      <Flex flexDirection={{ base: "column", md: "row" }} gap={4} justifyContent="space-between">
         {dataSteps.map(({ icon, title, text, id, after, delay }) => (
           <CardSteps
             key={id}
