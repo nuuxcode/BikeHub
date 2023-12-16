@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class BikeService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findOne(
     bikeWhereUniqueInput: Prisma.BikeWhereUniqueInput,
@@ -13,7 +13,18 @@ export class BikeService {
     return this.prisma.bike.findUnique({
       where: bikeWhereUniqueInput,
       include: {
-        Park: true, // Include related park data
+        Park: true,
+      },
+    });
+  }
+
+  async findByStatus(status: string): Promise<Bike[]> {
+    return this.prisma.bike.findMany({
+      where: {
+        status: status,
+      },
+      include: {
+        Park: true,
       },
     });
   }
@@ -33,7 +44,7 @@ export class BikeService {
       where,
       orderBy,
       include: {
-        Park: true, // Include related park data
+        Park: true,
       },
     });
   }

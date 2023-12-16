@@ -21,11 +21,16 @@ import { BikeService } from './bike.service';
 @ApiTags('bikes')
 @Controller('/bikes')
 export class BikeController {
-  constructor(private bikeService: BikeService) {}
+  constructor(private bikeService: BikeService) { }
 
   @Get('/')
   async getAllBikes(): Promise<BikeModel[]> {
     return this.bikeService.findAll({});
+  }
+
+  @Get('status/:status')
+  async getBikesByStatus(@Param('status') status: string): Promise<BikeModel[]> {
+    return this.bikeService.findByStatus(status);
   }
 
   @Get('bike/:id')
