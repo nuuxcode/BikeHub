@@ -34,5 +34,6 @@ function createRandomPark(): Partial<Park> | null {
   return {
     name,
     location,
+    image: faker.image.city(),
   };
 }

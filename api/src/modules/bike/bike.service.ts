@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Bike, Prisma } from '@prisma/client';
+import { Park, Bike, Prisma } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -12,6 +12,9 @@ export class BikeService {
   ): Promise<Bike | null> {
     return this.prisma.bike.findUnique({
       where: bikeWhereUniqueInput,
+      include: {
+        Park: true, // Include related park data
+      },
     });
   }
 
@@ -29,6 +32,9 @@ export class BikeService {
       cursor,
       where,
       orderBy,
+      include: {
+        Park: true, // Include related park data
+      },
     });
   }
 

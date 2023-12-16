@@ -118,7 +118,7 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
                       Price from:
                     </Text>
                     <Text className="text-gray-500 font-medium">
-                      ${bike.price_tier}/hour
+                      ${bike.price}/hour
                     </Text>
                   </Flex>
                 </Box>

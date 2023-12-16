@@ -48,7 +48,7 @@ const BookingPage = () => {
   const [bike, setBike] = useState({
     id: 0,
     model: "",
-    price_tier: 0.0,
+    price: 0.0,
     status: "",
     location: "",
   });
@@ -109,7 +109,7 @@ const BookingPage = () => {
       setTotalPrice(0);
       return 0;
     }
-    setTotalPrice(hoursDifference * bike.price_tier);
+    setTotalPrice(hoursDifference * bike.price);
     return hoursDifference;
   }
 
@@ -300,7 +300,7 @@ const BookingPage = () => {
                   <AiOutlineDollarCircle size={26} color="orange" />
                   <Text className="text-gray-800 font-medium">Price from:</Text>
                   <Text className="text-gray-500 font-medium">
-                    ${bike.price_tier}/hour
+                    ${bike.price}/hour
                   </Text>
                 </Flex>
               </Box>

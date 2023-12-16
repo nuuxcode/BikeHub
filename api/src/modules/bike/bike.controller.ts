@@ -43,17 +43,19 @@ export class BikeController {
       status?: string;
       lock: boolean;
       location: string;
-      price_tier: string;
+      price: number;
       park_id: number;
+      image?: string;
     },
   ): Promise<BikeModel> {
-    const { model, status, lock, location, price_tier, park_id } = bikeData;
+    const { model, status, lock, location, price, park_id, image } = bikeData;
     return this.bikeService.create({
       model,
       status,
       lock,
       location,
-      price_tier,
+      price,
+      image,
       Park: {
         connect: { id: park_id },
       },

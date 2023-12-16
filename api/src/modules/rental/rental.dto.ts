@@ -24,6 +24,15 @@ export class CreateRentalDto {
   @IsNumber()
   @IsNotEmpty()
   price: number;
+
+  @IsString()
+  qrcode?: string;
+
+  @IsString()
+  payment_id?: string;
+
+  @IsString()
+  order_id?: string;
 }
 
 export class UpdateRentalDto {
@@ -50,4 +59,13 @@ export class UpdateRentalDto {
   @IsNumber()
   @IsNotEmpty()
   price?: number;
+
+  @IsString()
+  qrcode?: string;
+
+  @IsString()
+  payment_id?: string;
+
+  @IsString()
+  order_id?: string;
 }
