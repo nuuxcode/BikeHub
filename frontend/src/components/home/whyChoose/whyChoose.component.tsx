@@ -97,7 +97,7 @@ const WhyChoose = () => {
     //   height="90vh"
     >
       <Box
-        className="absolute w-2/5 h-full top-1 right-12 bg-teal-50 -z-10"
+        className="absolute w-2/5 h-full top-1 right-12 bg-teal-100 -z-10 opacity-25"
         clipPath={"polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%)"}
       />
       <Reveal>
@@ -105,7 +105,7 @@ const WhyChoose = () => {
           as="h2"
           size={{ base: "sm", md: "xl" }}
           className=" mb-3 capitalize"
-          mt={10}
+          mt={100}
         >
           why choose BikeHub 🚴‍♂️✨
         </Heading>

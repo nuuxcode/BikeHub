@@ -10,7 +10,7 @@ import {
   IoMdNotificationsOutline,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
-import avatar from "assets/img/avatars/avatar4.png";
+import avatar from "assets/img/avatars/avatar3.png";
 import useAuth from "utils/auth/AuthHook";
 
 const Navbar = (props: {
@@ -20,8 +20,8 @@ const Navbar = (props: {
 }) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
-  const { logOut } = useAuth();
-
+  const { logOut, user } = useAuth();
+  console.log("user", user)
   const handleLogout = () => {
     logOut();
   };
@@ -190,7 +190,7 @@ const Navbar = (props: {
           button={
             <img
               className="h-10 w-10 rounded-full"
-              src={avatar}
+              src={user?.image}
               alt="Elon Musk"
             />
           }
@@ -199,7 +199,7 @@ const Navbar = (props: {
               <div className="ml-4 mt-3">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey,
+                    👋 Hey, {user?.name}
                   </p>{" "}
                 </div>
               </div>

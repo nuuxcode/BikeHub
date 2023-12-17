@@ -94,7 +94,7 @@ const RegisterForm: React.FC = () => {
     validation();
     try {
       // Make a POST request to your login endpoint
-      data.birthdate = new Date(data.birthdate);
+      data.birthdate = new Date(data.birthdate).toISOString();
       const response = await axios.post("auth/register", JSON.stringify(data), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -261,7 +261,7 @@ const RegisterForm: React.FC = () => {
         >
           Sign up
         </Button>
-        <p className="text-sm mt-2 font-light text-gray-500 dark:text-gray-400">
+        <p className="text-sm mt-2 font-light text-gray-500 dark:text-gray-400 mb-5">
           Already have an account?{" "}
           <Link
             to="/login"

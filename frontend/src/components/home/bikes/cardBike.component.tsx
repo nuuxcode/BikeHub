@@ -23,6 +23,10 @@ export type Bike = {
   location: string;
   price: number;
   park_id: number;
+  image: string;
+  Park: {
+    name: string;
+  };
 };
 
 const CardBike = ({ bike }: { bike: Bike }) => {
@@ -41,29 +45,33 @@ const CardBike = ({ bike }: { bike: Bike }) => {
       <Box
         className="w-full h-40 rounded-lg"
         position={"relative"}
-        bgImage={bikeImage}
+        bgImage={bike.image ? bike.image : bikeImage}
         bgPosition={"center"}
         bgRepeat={"no-repeat"}
         bgSize={"cover"}
       >
         <FaHeart
           onClick={() => setLiked(!liked)}
-          className={`text-gray-600 absolute top-2 right-2 w-5 h-5 cursor-pointer ${
-            liked &&
+          className={`text-gray-600 absolute top-2 right-2 w-5 h-5 cursor-pointer ${liked &&
             "text-red-500 berder-red-600 text-opacity-100 drop-shadow-lg"
-          }`}
+            }`}
         />
       </Box>
       <Reveal>
-        <Heading as="h1" size="md" fontWeight={500} className="capitalize">
+        <Heading mt={3} as="h1" size="md" fontWeight={500} className="capitalize">
           {bike.model}
         </Heading>
       </Reveal>
       <Reveal>
-        <Text fontWeight={500} className="text-xs text-gray-500 font-medium ">
-          Best choice for women
+        <Text mb={2} fontWeight={500} className="text-xs text-gray-500 font-medium ">
+          {bike?.Park?.name}
         </Text>
       </Reveal>
+      {/* <Reveal>
+        <Text fontWeight={500} className="text-xs text-gray-500 font-medium ">
+          {bike.id % 2 === 0 ? 'Best choice for men' : 'Best choice for women'}
+        </Text>
+      </Reveal> */}
       <Reveal width="full" delay={0.25}>
         <Flex justifyContent={"space-between"} mb={3}>
           <Heading as="h3" size="md" fontWeight={500} color={"gray.700"}>

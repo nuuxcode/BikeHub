@@ -65,6 +65,14 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
             >
               <TagLabel>{bike.status}</TagLabel>
             </Tag>
+            <Tag
+              size={"md"}
+              borderRadius="lg"
+              variant="solid"
+              colorScheme={Status[bike.status as keyof typeof Status]}
+            >
+              <TagLabel>{bike.Park.name}</TagLabel>
+            </Tag>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -76,7 +84,7 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
               <Box
                 className="md:w-5/12 w-full h-80 rounded-lg"
                 position={"relative"}
-                bgImage={bikeImage}
+                bgImage={bike.image ? bike.image : bikeImage}
                 bgColor={"gray.100"}
                 bgPosition={"center"}
                 bgRepeat={"no-repeat"}
@@ -194,7 +202,7 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
                 colorScheme="teal"
                 onClick={handleBooking}
               >
-                Booking Now
+                Book now
               </Button>
             </Box>
           </ModalFooter>

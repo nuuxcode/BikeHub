@@ -9,36 +9,38 @@ export async function seedRentals(users, bikes) {
     return [];
   }
 
-  const rentals = faker.helpers.multiple(
-    () => createRandomRental(users, bikes),
-    { count: 100 },
-  );
   const createdRentals = [];
 
-  for (const rental of rentals) {
-    if (!rental) {
-      console.log('Skipping undefined rental');
+  for (const user of users) {
+    if (user.id === 1) {
       continue;
     }
-    const createdRental = await prisma.rental.create({
-      data: rental as Prisma.RentalCreateInput,
-    });
-    createdRentals.push(createdRental);
-    console.log(`Created rental with ID: ${createdRental.id}`);
+
+    for (let i = 0; i < 10; i++) {
+      const rental = createRandomRental(user, bikes);
+      if (!rental) {
+        console.log('Skipping undefined rental');
+        continue;
+      }
+      const createdRental = await prisma.rental.create({
+        data: rental as Prisma.RentalCreateInput,
+      });
+      createdRentals.push(createdRental);
+      console.log(`Created rental with ID: ${createdRental.id}`);
+    }
   }
 
   return createdRentals;
 }
 
 function createRandomRental(
-  users: User[],
+  user: User,
   bikes: Bike[],
 ): Partial<Rental> | null {
-  const user = faker.helpers.arrayElement(users);
   const bike = faker.helpers.arrayElement(bikes);
 
-  if (!user || !bike) {
-    console.log('Undefined user or bike:', { user, bike });
+  if (!bike) {
+    console.log('Undefined bike:', { bike });
     return null;
   }
 

@@ -43,12 +43,12 @@ export let BarChartOptionsTopCustomers: (
           [
             {
               offset: 0,
-              color: "#4318FF",
+              color: "#38B2AC",
               opacity: 1,
             },
             {
               offset: 100,
-              color: "rgba(67, 24, 255, 1)",
+              color: "rgba(56, 178, 172, 1)",
               opacity: 0.28,
             },
           ],

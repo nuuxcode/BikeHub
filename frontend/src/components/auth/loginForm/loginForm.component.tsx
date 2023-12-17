@@ -86,12 +86,14 @@ const LoginForm: React.FC = () => {
       });
 
       const userRes = response?.data?.user;
+      console.log("userRes", userRes);
       login({
         id: userRes.id,
         name: userRes?.name,
         email: userRes?.email,
         birthdate: userRes?.birthdate,
         phone: userRes?.phone,
+        image: userRes?.image,
       });
       setData({ email: "", password: "" });
       setErrMsg("");

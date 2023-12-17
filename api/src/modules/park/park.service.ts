@@ -13,11 +13,42 @@ export class ParkService {
     return this.prisma.park.findUnique({
       where: parkWhereUniqueInput,
       include: {
-        Bike: true, // Include related park data
+        Bike: true,
       },
     });
   }
+  async findOpenParks(): Promise<Park[]> {
+    return this.prisma.park.findMany({
+      where: {
+        Bike: {
+          some: {
+            status: 'available',
+          },
+        },
+      }
+    });
+  }
 
+  async findClosedParks(): Promise<Park[]> {
+    return this.prisma.park.findMany({
+      where: {
+        OR: [
+          {
+            Bike: {
+              none: {},
+            },
+          },
+          {
+            Bike: {
+              none: {
+                status: 'available',
+              },
+            },
+          },
+        ],
+      }
+    });
+  }
   async findAll(params: {
     skip?: number;
     take?: number;
@@ -33,7 +64,7 @@ export class ParkService {
       where,
       orderBy,
       include: {
-        Bike: true, // Include related park data
+        Bike: true,
       },
     });
   }
