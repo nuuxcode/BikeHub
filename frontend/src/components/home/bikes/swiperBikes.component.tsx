@@ -13,7 +13,7 @@ const SwiperBikes = () => {
   const [selectedParkId, setSelectedParkId] = useState("all");
   const swiperRef = useRef<SwiperCore | null>(null);
   const [isSwiperInitialized, setIsSwiperInitialized] = useState(false);
-  const [, setSlideIndex] = useState(0);
+  const [activeSlideIndex, setSlideIndex] = useState(0);
   useEffect(() => {
     axios
       .get("/parks/open")
@@ -45,7 +45,7 @@ const SwiperBikes = () => {
     const parkId = event.target.value;
     setSelectedParkId(parkId);
   };
-
+  console.log("--- ",swiperRef.current?.isEnd)
   return (
     <Box
       id="weOffer"
@@ -131,13 +131,14 @@ const SwiperBikes = () => {
           spaceBetween={18}
           onAfterInit={(swiper) => {
             swiperRef.current = swiper;
-            setIsSwiperInitialized(true);
           }}
           onSlideChange={(swiper) => {
             setSlideIndex(swiper.activeIndex);
+            setIsSwiperInitialized(true);
           }}
           onBeforeInit={(swiper:any) => {
             swiperRef.current = swiper;
+            setIsSwiperInitialized(false);
           }}
           className="mySwiper"
         >
@@ -149,12 +150,12 @@ const SwiperBikes = () => {
         </Swiper>
         <Flex gap={4} className="mt-4 justify-center">
           <HiArrowLeft
-            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${swiperRef.current?.isBeginning ? 'text-gray-500' : 'text-green-500'}`}
+            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${activeSlideIndex === 0 || swiperRef.current?.isBeginning ? 'text-gray-500' : 'text-green-500'}`}
             size={24}
             onClick={() => swiperRef.current?.slidePrev()}
           />
           <HiArrowRight
-            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${!isSwiperInitialized || swiperRef.current?.isEnd ? 'text-gray-500' : 'text-green-500'}`}
+            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${isSwiperInitialized && swiperRef.current?.isEnd ? 'text-gray-500' : 'text-green-500'}`}
             size={24}
             onClick={() => swiperRef.current?.slideNext()}
           />
