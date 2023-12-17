@@ -134,7 +134,7 @@ const Header: React.FC = () => {
                 minW={0}
               >
                 <Avatar
-                  size={"sm"}
+                  size={"lg"}
                   src={user?.image}
                 />
               </MenuButton>
