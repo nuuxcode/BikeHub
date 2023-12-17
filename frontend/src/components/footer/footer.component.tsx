@@ -16,7 +16,7 @@ const Footer = () => {
           <Link to="/">
             <Image src={logoImage} width={"150px"} />
           </Link>
-          <Flex gap="8" flexDirection={{ base: "column", md: "row" }}>
+          <Flex gap="8" mr={35} flexDirection={{ base: "column", md: "row" }}>
             <Link to="/">
               <Button
                 paddingStart={0}
@@ -40,7 +40,7 @@ const Footer = () => {
             </Link>
 
             {footerItems.map((item, i) => (
-              <A key={i} href={window.location.origin+"/"+item.path}>
+              <A key={i} href={window.location.origin + "/" + item.path}>
                 <Button
                   paddingStart={0}
                   paddingEnd={0}
@@ -70,7 +70,8 @@ const Footer = () => {
           <Link to="/" className="hover:underline">
             BikeHub
           </Link>
-          . All Rights Reserved.
+          . All Rights Reserved.<br />
+          <Link to="https://github.com/nuuxcode/BikeHub" className="hover:underline">Made with ❤️ by nuuX & Ayoub & Bio.</Link>
         </span>
       </div>
     </footer>
