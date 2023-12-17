@@ -107,7 +107,7 @@ const Header: React.FC = () => {
             <Link to="/login">
               <Button
                 colorScheme="teal"
-                variant={location.pathname === '/login' ? 'solid' : 'outline'}
+                variant={location.pathname === '/login' || location.pathname === '/' ? 'solid' : 'outline'}
                 size={{ base: "sm", md: "md" }}
               >
                 Signin

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Heading, Box, Center, Text, Flex } from "@chakra-ui/react";
 import { Reveal } from "../../motion/reveal.component";
 import CardReview from "./cardReview.component";
@@ -15,6 +15,7 @@ import "../../../index.css";
 
 const SwiperReviews = () => {
   const swiperRef = useRef<SwiperCore>();
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
   const reviews = [
     {
@@ -65,11 +66,11 @@ const SwiperReviews = () => {
       className="relative md:flex-row flex-col items-center justify-end gap-4"
     >
       <Box
-        className="absolute w-3/6 h-full top-1 right-1 bg-teal-50"
+        className="absolute w-3/6 h-full top-1 right-1 bg-teal-100 opacity-25"
         clipPath={"polygon(100% 0, 41% 0, 100% 89%)"}
       />
       <Box
-        className="absolute w-2/5 h-full top-0 left-0 bg-teal-50"
+        className="absolute w-2/5 h-full top-0 left-0 bg-teal-100 opacity-25"
         clipPath={"circle(62.2% at 13% 80%)"}
       />
 
@@ -92,7 +93,7 @@ const SwiperReviews = () => {
         </Reveal>
         <Reveal>
           <Text className="text-gray-500 sm:text-base text-sm font-medium sm:text-start text-center">
-          Discovering the Joy of Riding with BikeHub
+            Discovering the Joy of Riding with BikeHub
           </Text>
         </Reveal>
         <Flex gap={3} alignSelf={{ base: "center", md: "start" }} zIndex={99}>
@@ -102,13 +103,21 @@ const SwiperReviews = () => {
               swiperRef.current?.slidePrev();
             }}
           >
-            <HiArrowLeft size={28} color={`teal`} />
+            <HiArrowLeft
+              className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${activeSlideIndex === 0 ? 'text-gray-500' : 'text-green-500'}`}
+              size={28}
+            />
           </div>
           <div
             className="cursor-pointer"
-            onClick={() => swiperRef.current?.slideNext()}
+            onClick={() => {
+              swiperRef.current?.slideNext();
+            }}
           >
-            <HiArrowRight size={28} color={"teal"} />
+            <HiArrowRight
+              className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${activeSlideIndex === reviews.length - 1 ? 'text-gray-500' : 'text-green-500'}`}
+              size={28}
+            />
           </div>
         </Flex>
       </Center>
@@ -116,6 +125,9 @@ const SwiperReviews = () => {
         <Swiper
           slidesPerView={1}
           spaceBetween={18}
+          onSlideChange={(swiper) => {
+            setActiveSlideIndex(swiper.activeIndex);
+          }}
           onBeforeInit={(swiper) => {
             swiperRef.current = swiper;
           }}

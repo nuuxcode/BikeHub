@@ -1,4 +1,4 @@
-import { Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { Center, Flex, Heading, Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { Reveal } from "../../motion/reveal.component";
 import {
@@ -54,8 +54,21 @@ const HowToRent: React.FC = () => {
       gap={6}
       py={"30px"}
       minHeight={"80vh"}
+      className="relative"
     >
       <Center flexDirection={"column"} gap={4}>
+        <Box
+          className="absolute w-full h-full top-0 left-0 bg-teal-100 opacity-25 -z-10"
+          clipPath={"circle(30.2% at 10% 50%)"}
+        />
+        <Box
+          className="absolute w-full h-full top-0 left-0 bg-teal-100 opacity-25 -z-10"
+          clipPath={"circle(30.2% at 50% 10%)"}
+        />
+        <Box
+          className="absolute w-full h-full top-0 left-0 bg-teal-100 opacity-25 -z-10"
+          clipPath={"circle(20.2% at 90% 5%)"}
+        />
         <Reveal>
           <Heading
             as="h3"

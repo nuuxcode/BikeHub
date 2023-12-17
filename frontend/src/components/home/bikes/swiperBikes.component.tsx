@@ -53,11 +53,11 @@ const SwiperBikes = () => {
       gap={4}
     >
       <Box
-        className="absolute w-2/5 h-full top-0 right-0 bg-teal-50"
-        clipPath={"circle(62.2% at 80% 13%)"}
+        className="absolute w-3/5 h-full top-0 right-0 bg-teal-100 opacity-25"
+        clipPath={"circle(60% at 80% 13%)"}
       />
       <Box
-        className="absolute w-1/6 h-full bottom-1 left-1 bg-teal-50"
+        className="absolute w-1/6 h-full bottom-1 left-1 bg-teal-100 opacity-25"
         clipPath={"circle(25% at 54% 74%)"}
       />
 
