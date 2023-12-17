@@ -18,11 +18,27 @@ export class BikeService {
     });
   }
 
-  async findByStatus(status: string): Promise<Bike[]> {
+  async findByStatus(status: string, limit?: number): Promise<Bike[]> {
     return this.prisma.bike.findMany({
       where: {
         status: status,
       },
+      take: limit || undefined,
+      include: {
+        Park: true,
+      },
+    });
+  }
+
+  async findByParkAndStatus(parkId: number, status?: string, limit?: number): Promise<Bike[]> {
+    const whereClause: any = { park_id: parkId };
+    if (status) {
+      whereClause.status = status;
+    }
+
+    return this.prisma.bike.findMany({
+      where: whereClause,
+      take: limit || undefined,
       include: {
         Park: true,
       },

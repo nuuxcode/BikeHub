@@ -55,7 +55,7 @@ model Rental {
   status     String
   price      Float
   User       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Bike       Bike      @relation(fields: [bike_id], references: [id])
+  Bike       Bike      @relation(fields: [bike_id], references: [id], onDelete: Cascade)
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   qrcode     String?

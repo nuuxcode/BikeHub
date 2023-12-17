@@ -28,9 +28,24 @@ export class BikeController {
     return this.bikeService.findAll({});
   }
 
-  @Get('status/:status')
-  async getBikesByStatus(@Param('status') status: string): Promise<BikeModel[]> {
-    return this.bikeService.findByStatus(status);
+  @Get('park/:parkId?/:status?/:limit?')
+  async getBikesByParkAndStatusWithLimit(
+    @Param('parkId') parkId: string,
+    @Param('status') status: string,
+    @Param('limit') limit: string,
+  ): Promise<BikeModel[]> {
+    console.log('parkId', parkId);
+    console.log('status', status);
+    console.log('limit', limit);
+    return this.bikeService.findByParkAndStatus(Number(parkId), status, Number(limit));
+  }
+
+  @Get('status/:status/:limit?')
+  async getBikesByStatus(
+    @Param('status') status: string,
+    @Param('limit') limit: string,
+  ): Promise<BikeModel[]> {
+    return this.bikeService.findByStatus(status, Number(limit));
   }
 
   @Get('bike/:id')

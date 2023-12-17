@@ -9,7 +9,14 @@ class AuthService {
     try {
       const response = await axios.get('/auth/check', { withCredentials: true });
       const { user, accessToken } = response.data;
-      const data = { "id": user.id, "name": user.name, "email": user.email, "birthdate": user.birthdate, "phone": user.phone };
+      const data = {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "birthdate": user.birthdate,
+        "phone": user.phone,
+        "image": user.image,
+      };
       Token = accessToken;
       console.log("Cookies Still on: ", response.status);
       authStatus.user = data;

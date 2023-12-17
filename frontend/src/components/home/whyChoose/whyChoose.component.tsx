@@ -105,7 +105,7 @@ const WhyChoose = () => {
           as="h2"
           size={{ base: "sm", md: "xl" }}
           className=" mb-3 capitalize"
-          mt={10}
+          mt={100}
         >
           why choose BikeHub 🚴‍♂️✨
         </Heading>
