@@ -32,14 +32,15 @@ const TopCustomers = () => {
             withCredentials: true,
           }),
         ]);
-        console.log("-response------------")
-        console.log(usersResponse)
-        console.log("-response------------")
-        console.log(rentalsResponse)
+        console.log("-response usersResponse------------")
+        console.log(usersResponse.data)
+        console.log("-response rentalsResponse------------")
+        console.log(rentalsResponse.data)
         console.log("-------------")
         const rentals: Rental[] = rentalsResponse.data;
         const users: User[] = usersResponse.data;
-
+        console.log("rentals", rentals)
+        console.log("users", users)
         // Count rentals by user
         const rentalCounts: { [userId: string]: number } = {};
         rentals.forEach((rental) => {
@@ -49,19 +50,19 @@ const TopCustomers = () => {
             rentalCounts[rental.user_id] = 1;
           }
         });
-
+        console.log("rentalCounts", rentalCounts)
         // Sort users by rental count and take top 5
         const sortedUsers = users
           .sort((a, b) => rentalCounts[b.id] - rentalCounts[a.id])
           .slice(0, 5);
-
+        console.log("sortedUsers", sortedUsers)
         const chartDataTransform = {
           name: "Rents Count",
           data: sortedUsers.map((user) => rentalCounts[user.id]),
         };
-
+        console.log("chartDataTransform", chartDataTransform)
         const customerNames = sortedUsers.map((user) => user.name);
-
+        console.log(sortedUsers)
         setChartData([chartDataTransform]);
         setCustomerNames(customerNames);
       } catch (error) {

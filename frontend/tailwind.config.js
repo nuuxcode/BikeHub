@@ -21,7 +21,7 @@ export default {
       },
     },
     fontFamily: {
-      sans: ["Roboto"],
+      sans: ["Roboto", "Open Sans", "sans-serif"],
     },
   },
   plugins: [],

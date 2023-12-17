@@ -33,6 +33,16 @@ export class ParkController {
     return this.parkService.findOne({ id: Number(id) });
   }
 
+  @Get('/open')
+  async getOpenParks(): Promise<ParkModel[]> {
+    return this.parkService.findOpenParks();
+  }
+
+  @Get('/closed')
+  async getClosedParks(): Promise<ParkModel[]> {
+    return this.parkService.findClosedParks();
+  }
+
   @Post('park')
   @Roles(ROLES_ENUM.ADMIN)
   @UseGuards(JwtAuthGuard)

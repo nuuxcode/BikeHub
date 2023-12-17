@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Rental, Prisma } from '@prisma/client';
+import { Bike, Park, Rental, Prisma } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -10,9 +10,19 @@ export class RentalService {
   async findOne(
     rentalWhereUniqueInput: Prisma.RentalWhereUniqueInput,
   ): Promise<Rental | null> {
-    return this.prisma.rental.findUnique({
+    const data = await this.prisma.rental.findUnique({
       where: rentalWhereUniqueInput,
+      include: {
+        User: true,
+        Bike: {
+          include: {
+            Park: true,
+          },
+        },
+      },
     });
+    delete data.User.password;
+    return data;
   }
 
   async findAll(params: {
@@ -23,13 +33,26 @@ export class RentalService {
     orderBy?: Prisma.RentalOrderByWithRelationInput;
   }): Promise<Rental[]> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.rental.findMany({
+    let data = await this.prisma.rental.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
+      include: {
+        User: true,
+        Bike: {
+          include: {
+            Park: true,
+          },
+        },
+      },
     });
+    // go through array and delete password from each user
+    data.forEach((rental) => {
+      delete rental.User.password;
+    });
+    return data;
   }
 
   async create(data: Prisma.RentalCreateInput): Promise<Rental> {

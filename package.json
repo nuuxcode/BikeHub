@@ -9,15 +9,18 @@
     "packages": [
       "api",
       "e2e",
-      "frontend"
+      "frontend",
+      "admin"
     ]
   },
   "scripts": {
     "test": "echo \"todo\"",
-    "build:app": "yarn workspace @bike/frontend build",
-    "build:api": "yarn workspace @bike/api build",
-    "start:app": "yarn workspace @bike/frontend start",
-    "start:api": "yarn workspace @bike/api start"
+    "front:dev": "yarn workspace @bike/frontend dev",
+    "front:build": "yarn workspace @bike/frontend build",
+    "front:start": "serve -l 3000 -s ~/BikeHub/frontend/dist",
+    "api:dev": "yarn workspace @bike/api start:dev",
+    "api:build": "yarn workspace @bike/api build",
+    "api:start": "yarn workspace @bike/api start:prod"
   },
   "keywords": [
     "nestjs",

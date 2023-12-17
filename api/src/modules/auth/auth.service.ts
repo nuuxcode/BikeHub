@@ -48,6 +48,7 @@ export class AuthService {
       updated_at: new Date(),
       birthdate: userData.birthdate,
       phone: userData.phone,
+      image: userData.image,
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -111,7 +112,7 @@ export class AuthService {
 
     Link: ${process.env.REDIRECT_URL}/setting-profile/updatePassword
 
-    Thank you,
+
     Enjoy your Bike :)
     `;
 

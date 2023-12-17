@@ -15,7 +15,7 @@ const columnHeaders = [
     title: "Status",
   },
   {
-    id: "price_tier",
+    id: "price",
     title: "Price Tier",
   },
   {

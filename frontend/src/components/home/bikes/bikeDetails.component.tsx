@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Modal,
   Button,
@@ -15,10 +14,6 @@ import {
   Heading,
   TagLabel,
   Tag,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
 } from "@chakra-ui/react";
 import { Bike } from "./cardBike.component";
 import bikeImage from "../../../assets/images/bikes/bike1.jpg";
@@ -28,6 +23,9 @@ import { AiOutlineDollarCircle } from "react-icons/ai";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import { MdDoneAll } from "react-icons/md";
+import { IoLocationOutline } from "react-icons/io5";
+
+import { generatePath, useNavigate } from "react-router-dom";
 
 type Model = {
   isOpen: boolean;
@@ -41,57 +39,17 @@ enum Status {
 }
 
 const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
-  const [data, setData] = useState({
-    pickUp: "",
-    return: "",
-  });
-  const [TotalPrice, setTotalPrice] = useState(0.0);
-
-  const [errPickUp, setErrPickUp] = useState(false);
-  const [errReturnTime, setErrReturnTime] = useState(false);
   // const [errData, setErrData] = useState({
   //   pickUp: false,
   //   returnTime: false,
   // });
-  /**
-   * Calculates the difference in hours between two given times.
-   *
-   * @param pickUp - The pick-up time in ISO 8601 format.
-   * @param returnTime - The return time in ISO 8601 format.
-   *
-   * @returns {number} - The difference in hours between the two times.
-   */
-  function calculateTimeDifference(pickUp: string, returnTime: string): number {
-    const pickUpTime = new Date(pickUp);
-    const returnTimeObj = new Date(returnTime);
 
-    // Calculate the time difference in milliseconds
-    const timeDifference = returnTimeObj.getTime() - pickUpTime.getTime();
+  const navigate = useNavigate();
 
-    // Convert the time difference to hours
-    const hoursDifference = timeDifference / (1000 * 60 * 60);
-    if (hoursDifference < 0 || isNaN(hoursDifference)) {
-      setTotalPrice(0);
-      return 0;
-    }
-    setTotalPrice(hoursDifference * bike.price_tier);
-    return hoursDifference;
-  }
-
-  const handleSubmit = () => {
-    if (data.return === "") {
-      setErrReturnTime(true);
-    } else {
-      setErrReturnTime(false);
-    }
-    if (data.pickUp === "") {
-      setErrPickUp(true);
-    } else {
-      setErrPickUp(false);
-    }
-    console.log("submit");
-    console.log(data);
+  const handleBooking = () => {
+    bike.id && navigate(generatePath(`/booking/${bike.id}`));
   };
+
   return (
     <>
       <Modal onClose={onClose} size={"4xl"} isOpen={isOpen}>
@@ -107,6 +65,14 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
             >
               <TagLabel>{bike.status}</TagLabel>
             </Tag>
+            <Tag
+              size={"md"}
+              borderRadius="lg"
+              variant="solid"
+              colorScheme={Status[bike.status as keyof typeof Status]}
+            >
+              <TagLabel>{bike.Park.name}</TagLabel>
+            </Tag>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -118,7 +84,7 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
               <Box
                 className="md:w-5/12 w-full h-80 rounded-lg"
                 position={"relative"}
-                bgImage={bikeImage}
+                bgImage={bike.image ? bike.image : bikeImage}
                 bgColor={"gray.100"}
                 bgPosition={"center"}
                 bgRepeat={"no-repeat"}
@@ -160,7 +126,7 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
                       Price from:
                     </Text>
                     <Text className="text-gray-500 font-medium">
-                      ${bike.price_tier}/hour
+                      ${bike.price}/hour
                     </Text>
                   </Flex>
                 </Box>
@@ -174,6 +140,13 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
                       Max passengers:
                     </Text>
                     <Text className="text-gray-500 font-medium">2</Text>
+                  </Flex>
+                  <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
+                    <IoLocationOutline size={26} color="orange" />
+                    <Text className="text-gray-800 font-medium">Location:</Text>
+                    <Text className="text-gray-500 font-medium">
+                      {bike.location}
+                    </Text>
                   </Flex>
                 </Box>
                 <Heading
@@ -217,63 +190,19 @@ const BikeDetails = ({ isOpen, onClose, bike }: Model) => {
                 </Box>
               </Flex>
             </Flex>
-            <Box className="mt-6 py-4">
-              {/* <FormControl isInvalid={}>
-                {errMsg && (
-                  <FormErrorMessage justifyContent={"center"}>
-                    {errMsg}
-                  </FormErrorMessage>
-                )}
-              </FormControl> */}
-              <Flex gap={4} className="max-sm:flex-col">
-                <FormControl id="pickUp" isInvalid={errPickUp}>
-                  <FormLabel>Pick Up Time</FormLabel>
-                  <Input
-                    type="datetime-local"
-                    value={data.pickUp}
-                    onChange={(e) => {
-                      setData({ ...data, pickUp: e.target.value });
-                      calculateTimeDifference(e.target.value, data.return);
-                    }}
-                    placeholder="Pick Up Time"
-                  />
-                  <FormErrorMessage>
-                    Pick Up Time should not be empty
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl id="return" isInvalid={errReturnTime}>
-                  <FormLabel>Return time</FormLabel>
-                  <Input
-                    value={data.return}
-                    onChange={(e) => {
-                      setData({ ...data, return: e.target.value });
-                      calculateTimeDifference(data.pickUp, e.target.value);
-                    }}
-                    placeholder="Return time"
-                    type="datetime-local"
-                  />
-                  <FormErrorMessage>
-                    Return time should not be empty
-                  </FormErrorMessage>
-                </FormControl>
-              </Flex>
-            </Box>
           </ModalBody>
-          <ModalFooter justifyContent={"space-between"}>
-            <Text fontSize="lg" fontWeight="bold">
-              Total Price: ${TotalPrice.toFixed(2)}
-            </Text>
+          <ModalFooter>
             <Box>
               <Button onClick={onClose} variant={"outline"} colorScheme="teal">
                 Close
               </Button>
               <Button
                 ml={4}
-                onClick={handleSubmit}
                 variant={"solid"}
                 colorScheme="teal"
+                onClick={handleBooking}
               >
-                Submit
+                Book now
               </Button>
             </Box>
           </ModalFooter>

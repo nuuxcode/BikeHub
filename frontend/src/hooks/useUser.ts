@@ -8,6 +8,7 @@ export interface User {
   email: string;
   birthdate: string | Date;
   phone?: string;
+  image?: string;
 }
 
 export const useUser = () => {

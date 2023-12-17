@@ -6,13 +6,12 @@ import {
   Delete,
   Put,
   UseGuards,
-  Param,
+  Param
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { ROLES_ENUM } from 'src/shared/constants/global.constants';
-
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { Roles } from '../auth/auth.roles.decorator';
 import { UpdateUser } from './../auth/auth.dto';

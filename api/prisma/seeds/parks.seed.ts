@@ -4,10 +4,10 @@ import { faker } from '@faker-js/faker';
 const prisma = new PrismaClient();
 
 export async function seedParks() {
-  const parks = faker.helpers.multiple(createRandomPark, { count: 10 });
   const createdParks = [];
 
-  for (const park of parks) {
+  for (let i = 1; i <= 20; i++) {
+    const park = createRandomPark(i);
     if (!park) {
       console.log('Skipping undefined park');
       continue;
@@ -22,8 +22,8 @@ export async function seedParks() {
   return createdParks;
 }
 
-function createRandomPark(): Partial<Park> | null {
-  const name = `Park ${faker.number.int({ min: 1, max: 10 })}`;
+function createRandomPark(number: number): Partial<Park> | null {
+  const name = `BikeHub Park ${number}`;
   const location = faker.location.streetAddress();
 
   if (!name || !location) {
@@ -34,5 +34,6 @@ function createRandomPark(): Partial<Park> | null {
   return {
     name,
     location,
+    image: faker.image.city(),
   };
 }
