@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Park, Prisma } from '@prisma/client';
+import { Bike, Park, Prisma } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -12,9 +12,43 @@ export class ParkService {
   ): Promise<Park | null> {
     return this.prisma.park.findUnique({
       where: parkWhereUniqueInput,
+      include: {
+        Bike: true,
+      },
+    });
+  }
+  async findOpenParks(): Promise<Park[]> {
+    return this.prisma.park.findMany({
+      where: {
+        Bike: {
+          some: {
+            status: 'available',
+          },
+        },
+      }
     });
   }
 
+  async findClosedParks(): Promise<Park[]> {
+    return this.prisma.park.findMany({
+      where: {
+        OR: [
+          {
+            Bike: {
+              none: {},
+            },
+          },
+          {
+            Bike: {
+              none: {
+                status: 'available',
+              },
+            },
+          },
+        ],
+      }
+    });
+  }
   async findAll(params: {
     skip?: number;
     take?: number;
@@ -29,6 +63,9 @@ export class ParkService {
       cursor,
       where,
       orderBy,
+      include: {
+        Bike: true,
+      },
     });
   }
 

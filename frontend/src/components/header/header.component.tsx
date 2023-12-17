@@ -30,7 +30,7 @@ import LogoutButton from "../logoutButton.component";
 import { useAuth } from "../../hooks/useAuth";
 import logoImage from "../../assets/images/logov2.png";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-
+import { useLocation } from 'react-router-dom';
 /**
  * Header: A functional component representing a header in React with Tailwind CSS.
  *
@@ -44,7 +44,7 @@ const Header: React.FC = () => {
     { label: "We Offer", path: "#weOffer" },
     { label: "Clients", path: "#clients" },
   ];
-
+  const location = useLocation();
   // const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
           </Button>
         </Link>
         {headerItems.map((item, i) => (
-          <A key={i} href={item.path}>
+          <A key={i} href={window.location.origin+"/"+item.path}>
             <Button
               paddingStart={0}
               paddingEnd={0}
@@ -107,7 +107,7 @@ const Header: React.FC = () => {
             <Link to="/login">
               <Button
                 colorScheme="teal"
-                variant="solid"
+                variant={location.pathname === '/login' || location.pathname === '/' ? 'solid' : 'outline'}
                 size={{ base: "sm", md: "md" }}
               >
                 Signin
@@ -116,7 +116,7 @@ const Header: React.FC = () => {
             <Link to="/signup" className="ml-3">
               <Button
                 colorScheme="teal"
-                variant="outline"
+                variant={location.pathname === '/signup' ? 'solid' : 'outline'}
                 size={{ base: "sm", md: "md" }}
               >
                 Signup
@@ -134,19 +134,15 @@ const Header: React.FC = () => {
                 minW={0}
               >
                 <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  size={"lg"}
+                  src={user?.image}
                 />
               </MenuButton>
               <MenuList zIndex={99}>
                 <Center>
                   <Avatar
                     size={"2xl"}
-                    src={
-                      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                    }
+                    src={user?.image}
                   />
                 </Center>
                 <Center>
@@ -169,11 +165,27 @@ const Header: React.FC = () => {
                   px="14px"
                 >
                   <Link
-                    to="/setting-profile"
+                    to="/setting-profile/information"
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
                       Setting Profile
+                    </Text>
+                  </Link>
+                </MenuItem>
+                <MenuItem
+                  justifyContent={"center"}
+                  _hover={{ bg: "none" }}
+                  _focus={{ bg: "none" }}
+                  color="gray.700"
+                  px="14px"
+                >
+                  <Link
+                    to="/profile"
+                    className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
+                  >
+                    <Text fontWeight={500} fontSize={16}>
+                      Profile
                     </Text>
                   </Link>
                 </MenuItem>

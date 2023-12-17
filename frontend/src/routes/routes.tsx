@@ -11,6 +11,8 @@ import UpdateInfoPers from "../pages/settingProfile/partials/updateInfoForm.comp
 import UpdatePassword from "../pages/settingProfile/partials/updatePasswordForm.component";
 import DeleteUserForm from "../pages/settingProfile/partials/deleteUserForm.component";
 import PaymentPage from "../pages/PaymentPage"
+import Profile from "../pages/profile/Profile.page";
+import BookingPage from "../pages/booking/booking.page";
 
 const Routes: React.FC = () => {
   return (
@@ -28,6 +30,23 @@ const Routes: React.FC = () => {
         <Route path="updatePassword" element={<UpdatePassword />} />
         <Route path="deleteUser" element={<DeleteUserForm />} />
       </Route>
+      <Route
+        path="profile"
+        element={
+          <Protected>
+            <Profile />
+          </Protected>
+        }
+      />
+      <Route
+        path="/Booking/:id"
+        element={
+          <Protected>
+            <BookingPage />
+          </Protected>
+        }
+      />
+
       <Route
         path="login"
         element={

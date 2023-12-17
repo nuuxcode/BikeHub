@@ -8,6 +8,9 @@ export class CreateParkDto {
   @IsString()
   @IsNotEmpty()
   location: string;
+
+  @IsString()
+  image?: string;
 }
 
 export class UpdateParkDto {
@@ -18,4 +21,7 @@ export class UpdateParkDto {
   @IsString()
   @IsNotEmpty()
   location?: string;
+
+  @IsString()
+  image?: string;
 }

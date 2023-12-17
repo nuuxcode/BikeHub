@@ -18,26 +18,26 @@ const LandingSwiper = () => {
   const data = [
     {
       img: bannerImage1,
-      title: "favorite rentals service",
-      sousTitle: "Starting from 3$ per hour",
-      text1: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      text2: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      title: "Explore the City, One Ride at a Time",
+      sousTitle: "Starting from 2$ per hour",
+      text1: "Discover hidden gems and scenic routes ", //
+      text2: "As you pedal through the heart of the city.",
       id: 1,
     },
     {
       img: bannerImage2,
-      title: "favorite rentals service",
+      title: "Feel the Wind, Embrace the Ride",
       sousTitle: "Starting from 15$ per day",
-      text1: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      text2: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      text1: "Experience the thrill of riding with our ", //
+      text2: "Premium bikes designed for speed and comfort.",
       id: 2,
     },
     {
       img: bannerImage3,
-      title: "favorite rentals service",
-      sousTitle: "Starting from 3$ per hour",
-      text1: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      text2: "lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      title: "Unlock the Joy of Riding",
+      sousTitle: "Starting from 50$ per month",
+      text1: "Elevate your mood and boost your energy", //
+      text2: "With every ride on our joyful bicycles.",
       id: 3,
     },
   ];

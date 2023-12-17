@@ -23,6 +23,8 @@ export type UserDetails = {
   password: string;
   phone: string;
   birthdate: Date | string;
+  image?: string;
+  role?: string;
 }
 
 export type UpdateUser = {
@@ -33,6 +35,8 @@ export type UpdateUser = {
   password?: string;
   phone?: string;
   birthdate?: Date | string;
+  image?: string;
+  role?: string;
 }
 
 export class RegisterUserDTO {

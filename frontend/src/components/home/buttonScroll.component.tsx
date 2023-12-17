@@ -19,7 +19,7 @@ const ButtonScroll = () => {
       onClick={() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }}
-      className={`fixed bottom-10 right-5 p-4 rounded-full shadow-md bg-gray-300 hover:bg-teal-500 focus:bg-teal-500 animation duration-300 ease-in-out text-white z-50  ${
+      className={`fixed bottom-10 right-5 p-4 rounded-full shadow-md bg-teal-100 hover:bg-teal-500 focus:bg-teal-500 animation duration-300 ease-in-out text-white z-50  ${
         visible ? "block" : "hidden"
       }`}
     >

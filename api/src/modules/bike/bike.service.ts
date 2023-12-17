@@ -1,17 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { Bike, Prisma } from '@prisma/client';
+import { Park, Bike, Prisma } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class BikeService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findOne(
     bikeWhereUniqueInput: Prisma.BikeWhereUniqueInput,
   ): Promise<Bike | null> {
     return this.prisma.bike.findUnique({
       where: bikeWhereUniqueInput,
+      include: {
+        Park: true,
+      },
+    });
+  }
+
+  async findByStatus(status: string, limit?: number): Promise<Bike[]> {
+    return this.prisma.bike.findMany({
+      where: {
+        status: status,
+      },
+      take: limit || undefined,
+      include: {
+        Park: true,
+      },
+    });
+  }
+
+  async findByParkAndStatus(parkId: number, status?: string, limit?: number): Promise<Bike[]> {
+    const whereClause: any = { park_id: parkId };
+    if (status) {
+      whereClause.status = status;
+    }
+
+    return this.prisma.bike.findMany({
+      where: whereClause,
+      take: limit || undefined,
+      include: {
+        Park: true,
+      },
     });
   }
 
@@ -29,6 +59,9 @@ export class BikeService {
       cursor,
       where,
       orderBy,
+      include: {
+        Park: true,
+      },
     });
   }
 

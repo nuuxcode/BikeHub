@@ -11,7 +11,7 @@ type Bike = {
   status: string;
   lock: boolean;
   location: string;
-  price_tier: string;
+  price: string;
   park_id: number;
   created_at: string;
   updated_at: string;
@@ -52,10 +52,10 @@ const BikeTierPie = () => {
         // Count bikes by price tier
         const bikeCounts: { [priceTier: string]: number } = {};
         bikes.forEach((bike) => {
-          if (bike.price_tier in bikeCounts) {
-            bikeCounts[bike.price_tier]++;
+          if (bike.price in bikeCounts) {
+            bikeCounts[bike.price]++;
           } else {
-            bikeCounts[bike.price_tier] = 1;
+            bikeCounts[bike.price] = 1;
           }
         });
 
