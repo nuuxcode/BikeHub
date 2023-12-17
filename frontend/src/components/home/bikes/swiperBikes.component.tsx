@@ -12,6 +12,7 @@ const SwiperBikes = () => {
   const [parks, setParks] = useState([]);
   const [selectedParkId, setSelectedParkId] = useState("all");
   const swiperRef = useRef<SwiperCore | null>(null);
+  const [isSwiperInitialized, setIsSwiperInitialized] = useState(false);
   const [, setSlideIndex] = useState(0);
   useEffect(() => {
     axios
@@ -128,6 +129,10 @@ const SwiperBikes = () => {
             },
           }}
           spaceBetween={18}
+          onAfterInit={(swiper) => {
+            swiperRef.current = swiper;
+            setIsSwiperInitialized(true);
+          }}
           onSlideChange={(swiper) => {
             setSlideIndex(swiper.activeIndex);
           }}
@@ -149,7 +154,7 @@ const SwiperBikes = () => {
             onClick={() => swiperRef.current?.slidePrev()}
           />
           <HiArrowRight
-            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${swiperRef.current?.isEnd ? 'text-gray-500' : 'text-green-500'}`}
+            className={`cursor-pointer font-bold transform hover:scale-125 transition-transform ${!isSwiperInitialized || swiperRef.current?.isEnd ? 'text-gray-500' : 'text-green-500'}`}
             size={24}
             onClick={() => swiperRef.current?.slideNext()}
           />
