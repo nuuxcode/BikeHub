@@ -100,7 +100,9 @@ const RentDetails = ({ rent }: { rent: Rental | null }) => {
 
             <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
               <Text className="font-medium text-gray-800">Age:</Text>
-              <Text className="font-medium text-gray-500">26</Text>
+              <Text className="font-medium text-gray-500">
+                {moment().diff(rent?.User?.birthdate, "years")}
+              </Text>
             </Flex>
           </Box>
           <Box className="flex flex-col  gap-2 sm:flex-row">

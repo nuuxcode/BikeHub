@@ -29,7 +29,7 @@ export type Rental = {
     email: string;
     image: string;
     phone: string;
-    birthday: string;
+    birthdate: string;
   };
   Bike: {
     model: string;
@@ -52,7 +52,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get(`/rentals/user/9`, {
+      .get(`/rentals/user/${user?.id}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -134,7 +134,15 @@ const Profile = () => {
           p={5}
           borderRadius={"2xl"}
         >
-          <RentDetails rent={currRental} />
+          {rentals.length > 0 ? (
+            <RentDetails rent={currRental} />
+          ) : (
+            <Box className="flex h-full items-center justify-center">
+              <Text fontSize={18} fontWeight={"bold"} color={"gray"}>
+                No history yet
+              </Text>
+            </Box>
+          )}
         </Box>
 
         <Box
