@@ -13,6 +13,8 @@ import DeleteUserForm from "../pages/settingProfile/partials/deleteUserForm.comp
 import PaymentPage from "../pages/PaymentPage"
 import Profile from "../pages/profile/Profile.page";
 import BookingPage from "../pages/booking/booking.page";
+import PaymentSuccessPage from '../pages/booking/PaymentSuccess.page';
+
 
 const Routes: React.FC = () => {
   return (
@@ -46,7 +48,11 @@ const Routes: React.FC = () => {
           </Protected>
         }
       />
-
+      <Route path="/payment-success/:id" element={
+        <Protected>
+          <PaymentSuccessPage />
+        </Protected>
+      } />
       <Route
         path="login"
         element={

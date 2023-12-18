@@ -77,7 +77,7 @@ const Header: React.FC = () => {
           </Button>
         </Link>
         {headerItems.map((item, i) => (
-          <A key={i} href={window.location.origin+"/"+item.path}>
+          <A key={i} href={window.location.origin + "/" + item.path}>
             <Button
               paddingStart={0}
               paddingEnd={0}
@@ -165,11 +165,11 @@ const Header: React.FC = () => {
                   px="14px"
                 >
                   <Link
-                    to="/setting-profile/information"
+                    to="/profile"
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
-                      Setting Profile
+                      Profile
                     </Text>
                   </Link>
                 </MenuItem>
@@ -181,11 +181,11 @@ const Header: React.FC = () => {
                   px="14px"
                 >
                   <Link
-                    to="/profile"
+                    to="/setting-profile/information"
                     className="w-full rounded-md hover:bg-teal-50 focus:bg-teal-50 text-center py-2"
                   >
                     <Text fontWeight={500} fontSize={16}>
-                      Profile
+                      Settings
                     </Text>
                   </Link>
                 </MenuItem>

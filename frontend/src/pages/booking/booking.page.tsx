@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Heading,
-  Step,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  Stepper,
   Tag,
   TagLabel,
   Text,
@@ -26,13 +17,16 @@ import { MdDoneAll } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 
 import bannerImg from "../../assets/images/bikes/bookingBanner.jpg";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../apis/axios";
 import { useAuth } from "../../hooks/useAuth";
 
 import { DateTimeRangePicker } from 'react-datetime-range-super-picker';
 import 'react-datetime-range-super-picker/dist/index.css'
 import { useToast } from "@chakra-ui/react";
+import PayPalButton from '../../components/paypal/PayPalButton';
+import StepsComponent from '../../components/bookingSteps/Steps.component';
+import Confetti from 'react-confetti';
 
 enum Status {
   available = "green",
@@ -41,6 +35,7 @@ enum Status {
 }
 
 const BookingPage = () => {
+  const navigate = useNavigate();
   const toast = useToast({ position: "top" });
   const { user } = useAuth();
   const { id } = useParams();
@@ -73,9 +68,9 @@ const BookingPage = () => {
   // const [errReturnTime, setErrReturnTime] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const steps = [
-    { title: "Choose your bike" },
-    { title: "Enter your details" },
-    { title: "Payment and Confirmation" },
+    { title: "Choose Location & Bike" },
+    { title: "Select Date & Payment" },
+    { title: "Take QR-CODE & Enjoy Ride!" },
   ];
   const { activeStep, setActiveStep } = useSteps({
     index: 1,
@@ -88,6 +83,7 @@ const BookingPage = () => {
     }).catch((error) => {
       console.error("Error fetching rentals:", error);
     });
+    window.scrollTo(0, 0);
   }, []);
 
 
@@ -98,11 +94,50 @@ const BookingPage = () => {
   //   if (data.start_time === "") { setErrPickUp(true); } else { setErrPickUp(false); }
   // };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+
+  function calculateTimeDifference(pickUp: string, returnTime: string): number {
+    const pickUpTime = new Date(pickUp);
+    const returnTimeObj = new Date(returnTime);
+    const timeDifference = returnTimeObj.getTime() - pickUpTime.getTime();
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+    if (hoursDifference < 0 || isNaN(hoursDifference)) { return 0; }
+    return hoursDifference;
+  }
+  const [from_date, setFromDate] = useState(new Date())
+  const [to_date, setToDate] = useState(new Date())
+
+  const handleFromDateUpdate = ({ date }: any) => {
+    console.log("date from", date.date)
+    setFromDate(date.date)
+  }
+  useEffect(() => {
+    setData(prevData => ({ ...prevData, start_time: from_date.toISOString() }));
+    let data = calculateTimeDifference(from_date.toISOString(), to_date.toISOString()) * bike.price
+    setTotalPrice(parseFloat(data.toFixed(2)));
+  }, [from_date]);
+
+  const handleToDateUpdate = ({ date }: any) => {
+    console.log("date to", date.date)
+    setToDate(date.date)
+  }
+  useEffect(() => {
+    setData(prevData => ({ ...prevData, end_time: to_date.toISOString() }));
+    setTotalPrice(calculateTimeDifference(from_date.toISOString(), to_date.toISOString()) * bike.price);
+  }, [to_date]);
+
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+
+  const handlePaymentSuccess = async () => {
+    setIsPaymentSuccessful(true);
+    toast({
+      title: `${TotalPrice.toFixed(2)} Payment successful!`,
+      status: "success",
+      duration: 10000,
+      isClosable: true,
+    });
+
+    // Post request logic
     setIsSubmitting(true);
-    //validation();
-    console.log("data", data);
     try {
       data.status = "rented";
       data.start_time = new Date(data.start_time).toISOString();
@@ -115,7 +150,7 @@ const BookingPage = () => {
           withCredentials: true,
         }
       );
-      console.log("response:", response); errMsg
+      console.log("response:", response);
       console.log(JSON.stringify(response?.data));
       setTotalPrice(0.0);
       setData({
@@ -130,13 +165,17 @@ const BookingPage = () => {
         order_id: ""
       });
       toast({
-        title: "Successfully created!",
+        title: "Successfully rented!",
         description: "Thank you for your booking.",
         status: "success",
-        duration: 5000,
+        duration: 10000,
         isClosable: true,
       });
       setActiveStep(2);
+      const rentalId = response.data.id;
+      setTimeout(() => {
+        navigate(`/payment-success/${rentalId}`);
+      }, 5000);
     } catch (error: any) {
       console.log(error);
       let errorMessage = error?.response?.data?.message;
@@ -157,99 +196,39 @@ const BookingPage = () => {
         title: "Error",
         description: errorMessage || "Something went wrong.",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     } finally {
       setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
-  function calculateTimeDifference(pickUp: string, returnTime: string): number {
-    const pickUpTime = new Date(pickUp);
-    const returnTimeObj = new Date(returnTime);
-    const timeDifference = returnTimeObj.getTime() - pickUpTime.getTime();
-    const hoursDifference = timeDifference / (1000 * 60 * 60);
-    if (hoursDifference < 0 || isNaN(hoursDifference)) { return 0; }
-    return hoursDifference;
-  }
-  const [from_date, setFromDate] = useState(new Date())
-  const [to_date, setToDate] = useState(new Date())
+  const handlePaymentFailure = () => {
+    toast({
+      title: "Payment failed!",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
-  const handleFromDateUpdate = ({ date }: any) => {
-    console.log("date from", date.date)
-    setFromDate(date.date)
-  }
+  const [isTotalPriceValid, setIsTotalPriceValid] = useState(true);
   useEffect(() => {
-    setData(prevData => ({ ...prevData, start_time: from_date.toISOString() }));
-    setTotalPrice(calculateTimeDifference(from_date.toISOString(), to_date.toISOString()) * bike.price);
-  }, [from_date]);
+    if (TotalPrice < 2) {
+      setIsTotalPriceValid(false);
+    } else {
+      setIsTotalPriceValid(true);
+    }
+  }, [TotalPrice]);
 
-  const handleToDateUpdate = ({ date }: any) => {
-    console.log("date to", date.date)
-    setToDate(date.date)
-  }
-  useEffect(() => {
-    setData(prevData => ({ ...prevData, end_time: to_date.toISOString() }));
-    setTotalPrice(calculateTimeDifference(from_date.toISOString(), to_date.toISOString()) * bike.price);
-  }, [to_date]);
+
   return (
     <div>
-      <Box
-        className="w-full h-20 flex flew-row justify-center items-center bg-ima"
-        position={"relative"}
-        // bgImage={`linear(to-t, gray.700,green.50,url(${bannerImg}) )`}
-        background={`linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(${bannerImg})`}
-        bgPosition={"center"}
-        bgRepeat={"no-repeat"}
-        bgSize={"cover"}
-        shadow={"md"}
-      >
-        <Stepper
-          size="lg"
-          colorScheme="teal"
-          color={"white"}
-          index={activeStep}
-          w="80%"
-        >
-          {steps.map((step, index) => (
-            <Step key={index} onClick={() => setActiveStep(index)}>
-              <Box className="flex flex-col justify-center items-center gap-1">
-                <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber className="text-teal-300" />}
-                  />
-                </StepIndicator>
-
-                <StepStatus
-                  complete={
-                    <StepTitle className=" text-lg text-teal-300 font-bold">
-                      {step.title}
-                    </StepTitle>
-                  }
-                  incomplete={
-                    <StepTitle className=" text-lg  font-bold">
-                      {step.title}
-                    </StepTitle>
-                  }
-                  active={
-                    <StepTitle className=" text-lg text-teal-300 font-bold">
-                      {step.title}
-                    </StepTitle>
-                  }
-                />
-              </Box>
-
-              <StepSeparator />
-            </Step>
-          ))}
-        </Stepper>
+      <Box>
+        <StepsComponent activeStep={activeStep} bannerImg={bannerImg} />
       </Box>
-
-      <Box w={"80%"} ml={"auto"} mr={"auto"} my={12}>
+      <Box w={"80%"} ml={"auto"} mr={"auto"} my={5}>
         <Box className="flex gap-3 px-2 py-3">
           <Text className="font-bold text-2xl text-teal-700">{bike.model}</Text>
           <Tag
@@ -381,71 +360,73 @@ const BookingPage = () => {
 
         </Box>
       </Box>
-      <form onSubmit={handleSubmit}>
-        <Flex direction={["column", "row"]} display="flex" alignItems="center" justifyContent="center" >
-          <Box border="1px" borderColor="gray.200" boxShadow="lg" p={4} rounded="md" display="flex" flexDirection="column">
-            <Flex gap={4} className="max-sm:flex-col" justifyContent="center">
-              <DateTimeRangePicker
-                from_date={from_date}
-                to_date={to_date}
-                format="yyyy-MM-dd HH:mm"
-                timeFormat="HH:mm"
-                dateFormat="yyyy-MM-dd"
-                weekStartsOn={1}
-                colors={{
-                  "primary_color": "#C6ECD8",
-                  "primary_highlight_color": "#266F48",
-                  "secondary_highlight_color": "#38A169",
-                  "primary_font_color": "#000000",
-                  "light_font_color": "#FFFFFF",
-                  "secondary_color": "#78D1A3"
-                }}
-                onFromDateTimeUpdate={handleFromDateUpdate}
-                onToDateTimeUpdate={handleToDateUpdate}
-              />
-            </Flex>
+      <Flex direction={["column", "row"]} display="flex" alignItems="center" justifyContent="center" >
+        <Box border="1px" borderColor="gray.200" boxShadow="lg" p={4} rounded="md" display="flex" flexDirection="column">
+          <Flex gap={4} className="max-sm:flex-col" justifyContent="center">
+            <DateTimeRangePicker
+              from_date={from_date}
+              to_date={to_date}
+              format="yyyy-MM-dd HH:mm"
+              timeFormat="HH:mm"
+              dateFormat="yyyy-MM-dd"
+              weekStartsOn={1}
+              colors={{
+                "primary_color": "#C6ECD8",
+                "primary_highlight_color": "#266F48",
+                "secondary_highlight_color": "#38A169",
+                "primary_font_color": "#000000",
+                "light_font_color": "#FFFFFF",
+                "secondary_color": "#78D1A3"
+              }}
+              onFromDateTimeUpdate={handleFromDateUpdate}
+              onToDateTimeUpdate={handleToDateUpdate}
+            />
+          </Flex>
+        </Box>
+        <Box border="1px" borderColor="gray.200" boxShadow="lg" p={4} rounded="md" display="flex" flexDirection="column" justifyContent="center" width={["100%", "20%"]} height={"100%"} mt={[4, 0]} ml={(5)}
+        >
+          <Text fontSize="lg" fontWeight="bold">
+            Total Price:
+            <span className="text-orange-500 ml-2">
+              ${TotalPrice.toFixed(2)}
+            </span>
+          </Text>
+          <Text fontSize="lg" fontWeight="bold">
+            Duration of Rent:
+            <span className="text-orange-500 ml-2">
+              {data.start_time && data.end_time ? `${calculateTimeDifference(data.start_time, data.end_time).toFixed(2)} hours` : 'N/A'}
+            </span>
+          </Text>
+          <Text fontSize="lg" fontWeight="bold">
+            Start Date:
+            <span className="text-orange-500 ml-2">
+              {data.start_time ? new Date(data.start_time).toLocaleString() : 'N/A'}
+            </span>
+          </Text>
+          <Text fontSize="lg" fontWeight="bold">
+            End Date:
+            <span className="text-orange-500 ml-2">
+              {data.end_time ? new Date(data.end_time).toLocaleString() : 'N/A'}
+            </span>
+          </Text>
+          {!isTotalPriceValid && (
+            <Text color="red.500" textAlign="center" mt={4}>
+              Please rent at least 1 hour.
+            </Text>
+          )}
+          <Box mt={4} display="flex" justifyContent="center">
+            {isTotalPriceValid && (
+              <PayPalButton amount={TotalPrice.toFixed(2)} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure} />
+            )}
           </Box>
-          <Box border="1px" borderColor="gray.200" boxShadow="lg" p={4} rounded="md" display="flex" flexDirection="column" justifyContent="center" width={["100%", "20%"]} height={"100%"} ml={100} mt={[4, 0]}
-          >
-            <Text fontSize="lg" fontWeight="bold">
-              Total Price:
-              <span className="text-orange-500 ml-2">
-                ${TotalPrice.toFixed(2)}
-              </span>
-            </Text>
-            <Text fontSize="lg" fontWeight="bold">
-              Duration of Rent:
-              <span className="text-orange-500 ml-2">
-                {data.start_time && data.end_time ? `${calculateTimeDifference(data.start_time, data.end_time).toFixed(2)} hours` : 'N/A'}
-              </span>
-            </Text>
-            <Text fontSize="lg" fontWeight="bold">
-              Start Date:
-              <span className="text-orange-500 ml-2">
-                {data.start_time ? new Date(data.start_time).toLocaleString() : 'N/A'}
-              </span>
-            </Text>
-            <Text fontSize="lg" fontWeight="bold">
-              End Date:
-              <span className="text-orange-500 ml-2">
-                {data.end_time ? new Date(data.end_time).toLocaleString() : 'N/A'}
-              </span>
-            </Text>
-            <Box mt={4} display="flex" justifyContent="center">
-              <Button
-                ml={4}
-                variant={"solid"}
-                colorScheme="teal"
-                isLoading={isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Box>
-          </Box>
-        </Flex>
-      </form>
-    </div>
+        </Box>
+      </Flex>
+      <Confetti
+        width={window.innerWidth}
+        height={window.innerHeight}
+        run={isPaymentSuccessful}
+      />
+    </div >
   );
 };
 
