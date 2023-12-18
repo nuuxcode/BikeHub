@@ -23,8 +23,8 @@ export default function MiniCalendar(props: {
       flexDirection="column"
       borderRadius={"xl"}
       shadow={"xl"}
-      w="80%"
-      maxW="max-content"
+      w="full"
+      // maxW="full"
       p="20px 15px"
       h="max-content"
       {...rest}
