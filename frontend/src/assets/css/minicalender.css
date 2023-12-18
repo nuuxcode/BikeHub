@@ -3,6 +3,11 @@
   background-color: transparent;
   font-family: "DM Sans", sans-serif;
 }
+@media screen and (max-width: 767px) {
+  .react-calendar {
+    width: 100% !important;
+  }
+}
 .react-calendar__navigation__prev2-button {
   display: none;
 }
