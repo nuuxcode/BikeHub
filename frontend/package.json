@@ -20,6 +20,7 @@
     "formik": "^2.4.5",
     "framer-motion": "^10.16.5",
     "html-to-image": "^1.11.11",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-calendar": "^4.7.0",
     "react-confetti": "^6.1.0",

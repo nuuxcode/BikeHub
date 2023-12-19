@@ -10,14 +10,17 @@ import {
 import bikeImg from "../../../assets/images/bikes/bike1.jpg";
 import qrCode from "../../../assets/images/bikes/qr-code.png";
 import { Rental } from "../Profile.page";
-
+import moment from "moment";
 enum Status {
   completed = "green",
   ongoing = "blue",
   lost = "red",
 }
 
-const RentDetails = ({ rent }: { rent: Rental }) => {
+const RentDetails = ({ rent }: { rent: Rental | null }) => {
+  const handleDate = (date: string | undefined) => {
+    return moment(date).format("MMM Do YY, h:mm a");
+  };
   return (
     <div>
       <header className="flex justify-between pr-5">
@@ -29,7 +32,7 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
           pl={2}
           mb={6}
         >
-          Current Rent
+          Current Rental
         </Heading>
         <Tag
           h={"fit-content"}
@@ -39,16 +42,16 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
           variant="solid"
           colorScheme={Status[rent?.status as keyof typeof Status]}
         >
-          <TagLabel className=" capitalize">ongoing</TagLabel>
+          <TagLabel className=" capitalize">{rent?.status}</TagLabel>
         </Tag>
       </header>
 
       <Flex gap={6} flexDirection={"column"}>
-        <Box className="w-full flex flex-row justify-around gap-4">
+        <Box className="flex w-full flex-row justify-around gap-4">
           <Box
-            className="w-40 h-40 rounded-lg"
+            className="h-40 w-1/3 rounded-lg"
             position={"relative"}
-            bgImage={bikeImg}
+            bgImage={rent?.Bike?.image || bikeImg}
             bgColor={"gray.100"}
             bgPosition={"center"}
             bgRepeat={"no-repeat"}
@@ -56,9 +59,9 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
             shadow={"md"}
           ></Box>
           <Box
-            className="w-40 h-40  rounded-lg"
+            className="h-40 w-40  rounded-lg"
             position={"relative"}
-            bgImage={qrCode}
+            bgImage={rent?.qrcode || qrCode}
             bgColor={"gray.100"}
             bgPosition={"center"}
             bgRepeat={"no-repeat"}
@@ -68,7 +71,7 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
         </Box>
 
         <Flex
-          className="flex-1 w-full"
+          className="w-full flex-1"
           flexDirection={"column"}
           shadow={"md"}
           bg={"gray.50"}
@@ -87,27 +90,32 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
           >
             User Information
           </Heading>
-          <Box className="flex gap-2  flex-col sm:flex-row">
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Full Name: </Text>
-              <Text className="text-gray-500 font-medium">Ayoub El Gharbi</Text>
+          <Box className="flex flex-col  gap-2 sm:flex-row">
+            <Flex className="w-full flex-wrap gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Full Name: </Text>
+              <Text className="font-medium text-gray-500">
+                {rent?.User?.name}
+              </Text>
             </Flex>
 
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Age:</Text>
-              <Text className="text-gray-500 font-medium">26</Text>
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Age:</Text>
+              <Text className="font-medium text-gray-500">
+                {moment().diff(rent?.User?.birthdate, "years")}
+              </Text>
             </Flex>
           </Box>
-          <Box className="flex gap-2  flex-col sm:flex-row">
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Email:</Text>
-              <Text className="text-gray-500 font-medium">ayoub@test.com</Text>
+          <Box className="flex flex-col  gap-2 sm:flex-row">
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Email:</Text>
+              <Text className="font-medium text-gray-500">
+                {rent?.User?.email}
+              </Text>
             </Flex>
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Phone Number:</Text>
-              <Text className="text-gray-500 font-medium">
-                {/* ${bike.price}/hour */}
-                6-666-665-666
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Phone Number:</Text>
+              <Text className="font-medium text-gray-500">
+                {rent?.User?.phone}
               </Text>
             </Flex>
           </Box>
@@ -123,28 +131,32 @@ const RentDetails = ({ rent }: { rent: Rental }) => {
           >
             Rent Information
           </Heading>
-          <Box className="flex gap-2  flex-col sm:flex-row">
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Bike Model: </Text>
-              <Text className="text-gray-500 font-medium">Cross</Text>
-            </Flex>
-
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Location:</Text>
-              <Text className="text-gray-500 font-medium">Msalah, Tanger</Text>
-            </Flex>
-          </Box>
-          <Box className="flex gap-2  flex-col sm:flex-row">
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Pick-up Time:</Text>
-              <Text className="text-gray-500 font-medium">
-                2021-05-05 07:00
+          <Box className="flex flex-col  gap-2 sm:flex-row">
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Bike Model: </Text>
+              <Text className="font-medium text-gray-500">
+                {rent?.Bike?.model}
               </Text>
             </Flex>
-            <Flex className="sm:w-1/2 w-full gap-2 border-b py-2">
-              <Text className="text-gray-800 font-medium">Return Time:</Text>
-              <Text className="text-gray-500 font-medium">
-                {/* ${bike.price}/hour */}
+
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Location:</Text>
+              <Text className="font-medium text-gray-500">
+                {rent?.Bike?.location}
+              </Text>
+            </Flex>
+          </Box>
+          <Box className="flex flex-col  gap-2 sm:flex-row">
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Pick-up Time:</Text>
+              <Text className="font-medium text-gray-500">
+                {handleDate(rent?.start_time)}
+              </Text>
+            </Flex>
+            <Flex className="w-full gap-2 border-b py-2 sm:w-1/2">
+              <Text className="font-medium text-gray-800">Return Time:</Text>
+              <Text className="font-medium text-gray-500">
+                {handleDate(rent?.end_time)}
               </Text>
             </Flex>
           </Box>
