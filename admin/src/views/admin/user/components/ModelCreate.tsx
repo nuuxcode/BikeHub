@@ -10,18 +10,23 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
   const [fields, setFields] = useState([]);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
 
+
   useEffect(() => {
     const getFields = async (module: string): Promise<string[]> => {
+      console.log("getFields")
       try {
+        console.log(`${process.env.REACT_APP_API_URL}${module}s${
+          module === "user" ? "" : "/" + module
+        }/2`)
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}${module}s${
             module === "user" ? "" : "/" + module
-          }/2`,
+          }/check`,
           {
             withCredentials: true,
           }
         );
-
+          console.log("response ",response)
         if (response.status !== 200) {
           throw new Error("Network response was not ok");
         }
@@ -32,7 +37,7 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
 
         const excludedFields = ["created_at", "updated_at", "id"];
         fields = fields.filter((field) => !excludedFields.includes(field));
-
+        console.log("fields",fields)
         return fields;
       } catch (error) {
         console.error(error);

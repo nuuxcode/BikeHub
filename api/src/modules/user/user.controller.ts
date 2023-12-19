@@ -29,6 +29,13 @@ export class UserController {
     return this.userService.users({});
   }
 
+  @Get('check')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async getFirstUser(): Promise<User> {
+    return this.userService.findFirst();
+  }
+
   @Get(':id')
   @Roles(ROLES_ENUM.ADMIN)
   @UseGuards(JwtAuthGuard)

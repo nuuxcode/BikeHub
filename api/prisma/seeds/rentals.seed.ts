@@ -16,7 +16,10 @@ export async function seedRentals(users, bikes) {
       continue;
     }
 
-    for (let i = 0; i < 10; i++) {
+    // Generate a random number between 10 and 30
+    const numRentals = faker.number.int({ min: 10, max: 30 });
+
+    for (let i = 0; i < numRentals; i++) {
       const rental = createRandomRental(user, bikes);
       if (!rental) {
         console.log('Skipping undefined rental');

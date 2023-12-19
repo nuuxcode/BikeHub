@@ -16,6 +16,10 @@ export class UserService {
     });
   }
 
+  async findFirst(): Promise<User | null> {
+    return this.prisma.user.findFirst();
+  }
+
   async users(params: {
     skip?: number;
     take?: number;

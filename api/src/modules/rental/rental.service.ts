@@ -28,6 +28,10 @@ export class RentalService {
     return data;
   }
 
+  async findFirst(): Promise<Rental> {
+    return this.prisma.rental.findFirst();
+  }
+
   async findAll(params: {
     skip?: number;
     take?: number;

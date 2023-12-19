@@ -18,6 +18,9 @@ export class BikeService {
     });
   }
 
+  async findFirst(): Promise<Bike> {
+    return this.prisma.bike.findFirst();
+  }
   async findByStatus(status: string, limit?: number): Promise<Bike[]> {
     return this.prisma.bike.findMany({
       where: {

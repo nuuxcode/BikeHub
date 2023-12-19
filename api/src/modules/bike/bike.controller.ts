@@ -28,6 +28,13 @@ export class BikeController {
     return this.bikeService.findAll({});
   }
 
+  @Get('bike/check')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async getFirstUser(): Promise<BikeModel> {
+    return this.bikeService.findFirst();
+  }
+
   @Get('park/:parkId?/:status?/:limit?')
   async getBikesByParkAndStatusWithLimit(
     @Param('parkId') parkId: string,
