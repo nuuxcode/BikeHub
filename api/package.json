@@ -26,6 +26,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.3.9",
     "@nestjs/swagger": "^6.2.1",
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "@prisma/client": "^5.5.2",
     "@types/nodemailer": "^6.4.14",
     "class-transformer": "^0.5.1",
