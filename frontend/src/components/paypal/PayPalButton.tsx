@@ -2,6 +2,17 @@ import React from 'react';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { OnApproveData } from "@paypal/paypal-js/types/components/buttons";
 
+let BACKEND_URL : any;
+if (import.meta.env.VITE_MODE === 'prod') {
+  BACKEND_URL = import.meta.env.VITE_BACK_END_PROD;
+}
+if (import.meta.env.VITE_MODE === 'dev') {
+  BACKEND_URL = import.meta.env.VITE_BACK_END_DEV;
+}
+if (import.meta.env.VITE_MODE === 'local') {
+  BACKEND_URL = import.meta.env.VITE_BACK_END_LOCAL;
+}
+
 interface PayPalButtonProps {
   onPaymentSuccess?: () => void;
   onPaymentFailure?: () => void;
@@ -30,7 +41,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ amount, onPaymentSuccess, o
     };
 
     try {
-      const response = await fetch("http://localhost:3300/api/v1/orders/create_order", {
+      const response = await fetch(`${BACKEND_URL}orders/create_order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +62,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ amount, onPaymentSuccess, o
   };
 
   const onApprove = (data: OnApproveData) => {
-    return fetch(`http://localhost:3300/api/v1/orders/complete_order`, {
+    return fetch(`${BACKEND_URL}orders/complete_order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

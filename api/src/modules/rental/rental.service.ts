@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class RentalService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async findOne(
     rentalWhereUniqueInput: Prisma.RentalWhereUniqueInput,
@@ -21,7 +21,10 @@ export class RentalService {
         },
       },
     });
-    delete data.User.password;
+    console.log("data", data)
+    if (data) {
+      delete data.User.password;
+    }
     return data;
   }
 
