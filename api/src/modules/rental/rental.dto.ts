@@ -9,11 +9,11 @@ export class CreateRentalDto {
   @IsNotEmpty()
   bike_id: number;
 
-  @IsDate()
+  //@IsDate()
   @IsNotEmpty()
   start_time: Date;
 
-  @IsDate()
+   //@IsDate()
   @IsNotEmpty()
   end_time: Date;
 
@@ -44,11 +44,11 @@ export class UpdateRentalDto {
   @IsNotEmpty()
   bike_id?: number;
 
-  @IsDate()
+   //@IsDate()
   @IsNotEmpty()
   start_time?: Date;
 
-  @IsDate()
+   //@IsDate()
   @IsNotEmpty()
   end_time?: Date;
 

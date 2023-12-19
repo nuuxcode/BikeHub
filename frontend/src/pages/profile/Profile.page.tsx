@@ -3,30 +3,58 @@ import {
   Box,
   Flex,
   Heading,
+  Spinner,
   // Icon,
   Text,
 } from "@chakra-ui/react";
-import bikeImg from "../../assets/images/bikes/bike1.jpg";
 import MiniCalendar from "../../components/calender/MniCalender";
 import RentDetails from "./partials/RentDetails";
 import { useEffect, useState } from "react";
 import axios from "../../apis/axios";
+import { useAuth } from "../../hooks/useAuth";
+import Rental from "./partials/RentalCard";
 
 export type Rental = {
   id: number;
   price: number;
   status: string;
-  bike: {
+  start_time: string;
+  end_time: string;
+  qrcode: string;
+  created_at: string;
+  updated_at: string;
+  User: {
+    id: number;
     name: string;
+    email: string;
+    image: string;
+    phone: string;
+    birthdate: string;
+  };
+  Bike: {
+    model: string;
+    image: string;
+    status: string;
     location: string;
+    Park: {
+      id: number;
+      name: string;
+      location: string;
+      image: string;
+    };
   };
 };
 const Profile = () => {
   const [rentals, setrentals] = useState<Rental[]>([]);
+  const [currRental, setcurrRental] = useState<Rental | null>(null); // rentals[0]
+  const [isLoaded, setIsLoaded] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     axios
-      .get(`/rentals/user/8`)
+      .get(`/rentals/user/${user?.id}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         setrentals(response.data);
       })
@@ -34,10 +62,21 @@ const Profile = () => {
         console.error("Error fetching rentals:", error);
       });
   }, []);
+  useEffect(() => {
+    setcurrRental(rentals[0]);
+    setIsLoaded(false);
+  }, [rentals]);
+
+  const handleRentalClick = (rental: Rental) => {
+    setcurrRental(rental);
+  };
   return (
-    <Box className="container mx-auto px-4 sm:px-16 py-12" minHeight={"80vh"}>
-      <Flex justifyContent={"space-between"}>
-        <Box w="300px">
+    <Box className=" mx-auto px-4 py-12 sm:px-16" minHeight={"80vh"}>
+      <Flex flexWrap={"wrap"} justifyContent={"space-between"}>
+        <Box
+          className=" flex flex-col gap-5 md:flex-row lg:flex-col lg:justify-between"
+          w={{ base: "full", md: "full", lg: "300px" }}
+        >
           <Box
             className="flex flex-col shadow-xl"
             borderRadius={"2xl"}
@@ -53,24 +92,23 @@ const Profile = () => {
               borderRadius={"md"}
             ></Box>
             <Avatar
-              src={
-                "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=1586&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
+              src={user?.image}
+              name={user?.name}
               size={"xl"}
-              className="-mt-10 mx-auto border-4 border-white"
+              className="mx-auto -mt-10 border-4 border-white"
             ></Avatar>
             <Heading
               as="h2"
               fontSize={18}
               fontWeight={"bold"}
-              className=" capitalize text-center my-3 font"
+              className=" font my-3 text-center capitalize"
             >
-              ayoub El Gharbi
+              {user?.name}
             </Heading>
 
             <Flex justifyContent={"space-evenly"} my={6}>
               <Box
-                className="flex flex-col justify-center items-center"
+                className="flex flex-col items-center justify-center"
                 w={"70px"}
                 h={"70px"}
                 textAlign={"center"}
@@ -86,18 +124,34 @@ const Profile = () => {
               </Box>
             </Flex>
           </Box>
-          <MiniCalendar minW="100%" selectRange={false} />
+          <MiniCalendar selectRange={false} />
         </Box>
+
         <Box
           minHeight={"80vh"}
-          width="45%"
+          minW={{ base: "full", lg: "600px" }}
           shadow={"lg"}
           p={5}
           borderRadius={"2xl"}
         >
-          <RentDetails rent={rentals[1]} />
+          {rentals.length > 0 ? (
+            <RentDetails rent={currRental} />
+          ) : (
+            <Box className="flex h-full items-center justify-center">
+              <Text fontSize={18} fontWeight={"bold"} color={"gray"}>
+                No history yet
+              </Text>
+            </Box>
+          )}
         </Box>
-        <Box width="350px" shadow={"lg"} borderRadius={"2xl"} p={3}>
+
+        <Box
+          width={{ base: "full", md: "350px" }}
+          h={"fit-content"}
+          shadow={"lg"}
+          borderRadius={"2xl"}
+          p={3}
+        >
           <Heading
             as="h1"
             fontSize={20}
@@ -109,53 +163,27 @@ const Profile = () => {
             Rentals
           </Heading>
           <hr className="mb-2" />
-          {rentals.length > 0 ? (
-            rentals.map((rental) => (
-              <Box
-                className="flex justify-between items-center p-2 rounded-lg"
-                _hover={{
-                  bg: "gray.50",
-                  cursor: "pointer",
-                  shadow: "xl",
-                  transition: "all 0.2s ease-in-out",
-                }}
-                _focus={{
-                  bg: "gray.50",
-                  cursor: "pointer",
-                  shadow: "xl",
-                }}
-              >
-                <Avatar borderRadius={"lg"} size={"md"} src={bikeImg} />
-                <Box justifySelf={"start"}>
-                  <Heading as="h2" fontSize={18} fontWeight={"bold"}>
-                    {rental.bike?.name}
-                  </Heading>
-                  <Text fontSize={12} fontWeight={"medium"} color={"gray"}>
-                    {rental.bike?.location}
-                  </Text>
-                </Box>
-                <Box
-                  fontWeight={"bold"}
-                  fontSize={18}
-                  textAlign={"center"}
-                  color={"orange"}
-                >
-                  <Text>${rental?.price}</Text>
-                  {/* <Text></Text> */}
-                </Box>
-                <Box color={"gray"} fontSize={"small"} fontWeight={"medium"}>
-                  <Text>3h</Text>
-                  <Text>ago</Text>
-                </Box>
+          <Box overflow={"auto"} height={"600px"}>
+            {isLoaded ? (
+              <Box className="flex h-full items-center justify-center">
+                <Spinner size="xl" />
               </Box>
-            ))
-          ) : (
-            <Box className="flex justify-center items-center h-full">
-              <Text fontSize={18} fontWeight={"bold"} color={"gray"}>
-                No history yet
-              </Text>
-            </Box>
-          )}
+            ) : rentals.length > 0 ? (
+              rentals.map((rental) => (
+                <Rental
+                  key={rental.id}
+                  rental={rental}
+                  onclickRent={handleRentalClick}
+                />
+              ))
+            ) : (
+              <Box className="flex h-full items-center justify-center">
+                <Text fontSize={18} fontWeight={"bold"} color={"gray"}>
+                  No history yet
+                </Text>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Flex>
     </Box>
