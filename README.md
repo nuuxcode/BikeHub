@@ -24,10 +24,50 @@ Dive into the heart of BikeHub by exploring our team, the technologies powering 
 
 
 
-## Team and Roles
-- [ITRI M'BARKI](https://www.linkedin.com/in/itri-m-barki-038704232/) (Full-Stack Developer)
-- [El Gharbi Ayoub](https://www.linkedin.com/in/elgharbiayoub/) (Full-Stack Developer)
-- [Mounssif nuuX BOUHLAOUI](https://www.linkedin.com/in/mounssif-bouhlaoui-25934570/) (DevOps/Full-Stack Developer)
+# Team and Roles
+
+## [ITRI M'BARKI](https://www.linkedin.com/in/itri-m-barki-038704232/) (Full-Stack Developer)
+**Role:** Full-Stack Developer focus on BACKEND
+
+**Contribution:**
+- Setup of the initial project files, laying the foundation for development.
+- Backend development using Nest.js, Prisma, and PostgreSQL.
+- Implementation of API functionalities, including authentication.
+- Creation of data models and database architecture.
+- Design and creation of the admin panel with CRUD functionality.
+- Implementation of charts and statistics for data visualization.
+- Full-stack development covering both frontend and backend aspects.
+
+## [El Gharbi Ayoub](https://www.linkedin.com/in/elgharbiayoub/) (Full-Stack Developer)
+**Role:** Full-Stack Developer focus on FRONTEND
+
+**Contribution:**
+- Design and creation of an engaging landing page.
+- Development of the user profile and dashboard, prioritizing user experience.
+- Implementation of profile settings for enhanced user customization.
+- Utilized React.js with Chakra-UI for the frontend.
+- Contributed to the overall design and visual appeal of the platform.
+- Collaborative work in creating a cohesive and integrated system.
+- Responsible for the UI/UX design, ensuring an optimal user experience.
+- Created the logo, selected colors, and designed all pages.
+- Contributed to the API and backend design.
+- Contributed to the data model and database architecture.
+
+## [Mounssif nuuX BOUHLAOUI](https://www.linkedin.com/in/mounssif-bouhlaoui-25934570/) (DevOps/Full-Stack Developer)
+**Role:** DevOps/Full-Stack Developer focus on DEVOPS
+
+**Contribution:**
+- Repository management.
+- Setup and configuration of dev/prod servers using PM2/NGINX.
+- Implementation of CI/CD using GitHub Actions.
+- Domain/SSL setup and management.
+- Integration of PayPal as payment processing.
+- Implementation of Google authentication for login and registration.
+- Implementation of Email notification features.
+- Creation and design of the booking and payment process.
+- Implementation of QR code generation for rentals.
+- Development of various API endpoints.
+- Data model updates.
 
 ## Technologies
 - **Front-end**: Reactjs / chakra-ui / axios / swiper
