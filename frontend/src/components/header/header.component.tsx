@@ -99,6 +99,28 @@ const Header: React.FC = () => {
             </Button>
           </A>
         ))}
+        <A href="https://github.com/nuuxcode/BikeHub/#team-and-roles" isExternal>
+          <Button
+            paddingStart={0}
+            paddingEnd={0}
+            className="group hover:text-teal-500 focus:text-teal-500"
+            variant="nav"
+            _hover={{ transition: "all 0.3s ease-in-out" }}
+            pos={"relative"}
+            size={{ base: "sm", md: "md" }}
+          >
+            Our Team
+            <Box
+              position={"absolute"}
+              className="w-0 h-[2px] bg-teal-500 rounded-xl bottom-0 left-0"
+              _groupFocus={{ width: "100%" }}
+              _groupHover={{
+                width: "100%",
+                transition: "all 0.3s ease-in-out",
+              }}
+            />
+          </Button>
+        </A>
       </HStack>
 
       <div>
