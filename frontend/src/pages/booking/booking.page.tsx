@@ -142,6 +142,7 @@ const BookingPage = () => {
       data.status = "rented";
       data.start_time = new Date(data.start_time).toISOString();
       data.end_time = new Date(data.end_time).toISOString();
+      data.price = parseFloat(TotalPrice.toFixed(2));
       const response = await axios.post(
         "/rentals/rental",
         JSON.stringify(data),
