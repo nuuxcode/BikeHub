@@ -67,7 +67,7 @@ export class UserService {
       delete data.oldPassword;
       delete data.newPassword;
     } else {
-      data.password = user.password;
+      delete data.password;
     }
     console.log("data updated:", data)
     const updatedUser = await this.prisma.user.update({
