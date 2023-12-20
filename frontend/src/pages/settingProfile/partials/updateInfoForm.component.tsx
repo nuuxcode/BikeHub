@@ -83,6 +83,7 @@ const UpdateInfoPers = () => {
         email: response?.data?.email,
         birthdate: newBirthdate,
         phone: response?.data?.phone,
+        image: response?.data?.image,
       });
       setData({ ...data, birthdate: newBirthdate });
     } catch (error: any) {

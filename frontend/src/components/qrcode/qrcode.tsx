@@ -27,7 +27,12 @@ const QRCodeComponent = ({ id }: { id: number }) => {
     const qrCodeRef = useRef(null);
 
     useEffect(() => {
-        axios.get(`/rentals/rental/${id}`, { withCredentials: true })
+        axios.get(`/rentals/rental/${id}`, {
+            headers: {
+                'User-Id': JSON.parse(localStorage.getItem('user') || '').id,
+            },
+            withCredentials: true
+        })
             .then(response => {
                 console.log("response.data", response.data)
                 const { id, user_id, bike_id, start_time, end_time, status, price, qrcode, payment_id, order_id, User, Bike, Park } = response.data;

@@ -9,12 +9,15 @@ export class UserListener {
     if (params.model == 'User') {
       if (params.action === 'create' || params.action === 'update') {
         const password = params.args['data'].password;
-        const encryptedPass = await AuthHelpers.hash(password);
 
-        params.args['data'] = {
-          ...params.args['data'],
-          password: encryptedPass,
-        };
+        // Only hash the password if it's provided
+        if (password) {
+          const encryptedPass = await AuthHelpers.hash(password);
+          params.args['data'] = {
+            ...params.args['data'],
+            password: encryptedPass,
+          };
+        }
       }
     }
 

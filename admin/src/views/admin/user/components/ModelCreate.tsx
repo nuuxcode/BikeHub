@@ -10,18 +10,21 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
   const [fields, setFields] = useState([]);
   const [formValues, setFormValues] = useState<{ [key: string]: any }>({});
 
+
   useEffect(() => {
     const getFields = async (module: string): Promise<string[]> => {
+      console.log("getFields")
       try {
+        console.log(`${process.env.REACT_APP_API_URL}${module}s${module === "user" ? "" : "/" + module
+          }/2`)
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}${module}s${
-            module === "user" ? "" : "/" + module
-          }/2`,
+          `${process.env.REACT_APP_API_URL}${module}s${module === "user" ? "" : "/" + module
+          }/check`,
           {
             withCredentials: true,
           }
         );
-
+        console.log("response ", response)
         if (response.status !== 200) {
           throw new Error("Network response was not ok");
         }
@@ -32,7 +35,7 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
 
         const excludedFields = ["created_at", "updated_at", "id"];
         fields = fields.filter((field) => !excludedFields.includes(field));
-
+        console.log("fields", fields)
         return fields;
       } catch (error) {
         console.error(error);
@@ -57,6 +60,10 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
       value = Number(value);
     } else if (event.target.name.endsWith("time")) {
       value = new Date(value).toISOString().slice(0, 16);
+    } else if (event.target.name === "birthdate") {
+      value = new Date(value).toISOString().slice(0, 10);
+    } else if (event.target.name === "price") {
+      value = parseFloat(value);
     }
     setFormValues({
       ...formValues,
@@ -68,7 +75,7 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
     // Convert date-time strings into Date instances
     const data = Object.fromEntries(
       Object.entries(formValues).map(([key, value]) => {
-        if (key.endsWith("time")) {
+        if (key.endsWith("time") || key === "birthdate") {
           console.log(value);
           value = new Date(value).toISOString();
           console.log(value);
@@ -78,6 +85,7 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
     );
 
     const createItem = async (module: string, data: { [key: string]: any }) => {
+      console.log("birthdate", data.birthdate)
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}${module}s/${module}`,
         {
@@ -159,6 +167,23 @@ const ModalCreate: React.FC<{ module: string; children: React.ReactNode }> = ({
                             checked={formValues[field]}
                             onChange={handleChange}
                             color="blue"
+                          />
+                        ) : field === "price" ? (
+                          <input
+                            type="number"
+                            step="0.01"
+                            name={field}
+                            value={formValues[field]}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-b-2 pl-1 shadow-md outline-none focus:border-indigo-300"
+                          />
+                        ) : field === "birthdate" ? (
+                          <input
+                            type="date"
+                            name={field}
+                            value={formValues[field]}
+                            onChange={handleChange}
+                            className="mt-1 block w-full rounded-md border-b-2 pl-1 shadow-md outline-none focus:border-indigo-300"
                           />
                         ) : (
                           <input

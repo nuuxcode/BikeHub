@@ -17,6 +17,12 @@ export class ParkService {
       },
     });
   }
+
+  async findFirst(): Promise<Park> {
+    return this.prisma.park.findFirst();
+  }
+
+
   async findOpenParks(): Promise<Park[]> {
     return this.prisma.park.findMany({
       where: {

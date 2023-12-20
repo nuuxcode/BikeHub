@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { Roles } from '../auth/auth.roles.decorator';
 import { UpdateUser } from './../auth/auth.dto';
 import { UserService } from './user.service';
-
+import { RegisterUserDTO } from '../auth/auth.dto';
 @ApiTags('users')
 @Controller('/users')
 export class UserController {
@@ -28,6 +28,22 @@ export class UserController {
   async getAll(): Promise<User[]> {
     return this.userService.users({});
   }
+
+  @Get('check')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async getFirstUser(): Promise<User> {
+    return this.userService.findFirst();
+  }
+
+
+  @Post('user')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async register(@Body() user: RegisterUserDTO): Promise<User> {
+    return this.userService.createUser(user);
+  }
+
 
   @Get(':id')
   @Roles(ROLES_ENUM.ADMIN)

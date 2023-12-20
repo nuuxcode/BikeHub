@@ -40,22 +40,35 @@ const TopCustomers = () => {
         const rentals: Rental[] = rentalsResponse.data;
         const users: User[] = usersResponse.data;
         console.log("rentals", rentals)
-        console.log("users", users)
+        console.log("usersx", users)
+        console.log("usersx lenght", users.length)
         // Count rentals by user
         const rentalCounts: { [userId: string]: number } = {};
+        let num = 0;
         rentals.forEach((rental) => {
+          console.log("---------")
+          console.log(rental.user_id)
           if (rental.user_id in rentalCounts) {
             rentalCounts[rental.user_id]++;
           } else {
             rentalCounts[rental.user_id] = 1;
           }
+          console.log(rentalCounts[rental.user_id])
+          console.log("lop:", num++)
         });
         console.log("rentalCounts", rentalCounts)
+        console.log("rental lenght", rentalCounts.length)
         // Sort users by rental count and take top 5
         const sortedUsers = users
-          .sort((a, b) => rentalCounts[b.id] - rentalCounts[a.id])
+          .sort((a, b) => {
+            const countA = rentalCounts[a.id] || 0;
+            const countB = rentalCounts[b.id] || 0;
+            console.log(`Comparing ${a.id}: ${countA} with ${b.id}: ${countB}`);
+            return countB - countA;
+          })
           .slice(0, 5);
         console.log("sortedUsers", sortedUsers)
+        console.log("sorteduser lenght", sortedUsers.length)
         const chartDataTransform = {
           name: "Rents Count",
           data: sortedUsers.map((user) => rentalCounts[user.id]),
@@ -77,7 +90,7 @@ const TopCustomers = () => {
     <Card extra="flex flex-col bg-white w-full rounded-3xl py-6 px-2 text-center">
       <div className="mb-auto flex items-center justify-between px-6">
         <h2 className="text-lg font-bold text-navy-700 dark:text-white">
-          Top Customers
+          Top Customersx
         </h2>
         <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-teal-600 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10">
           <MdBarChart className="h-6 w-6" />

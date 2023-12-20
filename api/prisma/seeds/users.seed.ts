@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 const prisma = new PrismaClient();
 
 export async function seedUsers() {
-  const users = faker.helpers.multiple(createRandomUser, { count: 5 });  const createdUsers = [];
+  const users = faker.helpers.multiple(createRandomUser, { count: 15 });  const createdUsers = [];
 
   for (const user of users) {
     const createdUser = await prisma.user.create({

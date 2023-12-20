@@ -30,10 +30,19 @@ export class RentalController {
     return this.rentalService.findAll({});
   }
 
+  @Get('rental/check')
+  @Roles(ROLES_ENUM.ADMIN)
+  @UseGuards(JwtAuthGuard)
+  async getFirstUser(): Promise<RentalModel> {
+    console.log("----- check")
+    return this.rentalService.findFirst();
+  }
+
   @Get('rental/:id')
   @Roles(ROLES_ENUM.ADMIN)
   @UseGuards(JwtAuthGuard)
   async getRentalById(@Param('id') id: string): Promise<RentalModel> {
+    console.log("----- check12")
     return this.rentalService.findOne({ id: Number(id) });
   }
 
@@ -45,6 +54,8 @@ export class RentalController {
   ): Promise<RentalModel[]> {
     return this.rentalService.findAll({ where: { user_id: Number(id) } });
   }
+
+
 
   @Post('rental')
   @Roles(ROLES_ENUM.ADMIN)
