@@ -33,6 +33,8 @@ jobs:
             export DATABASE_URL_PROD=${{ secrets.PROD_PDATABASE_URL }}
             export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             export JWT_SIGNATURE=${{ secrets.JWT_SIGNATURE }}
+            export CLIENT_ID=${{ secrets.CLIENT_ID }}
+            export CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
             echo "--------"
             echo "### CMD: cd BikeHub"
             cd BikeHub
