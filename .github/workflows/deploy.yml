@@ -27,6 +27,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ vars.SSH_PORT }}
           script: |
+            export DATABASE_URL=${{ secrets.DATABASE_URL }}
+            export DATABASE_URL_LOCAL=${{ secrets.DATABASE_URL_LOCAL }}
+            export DATABASE_URL_DEV=${{ secrets.DEV_PDATABASE_URL }}
+            export DATABASE_URL_PROD=${{ secrets.PROD_PDATABASE_URL }}
+            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export JWT_SIGNATURE=${{ secrets.JWT_SIGNATURE }}
             echo "--------"
             echo "### CMD: cd BikeHub"
             cd BikeHub

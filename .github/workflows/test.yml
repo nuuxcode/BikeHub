@@ -9,6 +9,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL_LOCAL: ${{ secrets.DATABASE_URL_LOCAL }}
+      DATABASE_URL_DEV: ${{ secrets.DEV_PDATABASE_URL }}
+      DATABASE_URL_PROD: ${{ secrets.PROD_PDATABASE_URL }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      JWT_SIGNATURE: ${{ secrets.JWT_SIGNATURE }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -46,6 +53,7 @@ jobs:
       - name: start api
         run: |
             cd api
+            cp .env.example .env
             yarn build
             yarn start:prod > api.log 2>&1 &
       - name: Wait for API to start
