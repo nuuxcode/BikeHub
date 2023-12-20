@@ -23,7 +23,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   ): boolean | Promise<boolean> | Observable<boolean> {
     console.log("--- canactivate")
     this.roles = this.reflector.get<string[]>('roles', context.getHandler());
-
+    const request = context.switchToHttp().getRequest();
+    if (request.headers['user-id'] && request.route.path === '/api/v1/rentals/rental/:id' && request.method === 'GET') {
+      return this.validateRental(request);
+    }
     return super.canActivate(context);
   }
 
@@ -32,6 +35,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const { params } = request;
     const rental = await this.rentalService.findOne({ id: Number(params.id) });
     console.log("rental",rental)
+    if (rental == null) {
+      throw new ForbiddenException();
+    }
     const user_id = request.headers['user-id'];
     console.log("request.headers['user-id']", user_id)
     console.log("rentalService.findOne user_id", rental?.user_id)

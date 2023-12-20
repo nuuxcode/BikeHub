@@ -215,7 +215,8 @@ const BookingPage = () => {
 
   const [isTotalPriceValid, setIsTotalPriceValid] = useState(true);
   useEffect(() => {
-    if (Math.floor(calculateTimeDifference(data.start_time, data.end_time)) > 1) {
+    console.log("duration",Math.floor(calculateTimeDifference(data.start_time, data.end_time)));
+    if (Math.floor(calculateTimeDifference(data.start_time, data.end_time)) >= 1) {
       setIsTotalPriceValid(true);
     } else {
       setIsTotalPriceValid(false);
