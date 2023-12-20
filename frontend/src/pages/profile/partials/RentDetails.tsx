@@ -11,6 +11,8 @@ import bikeImg from "../../../assets/images/bikes/bike1.jpg";
 import qrCode from "../../../assets/images/bikes/qr-code.png";
 import { Rental } from "../Profile.page";
 import moment from "moment";
+import QRCodeComponent from "../../../components/qrcode/qrcode";
+
 enum Status {
   completed = "green",
   ongoing = "blue",
@@ -32,7 +34,7 @@ const RentDetails = ({ rent }: { rent: Rental | null }) => {
           pl={2}
           mb={6}
         >
-          Current Rental
+          Rent Details
         </Heading>
         <Tag
           h={"fit-content"}
@@ -61,13 +63,14 @@ const RentDetails = ({ rent }: { rent: Rental | null }) => {
           <Box
             className="h-40 w-40  rounded-lg"
             position={"relative"}
-            bgImage={rent?.qrcode || qrCode}
+            // bgImage={rent?.qrcode || qrCode}
             bgColor={"gray.100"}
             bgPosition={"center"}
             bgRepeat={"no-repeat"}
             bgSize={"cover"}
             shadow={"md"}
-          ></Box>
+          ><QRCodeComponent id={Number(rent?.id)} size={140} /></Box>
+
         </Box>
 
         <Flex

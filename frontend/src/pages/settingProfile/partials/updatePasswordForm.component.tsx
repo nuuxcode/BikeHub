@@ -7,6 +7,7 @@ import {
   Button,
   FormErrorMessage,
   Flex,
+  useToast,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
@@ -23,7 +24,7 @@ interface RegisterCredentials {
 const UpdatePassword = () => {
   const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const toast = useToast({ position: "top" });
   const [data, setData] = useState<RegisterCredentials>({
     oldPassword: "",
     newPassword: "",
@@ -81,7 +82,13 @@ const UpdatePassword = () => {
       console.log(response);
       console.log(JSON.stringify(response?.data));
       setErrMsg("");
-      toast.success("Successfully updated!");
+      toast({
+        title: "Password updated.",
+        description: "Your password has been successfully updated.",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+      });
       setErrPassword(false);
     } catch (error: any) {
       console.log(error);
@@ -91,7 +98,13 @@ const UpdatePassword = () => {
       else
         errorMessage = error?.response?.data?.message.join(", ");
 
-      toast.error(errorMessage)
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {

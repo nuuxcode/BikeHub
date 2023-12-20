@@ -22,7 +22,7 @@ interface Data {
     park_id: number;
 }
 
-const QRCodeComponent = ({ id }: { id: number }) => {
+const QRCodeComponent = ({ id, size }: { id: number, size?:number }) => {
     const [data, setData] = useState<Data | null>(null);
     const qrCodeRef = useRef(null);
 
@@ -76,7 +76,7 @@ const QRCodeComponent = ({ id }: { id: number }) => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {data && (
                 <div style={{ marginTop: '20px' }} ref={qrCodeRef}>
-                    <QRCode value={JSON.stringify(data)} />
+                    <QRCode value={JSON.stringify(data)} size={size} />
                 </div>
             )}
             <Button onClick={saveImage} style={{ marginTop: '20px' }}>Save QR Code</Button>
