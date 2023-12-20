@@ -69,14 +69,54 @@ Dive into the heart of BikeHub by exploring our team, the technologies powering 
 - Development of various API endpoints.
 - Data model updates.
 
-## Technologies
-- **Front-end**: Reactjs / chakra-ui / axios / swiper
-- **Back-end**: Nest.js / jwt / passport / swagger / nodemailer / google-oauth
-- **Database**: Postgresql with Prisma
-- **DevOps**: PM2 / DATADOG / 2 Servers prod and dev (Google Cloud and DigitalOcean)
-- **CI/CD**: Github Actions
-- **Payment**: PayPal API
-- **QR Code**: QR Code Generator Library
+# Technologies
+
+## Front-End
+- **React.js**: A JavaScript library for building user interfaces.
+- **Chakra-UI**: A simple, modular, and accessible component library for React.
+- **Axios**: A promise-based HTTP client for the browser and Node.js.
+- **Swiper**: A modern touch slider used for creating interactive and responsive carousels.
+- **Vite.js with TypeScript**: A fast, opinionated frontend build tool.
+- **React-QR-CODE**: Library for generating QR codes in React applications.
+  
+## Back-End
+- **Nest.js with TypeScript**: A powerful and scalable Node.js framework for building server-side applications.
+- **Prisma**: A modern database toolkit for TypeScript and Node.js.
+- **PostgreSQL**: An open-source relational database management system.
+- **Swagger**: A tool for designing, building, documenting, and consuming RESTful web services.
+- **Nodemailer**: A module for Node.js applications to send emails.
+- **JWT & Passport**: Libraries for authentication and authorization in Node.js applications.
+- **Google OAuth**: Integration for authentication using Google accounts.
+- **PayPal API**: A payment gateway for online transactions.
+
+## DevOps
+- **PM2**: A process manager for Node.js applications.
+- **DATADOG**: Monitoring and analytics platform for comprehensive observability.
+- **2 Servers (prod and dev)**: Deployed on Google Cloud and DigitalOcean.
+- **CI/CD with GitHub Actions**: Automated workflows for continuous integration and continuous deployment.
+
+## Monitoring
+- **Google Cloud Monitoring**: Monitoring solutions for applications hosted on Google Cloud.
+- **DigitalOcean Monitoring**: Monitoring tools for applications hosted on DigitalOcean.
+- **PM2 MONITOR**: Monitoring capabilities provided by PM2.
+- **DATADOG**: Centralized monitoring and analytics for applications.
+
+## Version Control and Collaboration
+- **GIT**: Distributed version control system.
+- **GITHUB**: Web-based platform for version control and collaboration.
+
+## Server and Domain
+- **LINUX**: Operating system.
+- **NGINX**: Web server and reverse proxy server.
+- **GitHub Actions**: Automated workflows for CI/CD.
+
+## Cloud Services
+- **Google Cloud**: Cloud computing services for hosting applications.
+- **DigitalOcean**: Cloud infrastructure provider.
+- **Namecheap**: Domain registration and management.
+
+This technology stack combines powerful frameworks, libraries, and services to build a robust and scalable application,
+integrating seamlessly from front-end to back-end and ensuring efficient deployment and monitoring.
 
 ## Installation (still on going)
 
