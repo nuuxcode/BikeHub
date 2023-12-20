@@ -16,6 +16,8 @@ jobs:
       DATABASE_URL_PROD: ${{ secrets.PROD_PDATABASE_URL }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       JWT_SIGNATURE: ${{ secrets.JWT_SIGNATURE }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
