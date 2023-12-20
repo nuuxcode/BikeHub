@@ -1,10 +1,4 @@
 name: Deploy DEV
-env:
-    JWT_SIGNATURE: ${{ vars.JWT_SIGNATURE }}
-    CORS_ALLOW_URL: ${{ vars.CORS_ALLOW_URL }}
-    API_PORT: ${{ vars.API_PORT }}
-    CLIENT_ID: ${{ vars.CLIENT_ID }}
-    CLIENT_SECRET: ${{ vars.CLIENT_SECRET }}
 on:
   push:
     branches:
@@ -30,7 +24,7 @@ jobs:
         with:
           host: ${{ env.SERVER_HOST }}
           username: ${{ env.SERVER_USERNAME }}
-          key: ${{ vars.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ vars.SSH_PORT }}
           script: |
             echo "--------"
