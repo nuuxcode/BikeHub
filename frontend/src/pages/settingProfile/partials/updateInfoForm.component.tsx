@@ -8,9 +8,9 @@ import {
   FormErrorMessage,
   Flex,
   InputGroup,
+  useToast,
   InputLeftElement,
 } from "@chakra-ui/react";
-import toast from "react-hot-toast";
 import { PhoneIcon } from "@chakra-ui/icons";
 import { useAuth } from "../../../hooks/useAuth";
 import axios from "../../../apis/axios";
@@ -33,7 +33,7 @@ const UpdateInfoPers = () => {
   const [errEmail, setErrEmail] = useState(false);
   const [errName, setErrName] = useState(false);
   const [errMsg, setErrMsg] = useState("");
-
+  const toast = useToast({ position: "top" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   /**
@@ -75,7 +75,13 @@ const UpdateInfoPers = () => {
       console.log(response);
       console.log(JSON.stringify(response?.data));
       setErrMsg("");
-      toast.success("Successfully updated!");
+      toast({
+        title: "Information updated.",
+        description: "Your information has been successfully updated.",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+      });
       const newBirthdate = new Date(response?.data?.birthdate).toISOString().split("T")[0];
       login({
         id: response?.data.id,
@@ -94,7 +100,13 @@ const UpdateInfoPers = () => {
       else
         errorMessage = error?.response?.data?.message.join(", ");
 
-      toast.error(errorMessage)
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {

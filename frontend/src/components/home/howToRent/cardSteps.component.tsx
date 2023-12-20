@@ -34,7 +34,7 @@ const CardSteps = ({ Icon, title, text, after, delay = 0.5 }: Props) => {
       }}
       initial="hidden"
       animate={mainControls}
-      transition={{ duration: 1, delay: delay }}
+      transition={{ duration: 0.5, delay: delay }}
     >
       <Box width={{ base: "100%", sm: "250px" }} display="flex" flexDirection="column" justifyContent="center" alignItems="center" gap={4}>
         <Center

@@ -15,7 +15,7 @@ import {
   Text,
   InputRightElement,
   InputGroup,
-  Toast,
+  useToast,
 } from "@chakra-ui/react";
 import { useAuth } from "../../../hooks/useAuth";
 
@@ -27,7 +27,7 @@ interface LoginCredentials {
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const stateLocation = useLocation().state;
-
+  const toast = useToast({ position: "top" });
   const { login } = useAuth();
   const [data, setData] = useState<LoginCredentials>({
     email: "",
@@ -99,17 +99,17 @@ const LoginForm: React.FC = () => {
       setErrMsg("");
       setIsSubmitting(false);
       navigate(stateLocation?.from ? stateLocation.from : "/");
-      Toast({
-        title: "Account deleted",
-        description: "Your account has been deleted.",
+      toast({
+        title: "Login Successful",
+        description: "You have successfully logged in.",
         status: "success",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
       });
     } catch (error: any) {
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
-        Toast({
+        toast({
           title: "Error",
           description: "Something went wrong. Please try again later.",
           status: "error",
@@ -118,7 +118,7 @@ const LoginForm: React.FC = () => {
         });
       } else if (error.response?.status === 400) {
         setErrMsg(error.response.data?.message[0]);
-        Toast({
+        toast({
           title: "Error",
           description: error.response.data?.message[0],
           status: "error",
@@ -127,7 +127,7 @@ const LoginForm: React.FC = () => {
         });
       } else if (error.response?.status === 401) {
         setErrMsg(error.response.data?.message);
-        Toast({
+        toast({
           title: "Error",
           description: error.response.data?.message[0],
           status: "error",

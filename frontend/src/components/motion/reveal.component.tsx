@@ -7,7 +7,7 @@ interface Props {
   delay?: number;
 }
 
-export const Reveal = ({ children, width = "fit", delay = 0.5 }: Props) => {
+export const Reveal = ({ children, width = "fit", delay = 0.7 }: Props) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -29,12 +29,12 @@ export const Reveal = ({ children, width = "fit", delay = 0.5 }: Props) => {
         }}
         initial="hidden"
         animate={mainControls}
-        transition={{ duration: 1, delay: delay }}
+        transition={{ duration: 0.7, delay: delay }}
       >
         {children}
       </motion.div>
       <motion.div
-        className="absolute opacity-50 top-4 left-0 bottom-4 right-0 bg-gradient-to-r from-teal-500 to-teal-700 z-20"
+        className="absolute opacity-30 top-4 left-0 bottom-4 right-0 bg-gradient-to-r from-teal-500 to-teal-700 z-20"
         variants={{
           hidden: { left: 0 },
           visible: { left: "100%" },

@@ -11,6 +11,7 @@ import {
   FormErrorMessage,
   Text,
   Flex,
+  useToast,
   InputGroup,
   InputRightElement,
   InputLeftElement,
@@ -30,7 +31,7 @@ const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const toast = useToast({ position: "top" });
   const [data, setData] = useState<RegisterCredentials>({
     name: "",
     email: "",
@@ -104,15 +105,26 @@ const RegisterForm: React.FC = () => {
       setData({ email: "", password: "", name: "", birthdate: "", phone: "" });
       setErrMsg("");
       navigate("/login");
-      toast.success("Successfully created!");
+      toast({
+        title: "Account created.",
+        description: "Your account has been successfully created.",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+      });
     } catch (error: any) {
       console.log(error);
       let errorMessage = error?.response?.data?.message;
       if (typeof errorMessage === "string")
         errorMessage = error?.response?.data?.message;
       else errorMessage = error?.response?.data?.message.join(", ");
-
-      toast.error(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       if (!error?.response) {
         setErrMsg("Something went wrong. Please try again later.");
       } else if (error.response?.status === 400) {
