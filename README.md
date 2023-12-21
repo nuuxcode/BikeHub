@@ -1,6 +1,22 @@
 # BikeHub: Bike Rental Website
-
 # Your Journey, Your Bike, Your Freedom with BikeHub
+## Demo https://bikehub.me/
+
+<a href="https://www.youtube.com/watch?v=TNgv1815Mpk" target="blank">
+<p align="center">Watch Video Website Demo</p>
+<p align="center">
+<img width="70%" src="https://github.com/nuuxcode/BikeHub/assets/24565896/82b77f18-780d-400c-9d3e-72e90bdf39a4" alt="nuuxcode" /></p>
+</a>
+
+## Presentation
+
+<a href="https://www.youtube.com/watch?v=K0fPMFc8jn4" target="blank">
+<p align="center">Watch Portfolio Project Presentation Video</p>
+<p align="center">
+<img width="70%" src="https://github.com/nuuxcode/BikeHub/assets/24565896/7de8fb45-ab2b-4b02-9ddb-bd8d646f00db" alt="nuuxcode" /></p>
+</a>
+
+# Welcome
 
 ![image](https://github.com/nuuxcode/BikeHub/assets/24565896/a334c148-f8dd-4bb3-b584-dec5534f3967)
 
