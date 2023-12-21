@@ -301,10 +301,8 @@ For more details, please refer to the [MIT License](https://opensource.org/licen
 ![BikeHub Screenshot](https://github.com/nuuxcode/BikeHub/assets/24565896/8b291285-c863-496e-9100-fba686d5d046)
 
 ## Deployment
-Provide a link to your deployed site: [BikeHub](http://bikehub.me/)
+site deployed at : [BikeHub](http://bikehub.me/)
 
-## Final Project Blog Article
-Include a link to the final project blog article for more in-depth information.
 
 ## Author(s) LinkedIn
 - [ITRI M'BARKI](https://www.linkedin.com/in/itri-m-barki-038704232/)
