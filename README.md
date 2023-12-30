@@ -141,7 +141,7 @@ Follow these steps to set up BikeHub locally on your machine:
 1. **Clone the Repository:**
    - Open your terminal and run:
      ```bash
-     git clone https://github.com/your-username/BikeHub.git ~/BikeHub/
+     git clone https://github.com/nuuxcode/BikeHub.git ~/BikeHub/
      ```
 
 2. **Install Dependencies:**
